@@ -3,7 +3,7 @@
     与whois.cymru.com建立连接获取AS信息
 """
 import socket
-import re
+import datetime
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -57,6 +57,7 @@ def get_std_asinfo(ip):
     """
     as_info = get_asn_whois(ip)
     std_asinfo = parse_as_info(as_info)
+    std_asinfo['AS_insert_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return std_asinfo
 
 
