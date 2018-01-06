@@ -1,0 +1,23 @@
+hostname 'www.722141.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+www.722141.com访问有误
+
+hostname 'www.442452.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+www.442452.com访问有误
+
+hostname 'www.140243.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+www.140243.com访问有误
+
+
+saved: www.ss408.com  UA-77281412-1
+saved: www.781781.com  UA-77281412-5
+saved: www.zddc555.com  UA-77281412-10
+saved: www.8370.com  UA-77281412-8
+saved: www.hrz222.com  UA-77281412-5
+saved: www.78898.com  UA-77281412-6
+saved: www.sts5555.com  UA-77281412-8
+saved: www.18118.com  UA-77281412-6
+saved: www.44002999.com  UA-77281412-1
+saved: www.061199.com  UA-77281412-2
+saved: www.0032005.com  UA-77281412-6
+saved: www.8996f.com  UA-77281412-2
+

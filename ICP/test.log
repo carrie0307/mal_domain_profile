@@ -1,0 +1,936 @@
+2017-10-21 10:35:46,255 - mylogger - INFO - 页面icp：获取html异常www.tm012.com  HTTP Error 500: Internal Server Error
+
+2017-10-21 10:36:57,206 - mylogger - INFO - 页面icp：获取html异常www.3339898.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:36:58,542 - mylogger - INFO - 页面icp：获取html异常www.www234118.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:37:14,458 - mylogger - INFO - 页面icp：获取html异常www.kj2469.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:39:53,650 - mylogger - INFO - 页面icp：获取html异常www.511789.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:40:01,272 - mylogger - INFO - 页面icp：获取html异常www.628899.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:40:15,595 - mylogger - INFO - 页面icp：获取html异常www.011818.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:40:36,323 - mylogger - INFO - 页面icp：获取html异常www.80738.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:42:10,172 - mylogger - INFO - 页面icp：获取html异常www.www234118.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:42:22,042 - mylogger - INFO - 页面icp：获取html异常www.644533.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:42:28,619 - mylogger - INFO - 页面icp：获取html异常www.kj2469.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:42:42,909 - mylogger - INFO - 页面icp：获取html异常www.959577.com  HTTP Error 503: Service Temporarily Unavailable
+
+2017-10-21 10:42:49,931 - mylogger - INFO - 页面icp：获取html异常www.50884.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:42:57,767 - mylogger - INFO - 页面icp：获取html异常www.195555.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:43:19,183 - mylogger - INFO - 页面icp：获取html异常www.zwxxedu.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:43:26,254 - mylogger - INFO - 页面icp：获取html异常www.doocang.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-21 10:43:27,340 - mylogger - INFO - 页面icp：获取html异常www.jacubs.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-21 10:43:44,579 - mylogger - INFO - 页面icp：获取html异常www.aisais.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:43:54,324 - mylogger - INFO - 页面icp：获取html异常www.120male.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:43:54,944 - mylogger - INFO - 页面icp：获取html异常www.0745a.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:43:55,146 - mylogger - INFO - 页面icp：获取html异常www.25679999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:43:55,742 - mylogger - INFO - 页面icp：获取html异常www.16659999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:43:57,583 - mylogger - INFO - 页面icp：获取html异常www.36238888.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:00,740 - mylogger - INFO - 页面icp：获取html异常www.22529999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:01,420 - mylogger - INFO - 页面icp：获取html异常www.28869999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:02,290 - mylogger - INFO - 页面icp：获取html异常www.aobo9922.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:44:03,850 - mylogger - INFO - 页面icp：获取html异常www.33189999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:04,450 - mylogger - INFO - 页面icp：获取html异常www.29229999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:10,711 - mylogger - INFO - 页面icp：获取html异常www.35968888.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:16,038 - mylogger - INFO - 页面icp：获取html异常www.889986.org.cn  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:44:16,926 - mylogger - INFO - 页面icp：获取html异常www.65879999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:17,323 - mylogger - INFO - 页面icp：获取html异常www.01222222.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:17,802 - mylogger - INFO - 页面icp：获取html异常www.31839999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:17,961 - mylogger - INFO - 页面icp：获取html异常www.31869999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:18,003 - mylogger - INFO - 页面icp：获取html异常www.208123.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:44:28,458 - mylogger - INFO - 页面icp：获取html异常www.661477.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:44:45,104 - mylogger - INFO - 页面icp：获取html异常www.5888HZ.CC  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:49,136 - mylogger - INFO - 页面icp：获取html异常www.z1246.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:49,641 - mylogger - INFO - 页面icp：获取html异常www.hkhktxc.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:50,954 - mylogger - INFO - 页面icp：获取html异常www.fjwap.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:50,964 - mylogger - INFO - 页面icp：获取html异常www.z1246.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:51,702 - mylogger - INFO - 页面icp：获取html异常www.bk135.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:44:51,734 - mylogger - INFO - 页面icp：获取html异常www.wapsct.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:52,267 - mylogger - INFO - 页面icp：获取html异常www.954321.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:53,124 - mylogger - INFO - 页面icp：获取html异常www.5888hz.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:53,295 - mylogger - INFO - 页面icp：获取html异常www.tm2626.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:44:53,302 - mylogger - INFO - 页面icp：获取html异常www.666hc.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:53,537 - mylogger - INFO - 页面icp：获取html异常www.tk588.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:53,911 - mylogger - INFO - 页面icp：获取html异常www.huizeluntan.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:55,854 - mylogger - INFO - 页面icp：获取html异常www.cp22088.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:44:57,096 - mylogger - INFO - 页面icp：获取html异常www.926628.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:57,155 - mylogger - INFO - 页面icp：获取html异常www.2881w.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:44:58,275 - mylogger - INFO - 页面icp：获取html异常www.1818hw.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:58,526 - mylogger - INFO - 页面icp：获取html异常www.588zl.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:58,899 - mylogger - INFO - 页面icp：获取html异常www.2tame.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:59,176 - mylogger - INFO - 页面icp：获取html异常www.7hst.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:59,482 - mylogger - INFO - 页面icp：获取html异常www.liucai8.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:44:59,885 - mylogger - INFO - 页面icp：获取html异常www.tk288.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:00,056 - mylogger - INFO - 页面icp：获取html异常www.600xs.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:00,310 - mylogger - INFO - 页面icp：获取html异常www.49txc.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:00,448 - mylogger - INFO - 页面icp：获取html异常www.vryyy.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:00,519 - mylogger - INFO - 页面icp：获取html异常www.188188.la  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:00,594 - mylogger - INFO - 页面icp：获取html异常www.yycca.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:01,025 - mylogger - INFO - 页面icp：获取html异常www.ml66.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:01,229 - mylogger - INFO - 页面icp：获取html异常www.75364.net  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:01,531 - mylogger - INFO - 页面icp：获取html异常www.58hz.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:01,639 - mylogger - INFO - 页面icp：获取html异常www.6hct.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:01,909 - mylogger - INFO - 页面icp：获取html异常www.1370366.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:45:02,190 - mylogger - INFO - 页面icp：获取html异常www.wapsct.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:03,376 - mylogger - INFO - 页面icp：获取html异常www.nbtz.pw  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:04,776 - mylogger - INFO - 页面icp：获取html异常www.jw49.pw  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:04,790 - mylogger - INFO - 页面icp：获取html异常www.977977.net  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:05,430 - mylogger - INFO - 页面icp：获取html异常www.33dh.pw  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:05,850 - mylogger - INFO - 页面icp：获取html异常www.126688.pw  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:06,059 - mylogger - INFO - 页面icp：获取html异常www.wtdh.cx  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:45:06,371 - mylogger - INFO - 页面icp：获取html异常www.90530.net  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:06,964 - mylogger - INFO - 页面icp：获取html异常www.8088096.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:07,206 - mylogger - INFO - 页面icp：获取html异常www.078587.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:45:07,968 - mylogger - INFO - 页面icp：获取html异常www.cp89003.com  <urlopen error [Errno 104] Connection reset by peer>
+
+2017-10-21 10:45:11,793 - mylogger - INFO - 页面icp：获取html异常www.yyycp30.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:13,565 - mylogger - INFO - 页面icp：获取html异常www.zcccc.cc  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:22,684 - mylogger - INFO - 页面icp：获取html异常www.hk518.cc  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:23,210 - mylogger - INFO - 页面icp：获取html异常www.c2007cp.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:23,747 - mylogger - INFO - 页面icp：获取html异常www.wap2007cp.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:27,620 - mylogger - INFO - 页面icp：获取html异常www.358kai.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:45:42,264 - mylogger - INFO - 页面icp：获取html异常www.3130b.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:45:51,859 - mylogger - INFO - 页面icp：获取html异常www.188144.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:47:25,630 - mylogger - INFO - 页面icp：获取html异常www.lhc999.com  HTTP Error 500: Internal Server Error
+
+2017-10-21 10:48:15,768 - mylogger - INFO - 页面icp：获取html异常www.bk456.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:49:13,010 - mylogger - INFO - 页面icp：获取html异常www.5138899.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:49:20,723 - mylogger - INFO - 页面icp：获取html异常www.33270.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:49:41,552 - mylogger - INFO - 页面icp：获取html异常www.www-0584.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:51:24,982 - mylogger - INFO - 页面icp：获取html异常www.cc9988.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:25,642 - mylogger - INFO - 页面icp：获取html异常www.tv8881.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:33,260 - mylogger - INFO - 页面icp：获取html异常www.ok99991.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:34,061 - mylogger - INFO - 页面icp：获取html异常www.s1818.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:34,838 - mylogger - INFO - 页面icp：获取html异常www.kz0088.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:36,752 - mylogger - INFO - 页面icp：获取html异常www.cc5551.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:38,323 - mylogger - INFO - 页面icp：获取html异常www.45687.com  <urlopen error [Errno 104] Connection reset by peer>
+
+2017-10-21 10:51:38,798 - mylogger - INFO - 页面icp：获取html异常www.c1188.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:51:42,191 - mylogger - INFO - 页面icp：获取html异常www.58963.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:52:02,051 - mylogger - INFO - 页面icp：获取html异常www.6999088.com  <urlopen error [Errno -3] Temporary failure in name resolution>
+
+2017-10-21 10:52:27,158 - mylogger - INFO - 页面icp：获取html异常www.003232.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:52:32,587 - mylogger - INFO - 页面icp：获取html异常www.78345.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:52:39,628 - mylogger - INFO - 页面icp：获取html异常www.79700.com  HTTP Error 400: Bad Request
+
+2017-10-21 10:52:51,537 - mylogger - INFO - 页面icp：获取html异常www.34563.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:53:17,881 - mylogger - INFO - 页面icp：获取html异常www.823377.com  HTTP Error 503: Service Temporarily Unavailable
+
+2017-10-21 10:53:59,364 - mylogger - INFO - 页面icp：获取html异常www.aa991.cc  HTTP Error 400: Bad Request
+
+2017-10-21 10:54:24,334 - mylogger - INFO - 页面icp：获取html异常www.211416.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:23,666 - mylogger - INFO - 页面icp：获取html异常www.x38rr.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:55:26,953 - mylogger - INFO - 页面icp：获取html异常www.j9061.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:55:29,983 - mylogger - INFO - 页面icp：获取html异常www.xhy8899.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:55:31,065 - mylogger - INFO - 页面icp：获取html异常www.ymx2.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:42,870 - mylogger - INFO - 页面icp：获取html异常www.710.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:43,860 - mylogger - INFO - 页面icp：获取html异常www.yinhe44444.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:48,844 - mylogger - INFO - 页面icp：获取html异常www.yidali22.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:49,171 - mylogger - INFO - 页面icp：获取html异常www.lb8033.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:49,471 - mylogger - INFO - 页面icp：获取html异常www.me6666.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:51,943 - mylogger - INFO - 页面icp：获取html异常www.ya7788.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:52,372 - mylogger - INFO - 页面icp：获取html异常www.08450.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:52,607 - mylogger - INFO - 页面icp：获取html异常www.yz4999.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:54,770 - mylogger - INFO - 页面icp：获取html异常www.amn88.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:55:55,107 - mylogger - INFO - 页面icp：获取html异常www.yz3999.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:55:57,957 - mylogger - INFO - 页面icp：获取html异常www.ys2299.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:00,898 - mylogger - INFO - 页面icp：获取html异常www.mapai88.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:56:01,263 - mylogger - INFO - 页面icp：获取html异常www.55883.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:56:02,487 - mylogger - INFO - 页面icp：获取html异常www.cysh158.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:05,524 - mylogger - INFO - 页面icp：获取html异常www.ask333.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:05,725 - mylogger - INFO - 页面icp：获取html异常www.yidali11.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:05,968 - mylogger - INFO - 页面icp：获取html异常www.dc0013.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:06,137 - mylogger - INFO - 页面icp：获取html异常www.bet50000.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:56:08,407 - mylogger - INFO - 页面icp：获取html异常www.dajinhu5.hk  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:56:09,251 - mylogger - INFO - 页面icp：获取html异常www.j9062.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:56:19,904 - mylogger - INFO - 页面icp：获取html异常www.894365.com  HTTP Error 500: Internal Server Error
+
+2017-10-21 10:56:20,056 - mylogger - INFO - 页面icp：获取html异常www.3y9988.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:22,259 - mylogger - INFO - 页面icp：获取html异常www.yz1999.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:22,526 - mylogger - INFO - 页面icp：获取html异常www.bet365538.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:23,573 - mylogger - INFO - 页面icp：获取html异常www.laok333.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:24,392 - mylogger - INFO - 页面icp：获取html异常www.777777s.cc  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:26,967 - mylogger - INFO - 页面icp：获取html异常www.th1122.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:28,919 - mylogger - INFO - 页面icp：获取html异常www.j6119.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:29,409 - mylogger - INFO - 页面icp：获取html异常www.ke0001.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:30,123 - mylogger - INFO - 页面icp：获取html异常www.jqb8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:31,626 - mylogger - INFO - 页面icp：获取html异常www.yz8999.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:32,690 - mylogger - INFO - 页面icp：获取html异常www.ys7777.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:33,315 - mylogger - INFO - 页面icp：获取html异常www.986438.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:56:33,983 - mylogger - INFO - 页面icp：获取html异常www.9a700.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:34,279 - mylogger - INFO - 页面icp：获取html异常www.00ts00.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:36,543 - mylogger - INFO - 页面icp：获取html异常www.684365.com  HTTP Error 500: Internal Server Error
+
+2017-10-21 10:56:39,368 - mylogger - INFO - 页面icp：获取html异常www.88608.com  ''
+
+2017-10-21 10:56:45,461 - mylogger - INFO - 页面icp：获取html异常www.16289.com  ''
+
+2017-10-21 10:56:48,740 - mylogger - INFO - 页面icp：获取html异常www.33883c.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:50,592 - mylogger - INFO - 页面icp：获取html异常www.shen1133.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:53,633 - mylogger - INFO - 页面icp：获取html异常www.shen1199.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:53,839 - mylogger - INFO - 页面icp：获取html异常www.yinhe00000.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:53,899 - mylogger - INFO - 页面icp：获取html异常www.33t888.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:54,423 - mylogger - INFO - 页面icp：获取html异常www.888866.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:54,440 - mylogger - INFO - 页面icp：获取html异常www.betwin999.us  HTTP Error 403: Forbidden
+
+2017-10-21 10:56:54,689 - mylogger - INFO - 页面icp：获取html异常www.27186.com  ''
+
+2017-10-21 10:56:55,201 - mylogger - INFO - 页面icp：获取html异常www.s37777.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:56,574 - mylogger - INFO - 页面icp：获取html异常www.vip7.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:56,975 - mylogger - INFO - 页面icp：获取html异常www.th1199.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:57,035 - mylogger - INFO - 页面icp：获取html异常www.8035D.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:57,569 - mylogger - INFO - 页面icp：获取html异常www.mapai01.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:56:57,849 - mylogger - INFO - 页面icp：获取html异常www.dhy3000.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:56:57,950 - mylogger - INFO - 页面icp：获取html异常www.8035M.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:05,195 - mylogger - INFO - 页面icp：获取html异常www.p8989.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-21 10:57:05,248 - mylogger - INFO - 页面icp：获取html异常www.899356.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:05,615 - mylogger - INFO - 页面icp：获取html异常www.jj9111.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:07,442 - mylogger - INFO - 页面icp：获取html异常www.xin8885.net  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:14,134 - mylogger - INFO - 页面icp：获取html异常www.pan1666.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:15,021 - mylogger - INFO - 页面icp：获取html异常www.81288.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:15,355 - mylogger - INFO - 页面icp：获取html异常www.008k7.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:57:15,966 - mylogger - INFO - 页面icp：获取html异常www.24646.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:16,095 - mylogger - INFO - 页面icp：获取html异常www.33883a.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:16,840 - mylogger - INFO - 页面icp：获取html异常www.yinhe11111.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:19,780 - mylogger - INFO - 页面icp：获取html异常www.shen1144.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:20,401 - mylogger - INFO - 页面icp：获取html异常www.ys5522.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:20,421 - mylogger - INFO - 页面icp：获取html异常www.rbet1365.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:20,423 - mylogger - INFO - 页面icp：获取html异常www.betway58.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:22,963 - mylogger - INFO - 页面icp：获取html异常www.11067.com  ''
+
+2017-10-21 10:57:24,973 - mylogger - INFO - 页面icp：获取html异常www.b66999.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:28,115 - mylogger - INFO - 页面icp：获取html异常www.xhy1188.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:28,495 - mylogger - INFO - 页面icp：获取html异常www.kima77.net  HTTP Error 403: Forbidden
+
+2017-10-21 10:57:29,085 - mylogger - INFO - 页面icp：获取html异常www.407bb.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:31,671 - mylogger - INFO - 页面icp：获取html异常www.99yyj.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 10:57:32,827 - mylogger - INFO - 页面icp：获取html异常www.blg034.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:57:33,516 - mylogger - INFO - 页面icp：获取html异常www.dj6668.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:34,393 - mylogger - INFO - 页面icp：获取html异常www.yid777.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:37,660 - mylogger - INFO - 页面icp：获取html异常www.5999bet.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-21 10:57:38,839 - mylogger - INFO - 页面icp：获取html异常www.cs066.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:39,983 - mylogger - INFO - 页面icp：获取html异常www.85898.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:42,168 - mylogger - INFO - 页面icp：获取html异常www.dy5522.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:57:42,196 - mylogger - INFO - 页面icp：获取html异常www.5568.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:42,482 - mylogger - INFO - 页面icp：获取html异常www.ys0099.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:44,945 - mylogger - INFO - 页面icp：获取html异常www.ss408.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:47,293 - mylogger - INFO - 页面icp：获取html异常www.0032005.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:47,803 - mylogger - INFO - 页面icp：获取html异常www.33508.com  HTTP Error 403: Forbidden
+
+2017-10-21 10:57:48,065 - mylogger - INFO - 页面icp：获取html异常www.jj366.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:48,898 - mylogger - INFO - 页面icp：获取html异常www.44002999.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:50,344 - mylogger - INFO - 页面icp：获取html异常www.9805.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:51,147 - mylogger - INFO - 页面icp：获取html异常www.hd606.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 10:57:53,143 - mylogger - INFO - 页面icp：获取html异常www.jg4466.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:54,756 - mylogger - INFO - 页面icp：获取html异常www.ya1111.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:55,102 - mylogger - INFO - 页面icp：获取html异常www.ubxyz.net  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:55,675 - mylogger - INFO - 页面icp：获取html异常www.dc0014.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:56,374 - mylogger - INFO - 页面icp：获取html异常www.yinhe22222.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:57:56,546 - mylogger - INFO - 页面icp：获取html异常www.09856.com  hostname 'www.09856.com' doesn't match either of '0188kj.com', 'www.0188kj.com'
+
+2017-10-21 10:57:59,044 - mylogger - INFO - 页面icp：获取html异常www.62566.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:58:01,149 - mylogger - INFO - 页面icp：获取html异常www.pb0588.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:58:02,524 - mylogger - INFO - 页面icp：获取html异常www.c789.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:58:03,285 - mylogger - INFO - 页面icp：获取html异常www.359359.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:58:07,500 - mylogger - INFO - 页面icp：获取html异常www.69c.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-21 10:58:07,843 - mylogger - INFO - 页面icp：获取html异常www.004532.com  hostname 'www.004532.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:08,085 - mylogger - INFO - 页面icp：获取html异常www.068191.com  hostname 'www.068191.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:08,972 - mylogger - INFO - 页面icp：获取html异常www.449465.com  hostname 'www.449465.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:09,175 - mylogger - INFO - 页面icp：获取html异常www.515495.com  hostname 'www.515495.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:11,586 - mylogger - INFO - 页面icp：获取html异常www.393844.com  hostname 'www.393844.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:13,975 - mylogger - INFO - 页面icp：获取html异常www.083187.com  hostname 'www.083187.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:17,282 - mylogger - INFO - 页面icp：获取html异常www.771941.com  hostname 'www.771941.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:20,478 - mylogger - INFO - 页面icp：获取html异常www.299248.com  hostname 'www.299248.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:21,767 - mylogger - INFO - 页面icp：获取html异常www.334080.com  hostname 'www.334080.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:22,402 - mylogger - INFO - 页面icp：获取html异常www.047990.com  hostname 'www.047990.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:23,062 - mylogger - INFO - 页面icp：获取html异常www.128644.com  hostname 'www.128644.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:23,584 - mylogger - INFO - 页面icp：获取html异常www.144060.com  hostname 'www.144060.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:25,004 - mylogger - INFO - 页面icp：获取html异常www.544964.com  hostname 'www.544964.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:25,792 - mylogger - INFO - 页面icp：获取html异常www.211714.com  hostname 'www.211714.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:26,605 - mylogger - INFO - 页面icp：获取html异常www.244068.com  hostname 'www.244068.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:26,687 - mylogger - INFO - 页面icp：获取html异常www.031039.com  hostname 'www.031039.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:27,614 - mylogger - INFO - 页面icp：获取html异常www.028982.com  hostname 'www.028982.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:27,838 - mylogger - INFO - 页面icp：获取html异常www.942235.com  hostname 'www.942235.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:58:34,621 - mylogger - INFO - 页面icp：获取html异常www.wt345.com  [Errno 104] Connection reset by peer
+
+2017-10-21 10:59:17,174 - mylogger - INFO - 页面icp：获取html异常www.xg909.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 10:59:17,272 - mylogger - INFO - 页面icp：获取html异常www.401415.com  hostname 'www.401415.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:18,164 - mylogger - INFO - 页面icp：获取html异常www.599341.com  hostname 'www.599341.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:30,825 - mylogger - INFO - 页面icp：获取html异常www.454396.com  hostname 'www.454396.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:36,633 - mylogger - INFO - 页面icp：获取html异常www.458815.com  hostname 'www.458815.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:36,930 - mylogger - INFO - 页面icp：获取html异常www.621184.com  hostname 'www.621184.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:38,787 - mylogger - INFO - 页面icp：获取html异常www.408029.com  hostname 'www.408029.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:39,618 - mylogger - INFO - 页面icp：获取html异常www.338040.com  hostname 'www.338040.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:39,866 - mylogger - INFO - 页面icp：获取html异常www.774017.com  hostname 'www.774017.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:42,998 - mylogger - INFO - 页面icp：获取html异常www.331415.com  hostname 'www.331415.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:48,505 - mylogger - INFO - 页面icp：获取html异常www.394744.com  hostname 'www.394744.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:50,311 - mylogger - INFO - 页面icp：获取html异常www.449107.com  hostname 'www.449107.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 10:59:55,407 - mylogger - INFO - 页面icp：获取html异常www.349906.com  hostname 'www.349906.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 11:00:02,963 - mylogger - INFO - 页面icp：获取html异常www.850350.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 11:00:05,747 - mylogger - INFO - 页面icp：获取html异常www.463244.com  hostname 'www.463244.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 11:00:07,583 - mylogger - INFO - 页面icp：获取html异常www.418211.com  hostname 'www.418211.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 11:00:10,143 - mylogger - INFO - 页面icp：获取html异常www.722141.com  hostname 'www.722141.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 11:00:12,120 - mylogger - INFO - 页面icp：获取html异常www.442452.com  hostname 'www.442452.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 11:00:26,352 - mylogger - INFO - 页面icp：获取html异常www.140243.com  hostname 'www.140243.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-21 11:01:29,219 - mylogger - INFO - 页面icp：获取html异常www.gp88kj.com  [Errno 104] Connection reset by peer
+
+2017-10-21 11:02:13,870 - mylogger - INFO - 页面icp：获取html异常www.tyc12345.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 11:03:32,715 - mylogger - INFO - 页面icp：获取html异常www.hg33396.com  HTTP Error 504: Gateway Timeout
+
+2017-10-21 11:03:49,071 - mylogger - INFO - 页面icp：获取html异常www.88jq.net  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-21 11:03:51,964 - mylogger - INFO - 页面icp：获取html异常www.haoliaoying.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 11:04:35,811 - mylogger - INFO - 页面icp：获取html异常www.aib8.com  [Errno 104] Connection reset by peer
+
+2017-10-21 11:06:36,450 - mylogger - INFO - 页面icp：获取html异常www.91805388.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 11:08:21,783 - mylogger - INFO - 页面icp：获取html异常www.1717bo.com  [Errno 104] Connection reset by peer
+
+2017-10-21 11:09:13,977 - mylogger - INFO - 页面icp：获取html异常www.8848bo.com  [Errno 104] Connection reset by peer
+
+2017-10-21 11:12:08,951 - mylogger - INFO - 页面icp：获取html异常www.5335.COM  ''
+
+2017-10-21 11:12:47,162 - mylogger - INFO - 页面icp：获取html异常www.tt539.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 11:14:55,674 - mylogger - INFO - 页面icp：获取html异常www.0085198.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 11:18:35,415 - mylogger - INFO - 页面icp：获取html异常www.305168.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-21 11:19:07,837 - mylogger - INFO - 页面icp：获取html异常www.69667799.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 11:21:25,514 - mylogger - INFO - 页面icp：获取html异常www.66777555.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-21 11:21:30,056 - mylogger - INFO - 页面icp：获取html异常www.628899.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:03:04,316 - mylogger - INFO - 页面icp：获取html异常www.6385119.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:03:12,128 - mylogger - INFO - 页面icp：获取html异常www.ok628899.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:03:35,276 - mylogger - INFO - 页面icp：获取html异常www.016222.com  HTTP Error 403: Forbidden
+
+2017-10-28 15:03:54,049 - mylogger - INFO - 页面icp：获取html异常www.www-50459.com  HTTP Error 400: Bad Request
+
+2017-10-28 15:03:55,974 - mylogger - INFO - 页面icp：获取html异常www.987699.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:03:56,852 - mylogger - INFO - 页面icp：获取html异常www.860077.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:03:58,002 - mylogger - INFO - 页面icp：获取html异常www.75899.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:02,461 - mylogger - INFO - 页面icp：获取html异常www.398399.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:07,525 - mylogger - INFO - 页面icp：获取html异常www.32108.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:15,449 - mylogger - INFO - 页面icp：获取html异常www.lhc222.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:18,762 - mylogger - INFO - 页面icp：获取html异常www.www-34908.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:19,368 - mylogger - INFO - 页面icp：获取html异常www.59459.com  HTTP Error 403: Forbidden
+
+2017-10-28 15:04:19,451 - mylogger - INFO - 页面icp：获取html异常www.jnbcpj.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:19,808 - mylogger - INFO - 页面icp：获取html异常www.www-60244.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:20,172 - mylogger - INFO - 页面icp：获取html异常www.5408.net  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:21,568 - mylogger - INFO - 页面icp：获取html异常www.63608.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:25,428 - mylogger - INFO - 页面icp：获取html异常www.287606.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:25,803 - mylogger - INFO - 页面icp：获取html异常www.0584.cc  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:30,378 - mylogger - INFO - 页面icp：获取html异常www.737475.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:30,981 - mylogger - INFO - 页面icp：获取html异常www.www-55987.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:38,432 - mylogger - INFO - 页面icp：获取html异常www.4435511.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:39,161 - mylogger - INFO - 页面icp：获取html异常www.803377.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:40,809 - mylogger - INFO - 页面icp：获取html异常www.www-67065.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:41,175 - mylogger - INFO - 页面icp：获取html异常www.58695.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:41,567 - mylogger - INFO - 页面icp：获取html异常www.606222.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:42,608 - mylogger - INFO - 页面icp：获取html异常www.3210911.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:42,811 - mylogger - INFO - 页面icp：获取html异常www.21058.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:42,822 - mylogger - INFO - 页面icp：获取html异常www.50007000.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:43,476 - mylogger - INFO - 页面icp：获取html异常www.683210.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:45,216 - mylogger - INFO - 页面icp：获取html异常www.tk828.com  HTTP Error 500: Internal Server Error
+
+2017-10-28 15:04:46,848 - mylogger - INFO - 页面icp：获取html异常www.758666.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:47,041 - mylogger - INFO - 页面icp：获取html异常www.921133.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:49,599 - mylogger - INFO - 页面icp：获取html异常www.kj1788.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:04:57,352 - mylogger - INFO - 页面icp：获取html异常www.397398.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:05:16,387 - mylogger - INFO - 页面icp：获取html异常www.37649.com  <urlopen error [Errno -3] Temporary failure in name resolution>
+
+2017-10-28 15:05:30,855 - mylogger - INFO - 页面icp：获取html异常www.pay38779.com  HTTP Error 403: Forbidden
+
+2017-10-28 15:05:34,884 - mylogger - INFO - 页面icp：获取html异常www.pjbet03.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:05:36,644 - mylogger - INFO - 页面icp：获取html异常www.9542.com  ''
+
+2017-10-28 15:05:37,028 - mylogger - INFO - 页面icp：获取html异常www.kk168888.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:05:48,427 - mylogger - INFO - 页面icp：获取html异常www.36225.com  HTTP Error 403: Forbidden
+
+2017-10-28 15:05:54,640 - mylogger - INFO - 页面icp：获取html异常www.45222.com  ''
+
+2017-10-28 15:05:59,999 - mylogger - INFO - 页面icp：获取html异常www.881669.com  HTTP Error 400: Bad Request
+
+2017-10-28 15:06:04,354 - mylogger - INFO - 页面icp：获取html异常www.41198c.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:06:30,767 - mylogger - INFO - 页面icp：获取html异常www.32109.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:06:44,968 - mylogger - INFO - 页面icp：获取html异常www.9594.cc  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:07:00,707 - mylogger - INFO - 页面icp：获取html异常www.698hd.com  HTTP Error 403: Forbidden
+
+2017-10-28 15:07:01,931 - mylogger - INFO - 页面icp：获取html异常www.yscome.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:07:02,008 - mylogger - INFO - 页面icp：获取html异常www.kp90.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-28 15:08:01,248 - mylogger - INFO - 页面icp：获取html异常www.822855.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:08:32,987 - mylogger - INFO - 页面icp：获取html异常www.130091.com  hostname 'www.130091.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-28 15:08:35,707 - mylogger - INFO - 页面icp：获取html异常www.200394.com  hostname 'www.200394.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-28 15:08:46,661 - mylogger - INFO - 页面icp：获取html异常www.160088.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:08:56,098 - mylogger - INFO - 页面icp：获取html异常www.www-4179.com  HTTP Error 400: Bad Request
+
+2017-10-28 15:08:58,807 - mylogger - INFO - 页面icp：获取html异常www.k9k98.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:09:34,475 - mylogger - INFO - 页面icp：获取html异常www.1188kj.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-28 15:09:58,766 - mylogger - INFO - 页面icp：获取html异常www.thefun88.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:10:03,712 - mylogger - INFO - 页面icp：获取html异常www.lehecai.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:10:10,554 - mylogger - INFO - 页面icp：获取html异常www.tt133.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 15:10:13,742 - mylogger - INFO - 页面icp：获取html异常www.233288.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:10:30,000 - mylogger - INFO - 页面icp：获取html异常www.688222.com  hostname 'www.688222.com' doesn't match either of '5050111.com', '5050111a.com', '5050111b.com', '5050111c.com', '5050aaa.com', '5050bbb.com', '5050ccc.com', 'txc234.com', 'txc345.com', 'txc456.com', 'txc6789.com', 'www-5050aaa.com', 'www-5050bbb.com', 'www-5050ccc.com', 'www.5050111.com', 'www.5050111a.com', 'www.5050111b.com', 'www.5050111c.com', 'www.5050aaa.com', 'www.5050bbb.com', 'www.5050ccc.com', 'www.txc234.com', 'www.txc345.com', 'www.txc456.com', 'www.txc6789.com', 'www.www-5050aaa.com', 'www.www-5050bbb.com', 'www.www-5050ccc.com', 'www.www5050aaa.com', 'www.www5050bbb.com', 'www.www5050ccc.com', 'www5050aaa.com', 'www5050bbb.com', 'www5050ccc.com'
+
+2017-10-28 15:10:58,564 - mylogger - INFO - 页面icp：获取html异常www.32235.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:10:59,527 - mylogger - INFO - 页面icp：获取html异常www.nn7737.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:11:01,555 - mylogger - INFO - 页面icp：获取html异常www.796888.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:11:02,325 - mylogger - INFO - 页面icp：获取html异常www.59660.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:11:03,027 - mylogger - INFO - 页面icp：获取html异常www.ww6699.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:11:09,355 - mylogger - INFO - 页面icp：获取html异常www.rr5599.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:13:24,609 - mylogger - INFO - 页面icp：获取html异常www.7554949.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:13:43,593 - mylogger - INFO - 页面icp：获取html异常www.www-63608.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:13:46,484 - mylogger - INFO - 页面icp：获取html异常www.www-59459.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:15:58,622 - mylogger - INFO - 页面icp：获取html异常www.hstbz.net  [Errno 104] Connection reset by peer
+
+2017-10-28 15:16:00,036 - mylogger - INFO - 页面icp：获取html异常www.gsddb.com  <urlopen error [Errno -3] Temporary failure in name resolution>
+
+2017-10-28 15:16:10,516 - mylogger - INFO - 页面icp：获取html异常www.123504.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:16:58,276 - mylogger - INFO - 页面icp：获取html异常www.6888219.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:17:04,725 - mylogger - INFO - 页面icp：获取html异常www.39879999.com  HTTP Error 403: Forbidden
+
+2017-10-28 15:17:07,305 - mylogger - INFO - 页面icp：获取html异常www.1218889.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:17:15,230 - mylogger - INFO - 页面icp：获取html异常www.yhyry.com  <urlopen error [Errno -3] Temporary failure in name resolution>
+
+2017-10-28 15:17:21,525 - mylogger - INFO - 页面icp：获取html异常www.jxpanshan.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:17:41,453 - mylogger - INFO - 页面icp：获取html异常www.17playgame.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:17:44,031 - mylogger - INFO - 页面icp：获取html异常www.bjjyhd.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:17:48,694 - mylogger - INFO - 页面icp：获取html异常www.hzfd120.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:17:50,494 - mylogger - INFO - 页面icp：获取html异常www.geiLiqq.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:18:49,527 - mylogger - INFO - 页面icp：获取html异常www.wuhubgy.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:18:49,705 - mylogger - INFO - 页面icp：获取html异常www.950f.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 15:19:09,757 - mylogger - INFO - 页面icp：获取html异常www.5y57.com  <urlopen error [Errno -3] Temporary failure in name resolution>
+
+2017-10-28 15:19:14,704 - mylogger - INFO - 页面icp：获取html异常www.szyajun.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:19:31,289 - mylogger - INFO - 页面icp：获取html异常www.v2you.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:19:48,567 - mylogger - INFO - 页面icp：获取html异常www.avxsj.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:19:49,084 - mylogger - INFO - 页面icp：获取html异常www.022tm.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:19:58,593 - mylogger - INFO - 页面icp：获取html异常www.lufao.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:20:34,948 - mylogger - INFO - 页面icp：获取html异常www.kedipu.com.cn  [Errno 104] Connection reset by peer
+
+2017-10-28 15:21:15,184 - mylogger - INFO - 页面icp：获取html异常www.52whb.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:21:38,968 - mylogger - INFO - 页面icp：获取html异常www.5qvd.com  [Errno 104] Connection reset by peer
+
+2017-10-28 15:23:15,233 - mylogger - INFO - 页面icp：获取html异常www.bx003.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 15:24:35,892 - mylogger - INFO - 页面icp：获取html异常www.migaomei.com.cn  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:16:05,088 - mylogger - INFO - 页面icp：获取html异常www.gzgaoke.com.cn  [Errno 104] Connection reset by peer
+
+2017-10-28 16:16:11,821 - mylogger - INFO - 页面icp：获取html异常www.haohaori.com.cn  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:16:39,780 - mylogger - INFO - 页面icp：获取html异常www.qyn88.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:21:31,092 - mylogger - INFO - 页面icp：获取html异常www.zg519.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:33:44,987 - mylogger - INFO - 页面icp：获取html异常www.choude.com.cn  [Errno 104] Connection reset by peer
+
+2017-10-28 16:33:46,568 - mylogger - INFO - 页面icp：获取html异常www.thhlk.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:33:49,260 - mylogger - INFO - 页面icp：获取html异常www.xianzuke.com.cn  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:33:49,473 - mylogger - INFO - 页面icp：获取html异常www.nc419.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:33:55,392 - mylogger - INFO - 页面icp：获取html异常www.920ks.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:34:11,285 - mylogger - INFO - 页面icp：获取html异常www.lxb88.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:34:13,750 - mylogger - INFO - 页面icp：获取html异常www.xcpt8.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:34:23,552 - mylogger - INFO - 页面icp：获取html异常www.aiziwei.com.cn  [Errno 104] Connection reset by peer
+
+2017-10-28 16:41:09,161 - mylogger - INFO - 页面icp：获取html异常www.kjr66.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:41:55,525 - mylogger - INFO - 页面icp：获取html异常www.414363.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:42:58,052 - mylogger - INFO - 页面icp：获取html异常www.6hcd.com  HTTP Error 403: Forbidden
+
+2017-10-28 16:44:00,925 - mylogger - INFO - 页面icp：获取html异常www.gc229.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:44:32,005 - mylogger - INFO - 页面icp：获取html异常www.qn268.com  HTTP Error 500: Internal Server Error
+
+2017-10-28 16:44:55,529 - mylogger - INFO - 页面icp：获取html异常www.733149.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:45:23,651 - mylogger - INFO - 页面icp：获取html异常www.575743.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:45:24,342 - mylogger - INFO - 页面icp：获取html异常www.706222.com  HTTP Error 403: Forbidden
+
+2017-10-28 16:45:31,242 - mylogger - INFO - 页面icp：获取html异常www.03414.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:48:53,425 - mylogger - INFO - 页面icp：获取html异常www.333.gg  [Errno 104] Connection reset by peer
+
+2017-10-28 16:49:50,997 - mylogger - INFO - 页面icp：获取html异常www.tm3737.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 16:49:58,279 - mylogger - INFO - 页面icp：获取html异常www.wapsss.pw  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:50:12,138 - mylogger - INFO - 页面icp：获取html异常www.42ht.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:50:43,883 - mylogger - INFO - 页面icp：获取html异常www.fh68.net  HTTP Error 400: Bad Request
+
+2017-10-28 16:50:44,893 - mylogger - INFO - 页面icp：获取html异常www.3gw1.net  HTTP Error 400: Bad Request
+
+2017-10-28 16:50:45,474 - mylogger - INFO - 页面icp：获取html异常www.216121.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:50:48,265 - mylogger - INFO - 页面icp：获取html异常www.waplcw.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:51:01,222 - mylogger - INFO - 页面icp：获取html异常www.hc930.com  HTTP Error 400: Bad Request
+
+2017-10-28 16:51:14,551 - mylogger - INFO - 页面icp：获取html异常www.666cc.win  HTTP Error 400: Bad Request
+
+2017-10-28 16:51:16,768 - mylogger - INFO - 页面icp：获取html异常www.c6879.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:51:17,758 - mylogger - INFO - 页面icp：获取html异常www.6tm.pw  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:51:29,036 - mylogger - INFO - 页面icp：获取html异常www.6c6c.win  HTTP Error 400: Bad Request
+
+2017-10-28 16:51:30,091 - mylogger - INFO - 页面icp：获取html异常www.518hao.win  HTTP Error 400: Bad Request
+
+2017-10-28 16:51:50,125 - mylogger - INFO - 页面icp：获取html异常www.djgs88.com  <urlopen error [Errno -5] No address associated with hostname>
+
+2017-10-28 16:52:45,252 - mylogger - INFO - 页面icp：获取html异常www.94377kj.com  <urlopen error [Errno -3] Temporary failure in name resolution>
+
+2017-10-28 16:52:47,605 - mylogger - INFO - 页面icp：获取html异常www.5430.cc  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 16:52:58,339 - mylogger - INFO - 页面icp：获取html异常www.tm2289.com  HTTP Error 400: Bad Request
+
+2017-10-28 16:53:00,271 - mylogger - INFO - 页面icp：获取html异常www.tm1377.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 16:53:06,676 - mylogger - INFO - 页面icp：获取html异常www.13688.cc  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:54:00,122 - mylogger - INFO - 页面icp：获取html异常www.3130a.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:54:06,808 - mylogger - INFO - 页面icp：获取html异常www.hc8888.win  HTTP Error 400: Bad Request
+
+2017-10-28 16:54:36,341 - mylogger - INFO - 页面icp：获取html异常www.918wz.cc  HTTP Error 400: Bad Request
+
+2017-10-28 16:54:37,335 - mylogger - INFO - 页面icp：获取html异常www.gsaa.cc  HTTP Error 400: 
+
+2017-10-28 16:55:07,240 - mylogger - INFO - 页面icp：获取html异常www.0708099.com  HTTP Error 400: Bad Request
+
+2017-10-28 16:55:28,809 - mylogger - INFO - 页面icp：获取html异常www.77880666.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 16:55:51,730 - mylogger - INFO - 页面icp：获取html异常www.400118.me  [Errno 104] Connection reset by peer
+
+2017-10-28 16:58:04,594 - mylogger - INFO - 页面icp：获取html异常www.134223.com  [Errno 104] Connection reset by peer
+
+2017-10-28 16:58:26,445 - mylogger - INFO - 页面icp：获取html异常www.515543.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:11:15,667 - mylogger - INFO - 页面icp：获取html异常www.00596.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 17:24:40,743 - mylogger - INFO - 页面icp：获取html异常www.kexunwei.com.cn  [Errno 104] Connection reset by peer
+
+2017-10-28 17:24:42,653 - mylogger - INFO - 页面icp：获取html异常www.516ka.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:24:49,526 - mylogger - INFO - 页面icp：获取html异常www.a4gn.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:24:52,649 - mylogger - INFO - 页面icp：获取html异常www.456338.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:25:07,516 - mylogger - INFO - 页面icp：获取html异常www.51tob.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:25:26,175 - mylogger - INFO - 页面icp：获取html异常www.tm228.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:25:27,609 - mylogger - INFO - 页面icp：获取html异常www.119036.com  ''
+
+2017-10-28 17:26:32,492 - mylogger - INFO - 页面icp：获取html异常www.yybaofu1.net  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 17:26:38,213 - mylogger - INFO - 页面icp：获取html异常www.19977.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:32:14,080 - mylogger - INFO - 页面icp：获取html异常www.u6655.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:32:15,775 - mylogger - INFO - 页面icp：获取html异常www.hhcc888.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:32:18,542 - mylogger - INFO - 页面icp：获取html异常www.cc86868.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:32:35,691 - mylogger - INFO - 页面icp：获取html异常www.j9059.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:32:45,909 - mylogger - INFO - 页面icp：获取html异常www.bet33555.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:32:46,873 - mylogger - INFO - 页面icp：获取html异常www.dy6622.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:32:54,578 - mylogger - INFO - 页面icp：获取html异常www.0055y8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:05,302 - mylogger - INFO - 页面icp：获取html异常www.0022y8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:11,875 - mylogger - INFO - 页面icp：获取html异常www.pjjt88.com  <urlopen error [Errno 101] Network is unreachable>
+
+2017-10-28 17:33:13,940 - mylogger - INFO - 页面icp：获取html异常www.66550151.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:14,026 - mylogger - INFO - 页面icp：获取html异常www.j9064.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:33:23,429 - mylogger - INFO - 页面icp：获取html异常www.0044y8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:26,081 - mylogger - INFO - 页面icp：获取html异常www.hg8888.info  [Errno 104] Connection reset by peer
+
+2017-10-28 17:33:32,710 - mylogger - INFO - 页面icp：获取html异常www.lfg1111.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:33:36,248 - mylogger - INFO - 页面icp：获取html异常www.xpj5004.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:33:36,889 - mylogger - INFO - 页面icp：获取html异常www.0066y8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:38,655 - mylogger - INFO - 页面icp：获取html异常www.yl3336.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:40,815 - mylogger - INFO - 页面icp：获取html异常www.y111000.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:33:45,446 - mylogger - INFO - 页面icp：获取html异常www.0033y8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:33:47,322 - mylogger - INFO - 页面icp：获取html异常www.j9060.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:33:48,011 - mylogger - INFO - 页面icp：获取html异常www.bet33222.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:33:48,915 - mylogger - INFO - 页面icp：获取html异常www.22238.com  <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)>
+
+2017-10-28 17:33:53,897 - mylogger - INFO - 页面icp：获取html异常www.0011y8.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:34:00,372 - mylogger - INFO - 页面icp：获取html异常www.rbet0365.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:34:07,376 - mylogger - INFO - 页面icp：获取html异常www.bl1188.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:36:46,572 - mylogger - INFO - 页面icp：获取html异常www.00818a.com  HTTP Error 403: Forbidden
+
+2017-10-28 17:36:54,836 - mylogger - INFO - 页面icp：获取html异常www.kj1088.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:37:07,361 - mylogger - INFO - 页面icp：获取html异常www.sbvip20.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:37:20,281 - mylogger - INFO - 页面icp：获取html异常www.15996.com  HTTP Error 403: Forbidden
+
+2017-10-28 17:37:39,657 - mylogger - INFO - 页面icp：获取html异常www.ys1199.com  HTTP Error 403: Forbidden
+
+2017-10-28 17:37:53,587 - mylogger - INFO - 页面icp：获取html异常www.4254.com  HTTP Error 403: Forbidden
+
+2017-10-28 17:38:03,624 - mylogger - INFO - 页面icp：获取html异常www.1333f.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:38:18,253 - mylogger - INFO - 页面icp：获取html异常www.yf1350.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:38:36,763 - mylogger - INFO - 页面icp：获取html异常www.4898688.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:40:28,744 - mylogger - INFO - 页面icp：获取html异常www.hg88948.com  ''
+
+2017-10-28 17:40:32,570 - mylogger - INFO - 页面icp：获取html异常www.35538.com  ''
+
+2017-10-28 17:40:33,087 - mylogger - INFO - 页面icp：获取html异常www.77437.com  [Errno 104] Connection reset by peer
+
+2017-10-28 17:40:34,031 - mylogger - INFO - 页面icp：获取html异常www.182888.com  hostname 'www.182888.com' doesn't match either of '286888.com', 'www.286888.com', 'www.66703.com', 'www.768789.com', '768789.com', '462008.com', '22076.com', 'www.35887.com', 'www.462008.com', '482008.com', 'www.21696.com', 'ls.286888.com', 'www.75549.com', '66703.com', 'www.64488.com', '75549.com', '21696.com', 'm.286888.com', 'www.482008.com', '64488.com', '35887.com', 'www.22076.com'
+
+2017-10-28 17:40:38,409 - mylogger - INFO - 页面icp：获取html异常www.077855.com  HTTP Error 403: Forbidden
+
+2017-10-28 17:42:34,499 - mylogger - INFO - 页面icp：获取html异常www.wns3008.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:42:55,965 - mylogger - INFO - 页面icp：获取html异常www.www-00699.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:43:49,132 - mylogger - INFO - 页面icp：获取html异常www.4311111.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:43:58,698 - mylogger - INFO - 页面icp：获取html异常www.333193.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:45:28,982 - mylogger - INFO - 页面icp：获取html异常www.653330.com  <urlopen error [Errno 111] Connection refused>
+
+2017-10-28 17:46:41,465 - mylogger - INFO - 页面icp：获取html异常www.24949.com  <urlopen error [Errno -2] Name or service not known>
+
+2017-10-28 17:47:14,685 - mylogger - INFO - 页面icp：获取html异常www.60081.net  [Errno 104] Connection reset by peer
+
+2017-10-28 17:47:17,913 - mylogger - INFO - 页面icp：获取html异常www.668246.com  <urlopen error [Errno -2] Name or service not known>
+
