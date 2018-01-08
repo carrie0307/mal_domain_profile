@@ -1,9 +1,9 @@
 # encoding:utf-8
 
 """
-使用内部DNS服务器获取域名IP、CNAME和对应的TTL时间
-作者：程亚楠
-时间：2017.8.25
+    使用阿里114DNS获取域名NS记录，A记录和CNAME记录
+    注：每次运行注意更新last_visit_times的数
+        循环获取前先测试一下
 """
 
 import DNS
@@ -23,7 +23,7 @@ import ip2region.exec_ip2reg
 searcher = ip2region.ip2Region.Ip2Region("ip2region/ip2region.db")
 
 """获取记录超时时间"""
-timeout = 10
+timeout = 20
 
 """阿里114DNS"""
 server = '114.114.114.114'
@@ -71,7 +71,7 @@ def handle_domain_rc(ns_name,domain):
         answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
     except DNS.Error, e:
         print '获取域名记录：', e
-        return [], [],[],[]
+        return -1, -1
 
     for i in answer_obj.answers:
         r_data = i['data']
@@ -82,7 +82,6 @@ def handle_domain_rc(ns_name,domain):
         elif i['typename'] == 'CNAME':
             cname.append(r_data)
             cname_ttl.append(r_ttl)
-
     return ip, cname
 
 
@@ -120,13 +119,14 @@ def fetch_rc_ttl(fqdn_domain):
     g_ns = ns
     ns_name = random.choice(ns)   # 随机选择一个ns服务器
     ip, cname = handle_domain_rc(ns_name, fqdn_domain)  # 得到cname和cname的ttl
-
-    # 若cname不为空，则递归进行cname的dns记录获取
-    if cname:
-        g_cnames.extend(cname)
-        return fetch_rc_ttl(cname[-1])
-    elif ip:
-        g_ips.extend(ip)
+    if ip != -1 and cname != -1:
+        # 说明获取没有出现异常
+        # 若cname不为空，则递归进行cname的dns记录获取
+        if cname:
+            g_cnames.extend(cname)
+            return fetch_rc_ttl(cname[-1])
+        elif ip:
+            g_ips.extend(ip)
 
 
 def get_domains(limit_num = None):
@@ -158,14 +158,16 @@ def insert_data(check_domain,cnames,ips,ns,ips_geo_list):
     detect_res['insert_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-    last_record = mongo_conn.mongo_read('domain_ip_cname',{'domain':check_domain},{'domain_ip_cnames':True,'visit_times':True},None)
-    domain_ip_cname_record = last_record[0]['domain_ip_cnames']
-    visit_times = last_record[0]['visit_times']
-
-    domain_ip_cname_record.append(detect_res)
+    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'domain':check_domain},{'visit_times':True},None)
+    visit_times = fetch_data[0]['visit_times']
     visit_times += 1
 
-    domain_ip_cnames = mongo_conn.mongo_update('domain_ip_cname',{'domain':check_domain},{'domain_ip_cnames':domain_ip_cname_record,'visit_times':visit_times})
+    cur_array = 'domain_ip_cnames.' + str(last_visit_times) # 当前domain_ip_cnames下标
+
+    domain_ip_cnames = mongo_conn.mongo_update('domain_ip_cname',{'domain':check_domain},
+                                                {cur_array:detect_res,
+                                                'visit_times':visit_times}
+                                                )
 
 
 
@@ -209,9 +211,7 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()
-
     # fetch_rc_ttl('0-360c.com')
     # print g_cnames
     # print g_ips

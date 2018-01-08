@@ -3,7 +3,7 @@
     获取AS信息
     注：
         1. 循环获取时，每次修改last_visit_times的值
-        2. 循环获取时先测试一下
+        2. 循环获取时先测试一下(尤其注意获取成功和不成功时visittimes的变化)
 """
 
 """数据库模块引入"""
@@ -27,7 +27,7 @@ thread_num = 2
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
 
-"""库中visit_times对应的数值"""
+"""库中visit_times对应的数值(get_ip_cname已更新visit_times=n,则这里就令visit_times=n)"""
 last_visit_times = 1
 
 def get_domains(limit_num = None):
