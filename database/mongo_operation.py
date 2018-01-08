@@ -21,12 +21,15 @@ class MongoConn(object):
         else:
             self.collection.insert_many(documents)
 
-    def mongo_read(self,collection_name,condition,return_parameter):
+    def mongo_read(self,collection_name,condition,return_parameter,limit_num):
         '''
         mongo读操作
         '''
         self.collection = self.db[collection_name]
-        res = self.collection.find(condition,return_parameter)
+        if limit_num:
+            res = self.collection.find(condition,return_parameter).limit(limit_num)
+        else:
+            res = self.collection.find(condition,return_parameter)
         return list(res)
 
 

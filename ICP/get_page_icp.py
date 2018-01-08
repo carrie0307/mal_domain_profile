@@ -27,7 +27,7 @@ html_q = Queue.Queue()
 icp_q = Queue.Queue()
 
 '''线程数量'''
-thread_num = 20
+thread_num = 1
 
 
 def get_domains():

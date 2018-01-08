@@ -15,6 +15,7 @@ baidu.com   111.13.101.208
 
 def get_nmap_state(ip):
     """
+    核心函数
     param ip:要扫描的ip
     return ip_info={state:主机状态，state80:80端口状态，state443:443端口状态,'status_insert_time':状态探测时间}
     """
