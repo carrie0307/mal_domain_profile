@@ -40,6 +40,15 @@ class MongoConn(object):
         self.collection = self.db[collection_name]
         self.collection.update(condition,{'$set':operation})
 
+
+    def mongo_inc(self,collection_name,condition,operation):
+        '''
+        mongo $inc操作
+        db.products.update({ sku: "abc123" },{$inc: { quantity: -2 ,size: 1} } 给满足sku: "abc123"的quantity值-2,size的值+1)
+        '''
+        self.collection = self.db[collection_name]
+        self.collection.update(condition,{'$inc':operation})
+
 if __name__ == '__main__':
     mongo_conn = MongoConn('172.29.152.152','mal_domain_min')
     print mongo_conn.mongo_read('domain_index',{},{'_id':False,'domain':True})

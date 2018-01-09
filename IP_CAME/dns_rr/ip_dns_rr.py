@@ -9,29 +9,12 @@
 import DNS
 import random
 import tldextract
-from datetime import datetime
-
-import sys
-sys.path.append("..") # 回退到上一级目录
-import database.mongo_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
-last_visit_times = 0
-
-"""地理位置相关"""
-import ip2region.ip2Region
-import ip2region.exec_ip2reg
-searcher = ip2region.ip2Region.Ip2Region("ip2region/ip2region.db")
 
 """获取记录超时时间"""
 timeout = 20
 
 """阿里114DNS"""
 server = '114.114.114.114'
-
-## 全局变量
-g_cnames = []
-g_ips = []
-g_ns = []
 
 
 def find_ns(fqdn_domain):
@@ -104,19 +87,21 @@ def find_ns_tll(main_domain,ns_name):
             return i['ttl']
 
 
-def fetch_rc_ttl(fqdn_domain):
+def fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames):
     """
     递归获取域名的cname、cname_ttl和IP、IP_ttl记录
     """
-    global g_ns
+
     # print '正在查询的域名：',fqdn_domain
     ns = find_ns(fqdn_domain)  # 得到ns列表
 
     # 若无ns，则停止
     if not ns:
         return
+    if not g_ns:
+        # 注意，这里g_ns.extend(ns)实际时代替了g_ns=ns,不知道为什么g_ns=ns最终的g_ns还是空
+        g_ns.extend(ns) # g_ns=[]说明时获取fqdn的ns，而不死递归调用此函数时获取的cname的ns
 
-    g_ns = ns
     ns_name = random.choice(ns)   # 随机选择一个ns服务器
     ip, cname = handle_domain_rc(ns_name, fqdn_domain)  # 得到cname和cname的ttl
     if ip != -1 and cname != -1:
@@ -124,95 +109,18 @@ def fetch_rc_ttl(fqdn_domain):
         # 若cname不为空，则递归进行cname的dns记录获取
         if cname:
             g_cnames.extend(cname)
-            return fetch_rc_ttl(cname[-1])
+            return fetch_rc_ttl(cname[-1], g_ns, g_ips, g_cnames)
         elif ip:
             g_ips.extend(ip)
 
 
-def get_domains(limit_num = None):
-    """
-    从数据库中获取要初始获取数据的域名
-    注：1 last_visit_times 控制这是第几次获取
-       2 limit_num 控制是否获取一定量的域名
-    """
-    global mongo_conn
-    global last_visit_times
-    domain_list = []
-
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'visit_times':last_visit_times},{'domain':True},limit_num)
-    domains = list(fetch_data)
-    for domain in domains:
-        domain_list.append(domain['domain'])
-
-    return domain_list
-
-
-def insert_data(check_domain,cnames,ips,ns,ips_geo_list):
-    global mongo_conn
-
-    detect_res = {}
-    detect_res['cnames'] = cnames
-    detect_res['NS'] = ns
-    detect_res['ips'] = ips
-    detect_res['ip_geo'] = ips_geo_list
-    detect_res['insert_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'domain':check_domain},{'visit_times':True},None)
-    visit_times = fetch_data[0]['visit_times']
-    visit_times += 1
-
-    cur_array = 'domain_ip_cnames.' + str(last_visit_times) # 当前domain_ip_cnames下标
-
-    domain_ip_cnames = mongo_conn.mongo_update('domain_ip_cname',{'domain':check_domain},
-                                                {cur_array:detect_res,
-                                                'visit_times':visit_times}
-                                                )
-
-
-
-
-def main():
-
-    global g_cnames, g_ips, g_ns
-    global searcher
-
-    mal_domains = get_domains(50000)
-
-    for check_domain in mal_domains:
-
-        g_cnames, g_ips, g_ns, ips_geo_list = [], [], [], []  # 初始化
-
-        ## 提取domain+tld
-        domain_tld = tldextract.extract(check_domain)
-        if domain_tld.suffix == "":
-            continue
-        else:
-            check_domain = domain_tld.domain+'.'+domain_tld.suffix
-
-        fqdn_domain = 'www.' + check_domain  # 全域名
-        print '查询的域名：',check_domain   # 在查询的域名
-        try:
-            fetch_rc_ttl(fqdn_domain)
-        except Exception,e:
-            print str(e)
-            continue
-
-        for ip in g_ips:
-            # 获取ip地理为值信息
-            ip_geo_info = ip2region.exec_ip2reg.get_ip_geoinfo(searcher,ip)
-            ips_geo_list.append(ip_geo_info)
-
-        # print g_cnames,g_ips,g_ns,ips_geo_list
-        try:
-            insert_data(check_domain,g_cnames,g_ips,g_ns,ips_geo_list)
-        except Exception,e:
-            print str(e)
-
-
 if __name__ == '__main__':
+    g_ns, g_ips, g_cnames= [],[],[]
+    # fetch_rc_ttl('www.000-078-japan.com', g_ns, g_ips, g_cnames)
+    fetch_rc_ttl('www.0666hg.com', g_ns, g_ips, g_cnames)
+    print g_ns, g_ips, g_cnames
     # main()
-    fetch_rc_ttl('0666p.com')
-    print g_cnames
-    print g_ips
-    print g_ns
+    # fetch_rc_ttl('0-360c.com')
+    # print g_cnames
+    # print g_ips
+    # print g_ns
