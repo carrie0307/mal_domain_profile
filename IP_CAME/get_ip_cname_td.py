@@ -2,8 +2,9 @@
 
 """
     使用阿里114DNS获取域名NS记录，A记录和CNAME记录
-    注：每次运行注意更新last_visit_times的数
-        循环获取前先测试一下(尤其注意获取成功和不成功时visittimes的变化)
+    注：1.每次运行注意更新last_visit_times的数
+       2. 循环获取前先测试一下(尤其注意获取成功和不成功时visittimes的变化)
+       3. 注意get_domains()的ip数量
 """
 
 import dns_rr.ip_dns_rr

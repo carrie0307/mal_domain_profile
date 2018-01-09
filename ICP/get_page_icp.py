@@ -2,6 +2,8 @@
 '''
     功能： 从页面上获取icp信息
 
+    总有一些提取结果可能不够规范，需要手动修改一些
+
     -1 打开网页时有误
     -- 页面没有icp
     icp备××× 页面获取到的icp内容
@@ -89,8 +91,8 @@ def get_page_icp():
     '''
     功能：获取页面上的icp信息，分三种情况进行处理：
         pattern1: 备案：粤ICP备11007122号-2 (500.com)
-        pattern2: 京ICP证 030247号 (icbc)
-        pattern2: 京ICP证000007 (sina)
+        pattern2: 京ICP证 030247号 (icbc) 360soulou.com 豫ICP证041518号
+        pattern2: 京ICP证000007 (sina) (这个可能提取会有误)
         pattern3: 粤B2-20090059-111 (qq.com) （增值营业号）
     '''
     global html_q

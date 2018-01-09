@@ -1,49 +1,45 @@
-# 非法域名画像 --- IP/CNAME及相关信息获取模块
+# 欢迎使用 Cmd Markdown 编辑阅读器
 
 ------
 
-## 代码
+.
+├── get_ip_asinfo.py    # 获取as信息总函数（多线程）
+├── get_ip_cname.py     # 获取ip,cname信息总函数（单线程）
+├── get_ip_cname_td.py  # 获取ip,cname信息总函数（多线程）
+├── get_ip_state.py     # 获取ip状态总函数（多线程）
+├── __init__.py
+├── init_table.py
+├── ASN                 # 获取AS信息模块
+│   ├── __init__.py
+│   ├── ip_as.py        # 获取as信息函数
+├── dns_rr              # 获取DNS记录(A,CNAME,NS）模块
+│   ├── __init__.py
+│   ├── ip_dns_rr.py   # 获取DNS记录函数
+├── ip2region          # IP转地理位置模块
+│   ├── exec_ip2reg.py  # 封装好的IP转地理位置函数
+│   ├── global_region.csv
+│   ├── __init__.py
+│   ├── ip2region.db    
+│   ├── ip2Region.py    # IP转地理位置原始的类
+│   ├── ip.merge.txt
+│   └── testSearcher.py # 原测试函数
+├── nmap_state          # nmap扫描IP端口状态模块
+│   ├── __init__.py
+│   ├── ip_nmap.py      # nmap扫描端口状态函数
+├── README.md
 
-* domain_ip_cname.py   
-    * 获取IP、CNAME和NS记录的原始数值
-
-* ip2regio/exec_ip2reg.py
-    * 获取IP的地理位置与运营商
-
-* ip_asn.py
-    * 获取IP的AS信息
-    * AS_insert_time:获取as信息的时间
-
-* ip_nmap.py
-    * 通过nmap获取主机与80，443端口的状态
-    * status_insert_time:扫描状态的时间
 
 ## 运行
 
-* domain_ip_cname.py   
-    * 获取IP、CNAME和NS记录的原始数值
-    * 把ip2regio/exec_ip2reg.py所得的地理位置信息也封装进去
-    * 总的insert_time
+* get_ip_cname_td.py
+    * 获取每次一轮询的IP、CNAME、NS和IP地理位置信息
+    * 假设运行前visit_times = n,则 运行后visit_times=n+1
 
-* ip_asn.py
-    * 获取ASN信息
-    * 注意存AS信息时的操作
-    * AS_insert_time:获取as信息的时间
+* get_ip_asinfo.py
+    * 获取上一次所得ip的AS信息
+    * 假设上次运行get_ip_cname.py后visit_times=n+1，这里就选择visit_times=n+1且没有as信息的数据来获取；更新信息时对应库中domain_ip_cnames列表中的下标是n(visit_times-1)
 
-* ip_nmap.py
-    * 通过nmap获取主机与80，443端口的状态
-    * 注意存库
-    * status_insert_time:扫描状态的时间
-
-* 循环获取IP
-    * 每次向domain_ip_cname中添加domain_ip_cname.py运行结果
-    * 更新visit_times数值
-
-# 问题
-    * 递归服务器选择
-    * domain_ip_cname能否添加多线程
-    * AS信息和nmap状态添加多线程
-
-
----
-2018.01.06
+* get_ip_state.py     
+    * 探测上一次所得ip的状态
+    * 假设上次运行get_ip_cname.py后visit_times=n+1，这里就选择visit_times=n+1且没有as信息的数据来获取；更新信息时对应库中domain_ip_cnames列表中的下标是n(visit_times-1)
+        
