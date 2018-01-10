@@ -3,20 +3,22 @@
     通过站长之家获得奇虎360对网站的检测结果
 """
 import requests
-import urllib2
 from selenium import webdriver
+import ip
 import re
+import time
+import threading
 import sys
 reload(sys) # Python2.5 初始化后删除了 sys.setdefaultencoding 方法，我们需要重新载入
 sys.setdefaultencoding('utf-8')
 
 headers = {'User-Agent':'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
 
-def request_res(domain):
+def request_res(domain,proxy):
     global headers
     url = 'http://tool.chinaz.com/webscan?host=' + domain
     # page_html = urllib2.urlopen(url).read()
-    page_html = requests.get(url).content
+    page_html = requests.get(url,proxies=proxy).content
     return page_html
     # print page_html
 
@@ -82,9 +84,19 @@ def unicode2zh(unicode_str):
 
 
 if __name__ == '__main__':
+    # ip.run_Getter()
+    # time.sleep(20) # 这个时间很关键，这段时间用来从各平台上获取代理ip
+    # ip.ip_Verify() # ip可用性验证
+    # time.sleep(60) # 验证以获得足够的IP
+    # watcher = threading.Thread(target=ip.ip_watcher) # 可用ip数量监测
+    # watcher.setDaemon(True)
+    # watcher.start()
+
     domains = ['baidu.com','taobao.com','1688.com','sohu.com','520820.com','bqmr.info','ked3.com','0-360c.com']
     for domain in domains:
-        # page_html = request_res(domain)
+        # proxy = ip.available_IP_q.get()
+        # print proxy
+        # page_html = request_res(domain,proxy)
         # auth_res_dict = get_auth_res(page_html)
         # domain_res = get_detect_deteil(auth_res_dict)
         # print domain,domain_res
