@@ -15,6 +15,7 @@ import sys
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
+"""与库中visit_times相对应"""
 last_visit_times = 0
 
 """多线程相关"""
@@ -23,7 +24,7 @@ import threading
 import time
 
 """线程数量"""
-thread_num = 2
+thread_num = 20
 
 """同步队列"""
 domain_q = Queue.Queue()
@@ -38,7 +39,7 @@ searcher = ip2region.ip2Region.Ip2Region("ip2region/ip2region.db")
 timeout = 20
 
 """阿里114DNS"""
-server = '114.114.114.114'
+server = '1.2.4.8'
 
 
 def get_domains(limit_num = None):
@@ -88,17 +89,18 @@ def insert_data():
             domain_ip_cnames = mongo_conn.mongo_update(collection_name,{'domain':check_domain},
                                                         {cur_array:detect_res}
                                                       )
+            print check_domain + 'saved ...'
         except Exception,e:
             print check_domain + ' save ' + str(e)
             # pass
 
     print '所有数据存储完成...'
 
+
 def get_ip_ns_cname_handler():
     global searcher
     global domain_q
     global res_q
-
 
     while not domain_q.empty():
 
@@ -116,9 +118,12 @@ def get_ip_ns_cname_handler():
         print '查询的域名：',check_domain   # 在查询的域名
 
         try:
+            """取消了被封装函数中的异常处理，所有异常在这里统一捕获处理"""
             dns_rr.ip_dns_rr.fetch_rc_ttl(fqdn_domain,g_ns, g_ips, g_cnames)
         except Exception,e:
-            print domain + str(e)
+            """凡是捕获到异常的，均加入队列统一再获取一遍"""
+            domain_q.put(check_domain)
+            print check_domain,str(e)
             continue
 
         for ip in g_ips:
@@ -132,7 +137,7 @@ def get_ip_ns_cname_handler():
 
 
 def main():
-    get_domains(limit_num = 50000)
+    get_domains(limit_num = None)
     get_dns_td = []
     for _ in range(thread_num):
         get_dns_td.append(threading.Thread(target=get_ip_ns_cname_handler))

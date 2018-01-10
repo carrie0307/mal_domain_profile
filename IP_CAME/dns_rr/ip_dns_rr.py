@@ -26,11 +26,12 @@ def find_ns(fqdn_domain):
     domain_len = len(fqdn_domain.split('.')) # 点的个数用来计算能获取几次"次级域名"
     for i in range(0,domain_len):
         req_obj = DNS.Request()
-        try:
-            answer_obj = req_obj.req(name=fqdn_domain, qtype=DNS.Type.NS, server=server, timeout=timeout)
-        except DNS.Error,e:
-            print e
-            return []  # 空ns
+        # try:
+        # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
+        answer_obj = req_obj.req(name=fqdn_domain, qtype=DNS.Type.NS, server=server, timeout=timeout)
+        # except DNS.Error,e:
+            # print e
+            # return []  # 空ns
         for i in answer_obj.answers:
             if i['typename'] == 'NS':
                 ns.append(i['data'])
@@ -50,12 +51,12 @@ def handle_domain_rc(ns_name,domain):
     """
     ip,ip_ttl,cname,cname_ttl = [],[],[],[]
     req_obj = DNS.Request()
-    try:
-        answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
-    except DNS.Error, e:
-        print '获取域名记录：', e
-        return -1, -1
-
+    # try:
+    # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
+    answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
+    # except DNS.Error, e:
+        # print '获取域名记录：', e
+        # return -1, -1
     for i in answer_obj.answers:
         r_data = i['data']
         r_ttl = i['ttl']
@@ -104,14 +105,13 @@ def fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames):
 
     ns_name = random.choice(ns)   # 随机选择一个ns服务器
     ip, cname = handle_domain_rc(ns_name, fqdn_domain)  # 得到cname和cname的ttl
-    if ip != -1 and cname != -1:
-        # 说明获取没有出现异常
-        # 若cname不为空，则递归进行cname的dns记录获取
-        if cname:
-            g_cnames.extend(cname)
-            return fetch_rc_ttl(cname[-1], g_ns, g_ips, g_cnames)
-        elif ip:
-            g_ips.extend(ip)
+
+    # 若cname不为空，则递归进行cname的dns记录获取
+    if cname:
+        g_cnames.extend(cname)
+        return fetch_rc_ttl(cname[-1], g_ns, g_ips, g_cnames)
+    elif ip:
+        g_ips.extend(ip)
 
 
 if __name__ == '__main__':

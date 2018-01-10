@@ -22,7 +22,7 @@ import threading
 import time
 
 """线程数量"""
-thread_num = 2
+thread_num = 1
 
 """同步队列"""
 domain_q = Queue.Queue()
@@ -50,7 +50,6 @@ def get_domains(limit_num = None):
                                                         {'domain':True,'domain_ip_cnames':True,'_id':False},limit_num
                                         )
     for item in fetch_data:
-        print item['domain']
         ips = item['domain_ip_cnames'][last_visit_times - 1]['ips'] # 获取上一次新插入的ip
         if ips:
             domain_q.put({item['domain']:ips})
@@ -80,6 +79,7 @@ def get_ip_state():
                 dm_ip_state.append(ip_state)
             except Exception, e:
                 # 出现异常则停止此域名的相关获取，否则会导致ip和as信息不对应
+                print ip,str(e)
                 flag = False
                 break
 
@@ -109,7 +109,7 @@ def save_state_info():
 
     while True:
         try:
-            domain,dm_ip_asinfo = res_q.get(timeout=200)
+            domain,dm_ip_asinfo = res_q.get(timeout=600)
         except Queue.Empty:
             print '存储完成'
             break
@@ -129,7 +129,7 @@ def main():
     集成以上内容的主函数
     """
     print '获取域名...'
-    get_domains(4)
+    get_domains(limit_num = 2)
     get_state_td = []
     for _ in range(thread_num):
         get_state_td.append(threading.Thread(target=get_ip_state))

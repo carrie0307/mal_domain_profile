@@ -22,7 +22,7 @@ import threading
 import time
 
 """线程数量"""
-thread_num = 2
+thread_num = 10
 
 """同步队列"""
 domain_q = Queue.Queue()
@@ -80,6 +80,7 @@ def get_asinfo():
                 dm_ip_asinfo.append(std_asinfo)
             except Exception, e:
                 # 出现异常则停止此域名的相关获取，否则会导致ip和as信息不对应
+                domain_q.put(domain_ip_dict) # 将获取失败的域名和ip再次加入队列
                 flag = False
                 break
 
@@ -123,7 +124,7 @@ def main():
     集成以上内容的主函数
     """
     print '获取域名...'
-    get_domains(10)
+    get_domains(limit_num = None)
     get_as_td = []
     for _ in range(thread_num):
         get_as_td.append(threading.Thread(target=get_asinfo))
