@@ -1,0 +1,333 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<title> - 360网站安全检测</title>
+<link rel="icon" type="image/vnd.microsoft.icon" href="http://www.360.cn/favicon.ico">
+<meta name="Keywords" content="360,360网站安全检测,漏洞扫描,挂马检测,篡改监控,SQL注入,XSS">
+<meta name="Description" content="360网站安全检测，提供免费的网站漏洞扫描、网页挂马检测、网页篡改监控服务">
+<link href="/css/webscan6.css?v=1" rel="stylesheet">
+<link href="/css/base.css" rel="stylesheet">
+
+</head>
+<body class="nobg">
+<script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript" src="/js/jquery.min.js"></script>
+<style>
+.my-website-user-oplist{z-index:1000;}
+.scan-info-tips{position:absolute; right:50px; top:44px; border:1px solid #bebebe; background:#fff; width:230px; z-index:100;-webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);box-shadow: 0 2px 4px rgba(0,0,0,.2);}
+.scan-info-tips li{line-height:18px; padding:5px 10px; border-top:1px dashed #E2E2E2; position:relative; margin-top:-1px; color:#333;}
+.scan-info-tips li a{color:#666; margin:0;font-size:12px;border-right: 0;}
+.scan-info-tips li a:hover{color:#000;}
+.scan-info-tips .close-tips-btn{text-align:right;}
+.scan-info-tips .close-tips-btn a{color:#999;font-size:12px;}
+.webscan-menu li{_width: 85px;}
+/*  新家的，更多按钮   */
+#menu-more{position:relative;}
+#menu-more_a:hover{line-height:42px; padding-bottom:2px;}
+#menu-more-list{position:absolute; left:-1px; top:41px; width:140px; padding-top:1px;}
+#menu-more-list dl{background:#3764B2;border: 1px solid #31528A;border-top:1px solid #3764B2;box-shadow:0 3px 6px rgba(0, 0, 0, .25);}
+#menu-more-list dd{line-height:30px; text-align:left; margin-left:0px}
+#menu-more-list dd a{font-size:14px; color:#fff; padding:2px 10px; display:block;}
+#menu-more-list dd a:hover{background:#32589B;}
+#menu-more-list{display:none;}
+
+.Bar{ position: relative; width: 150px;    /* 宽度 */ /*border: 1px solid #B1D632; padding: 1px;*/ background-color:#FFF ; display:inline-block}
+.Bar div{ display: block; position: relative; background:#68a64c;/* 进度条背景颜色 */ color: #333333; height: 15px; /* 高度 */ line-height: 15px;  /* 必须和高度一致，文本才能垂直居中 */ }
+.Bars div{ background:#090}
+.Bar div span{ position: absolute; width: 150px; /* 宽度 */ text-align: center; font-weight: bold; }
+
+.add_points_tips{position:absolute;background: none repeat scroll 0 0 #FFFFD7;border: 1px solid #EEC197;border-radius: 5px 5px 5px 5px; height:50px; width:180px; z-index:1000; line-height:40px; height:40px; left:50px; display:none; font-size:16px; font-weight:bold; text-align:center; color:#333;z-index:2000}
+.shengji_tips{color:#000;position:absolute;background: none repeat scroll 0 0 #f2f2f2;border: 1px solid #999;/*border-radius: 5px 5px 5px 5px;*/box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);width:220px; z-index:1000; left:136px; top:44px; font-size:16px; font-weight:bold; text-align:center}
+.my_use_functions p{line-height:35px; font-size:14px}
+.my_use_functions a{color:#31528a; padding-left:2px; padding-right:2px}
+
+.today_works_tips{color:#000;position:absolute;background: none repeat scroll 0 0 #f2f2f2;border: 1px solid #999;border-radius: 5px 5px 5px 5px;width:220px; z-index:1000; left:120px; font-size:16px; font-weight:bold; text-align:center}
+
+</style>
+<div id="headerbox">
+		<div class="header" style="padding-right:0;">
+			<div class="logo"><a onclick="_czc.push(['_trackEvent', '头部菜单','返回首页']);" href="/" title=""><img src="http://p6.qhimg.com/t01cbeac2c42fe484ab.png" alt=""></a></div>
+			<div class="webscan-menu">
+				<ul style="display:inline-block; float:left">
+                	                    <li><a href="/manage" title="我的网站" onclick="_czc.push(['_trackEvent','头部菜单','我的网站']);">我的网站</a></li>
+                                    </ul>
+                			</div>
+            <div class="user-login">
+            
+                					<div class="my-user-op">
+						 <a href="/index/login" title="登录" onclick="_gaq.push([&quot;_trackPageview&quot;, &quot;/home/login/from_header&quot;]);">登录</a>  <a href="http://i.360.cn/reg?src=pcw_webscan&amp;destUrl=http%3A%2F%2Fwebscan.360.cn" title="注册" onclick="_gaq.push([&quot;_trackPageview&quot;, &quot;/home/reg/from_header&quot;]);">注册</a>
+                				</div>
+                <div class="scan-info-tips" style="display:none" id="user_mess_tips">
+					<ul>
+					 <li class="close-tips-btn"><a href="javascript:void(0)" title="" onclick="_czc.push(['_trackEvent', '头部菜单','关闭消息']);">我知道了，关闭提醒</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!--begin tips -->
+	   
+    <script type="text/javascript">
+	function closeMessage() {
+		$.ajax({	
+			dataType:  'json',
+			url : "/index/close-message2",
+			data:"close=1",
+			type: 'POST',
+			success: function(data) {
+			   $(".mycenter-news-tips").hide();
+			}
+		});
+	}
+    function closeSjBox() {
+        $.ajax({
+            dataType:  'json',
+            url : "/points/iknow",
+            type: 'POST',
+            success: function(data) {
+                if(data.state == "yes"){
+                    $(".shengji_tips").hide();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+	</script>
+	    <script>
+	function readmessage(obj,type,itemid){
+		$.ajax({  	
+		url : "/message/close",
+		type: 'POST',
+		dataType:  'json',
+		data:"type="+type+"&itemid="+itemid,
+		success: function(data){
+			if(data.state == "yes"){
+				 location.href=obj.href;
+				 $("#message_"+itemid+"_"+type).hide();
+			}else{
+			
+			}
+		}
+		});
+	}
+	function close_user_mess() {
+		$.ajax({  	
+		url : "/message/ajaxcloseallmessage",
+		type: 'POST',
+		success: function(data){
+			$("#user_mess_tips").css("display", "none");
+		}
+		});	
+	}
+</script>
+<!--end tips -->
+<script>
+$(function(){
+	$("#menu-more").hover(function(){
+		$("#menu-more-list").show();
+		$("#menu-more").css("background-color","#3764B2");
+		$("#menu-more").css("padding-bottom","2px");
+	},function(){
+		$("#menu-more-list").hide();
+		$("#menu-more").css("background-color","");
+		$("#menu-more").css("padding-bottom","0px");
+	})
+
+})
+</script>
+<style>
+.bdream-overlay {
+    background: radial-gradient(ellipse farthest-corner at center center , rgba(0, 0, 0, 0.4) 0px, rgba(0, 0, 0, 0.9) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    opacity: 0;
+    position: absolute;
+    z-index: 999999;
+	display:none;
+}
+.bdream-helperLayer {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+    position: absolute;
+    z-index: 9999998;
+	display:none;
+}
+</style>
+<div style="width: 700px; height: 72px; top: 162px; left: 601.5px;" class="bdream-helperLayer" id="bdreamHelp"></div>
+<div class="bdream-overlay" style="top: 0px; bottom: 0px; left: 0px; right: 0px; opacity: 0.8; position: fixed;" id="bdreamOverlay"></div>
+<div class="wrap2" style="padding-top:40px;margin: 0 auto;width: 670px;">
+	<div class="verificationcode">
+	<p>大哥，你访问网站方式太像一个机器人了。你是怎么做到的！？</p>
+	<p>为了保护用户的数据，请向我们证明你真的是人类</p>
+	<form action="/index/verificationcode" method="post" id="codeform" name="codeform">
+	<p><img id="img110" onclick="RefreshImage_ne2()" style="cursor:pointer" src="/securimage/securimage_show.php?sid=69f7d17cfc7745087fe6b29079a247c6"> <a href="#" onclick="RefreshImage_ne2()" class="see_more">看不清, 换一个</a></p>
+	<p style="margin-top:14px;"><input type="hidden" name="url" value="0000518.com">
+	 输入上面的验证码：<input maxlength="4" name="yzm" type="text" value="" class="verificationcode_yzm"><span onclick="document.getElementById('codeform').submit();" class="verificationcode_submit">确定</span></p>
+	 	 </form>
+	</div>
+</div>
+
+<div id="footer">
+	<div class="wrapper clearfix">
+		<div class="footLink f_1">
+			<h3>友情链接</h3>
+			<ul>
+				<li><a target="__blank" title="360安全卫士" href="http://www.360.cn/">360安全卫士</a></li>
+				<li><a onclick="_gaq.push(['_trackPageview', '/home/nav_b3602']);" target="_blank" title="360安全卫士企业版" href="http://b.360.cn/">企业内网安全</a></li>
+				<li><a target="_blank" title="360杀毒" href="http://sd.360.cn/">360杀毒</a></li>
+				<li><a target="_blank" title="360网址导航" href="http://hao.360.cn/">360网址导航</a></li> 
+				<li><a target="_blank" title="易通软件" href="http://www.cmseasy.cn/">易通软件</a></li> 
+				<li><a target="_blank" title="网站卫士" href="http://wangzhan.360.cn/">网站卫士</a></li>
+                <li><a href="http://www.hack-cn.com/" title="被黑网站统计" target="_blank">被黑网站统计</a></li>
+				<li><a href="http://loudong.360.cn/" title="库带计划-第三方漏洞收集" target="_blank">第三方漏洞收集</a></li>
+				<li><a href="http://bbs.vc52.cn" title="精睿论坛" target="_blank">精睿论坛</a></li>
+                <li><a href="http://seo.aizhan.com" title="seo培训" target="_blank">seo培训</a></li>
+                <li><a href="http://www.gongju.com/" title="工具网" target="_blank">工具网</a></li>
+                <li><a href="http://www.7c.com/" title="去查网" target="_blank">去查网</a></li>
+                <li><a href="http://www.links.cn" title="站长工具" target="_blank">站长工具</a></li>
+                <li><a href="http://www.chinesehongker.com" title="中国红客联盟" target="_blank">中国红客联盟</a></li>
+                <li><a href="https://www.wosign.com/products/SSL.htm" title="WoSign SSL证书" target="_blank">WoSign SSL证书</a></li>
+                <li><a href="http://www.west.cn " title="西部数码" target="_blank">西部数码</a></li>
+                <li><a href="http://www.5778.com" title="第一主机" target="_blank">第一主机</a></li>
+                <li><a href="http://zhanzhang.so.com/" title="360站长平台" target="_blank">360站长平台</a></li>
+                <li><a href="http://jk.cloud.360.cn/" title="360云监控" target="_blank">360云监控</a></li>
+                 <li><a href="http://www.dnspan.com/" title="高防DNS" target="_blank">高防DNS</a></li>
+		  <li><a href="http://www.163ns.com/webservice/" title="智能建站" target="_blank">智能建站</a></li>
+		  <li><a target="_blank" title="360杀毒" href="http://bobao.360.cn">360安全播报</a></li>
+          <li><a target="_blank" title="360云加速" href="https://cdn.cloud.360.cn/">360云加速</a></li>
+	<li><a target="_blank" title="" href="http://www.72e.net">免费建站</a></li>  
+			</ul>	
+		</div>
+		
+		<div class="footLink f_2">
+			<h3>使用指南</h3>
+			<ul class="clearfix">
+				<li><a href="/protect/report">- 漏洞修复</a></li>
+				<li><a href="/webshell/">- 后门查杀</a></li>
+				<li><a href="/grid/index">- 9宫格</a></li>
+				<li><a href="/help/features">- 特色功能</a></li>
+				<li><a href="/product/whouse">- 成功案例</a></li>
+				<li><a href="/help/faq">- 帮助</a></li>
+				<li><a href="/news">- 安全播报</a></li>
+				<li><a href="http://ce.cloud.360.cn" target="_blank">- 站长工具</a></li>
+				<li><a href="/vul">- 常见漏洞</a></li>
+				<li><a href="http://bbs.webscan.360.cn" target="_blank">- 站长论坛</a></li>
+			</ul>
+		</div>
+        <div class="footLink f_3">
+			<h3>对外合作</h3>
+			<ul class="clearfix">
+				<li><a href="/help/idccooperation">IDC合作</a></li>
+			</ul>
+		</div>
+		<div class="footLink f_3">
+			<h3>关于我们</h3>
+			<ul class="clearfix">
+				<li><a href="/help/contact">联系我们</a></li>
+				<li><a href="/help/whouse">合作伙伴</a></li>
+				<li><a href="/help/agreement">用户协议</a></li>
+                <li><a href="/help/log">更新日志</a></li>
+                <li><a href="/url/search">最近关注</a></li>
+                <li><a href="/help/report">2013安全报告</a></li>
+                <!--<li><a href="http://safe.webscan.360.cn/">ASP后门扫描</a></li>-->
+                <li><a target="_blank" href="http://yingyan.360.cn">鹰眼</a></li>
+                 <li><a target="_blank" href="http://ce.webscan.360.cn/?from=360webscan_footer" onclick="_gaq.push(['_trackPageview', '/renjia/footer']);">刃甲</a></li>
+                 <li><a href="/url/search">最新搜索</a></li>
+			</ul>
+		</div>
+		<div class="footLink f_4">
+			<h3>关注我们</h3>
+			<ul class="im clearfix">
+				<li class="sina"><a style="color:#247CD6" href="http://weibo.com/360webscan" target="__blank">360网站安全检测微博</a></li>
+                
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="ft" style="border-top: 1px dashed #CCC">
+		<p>Copyright©2005-2015 360网站安全检测 <a target="_blank" href="http://www.miibeian.gov.cn">京ICP证080047号</a></p>
+	</div>
+	
+</div>
+
+<style>
+#cnzz_stat_icon_1254937590{display:none}
+</style>
+<script type="text/javascript">
+var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cspan id='cnzz_stat_icon_1254937590'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254937590' type='text/javascript'%3E%3C/script%3E"));
+var _czc = _czc || [];
+_czc.push(["_setAccount", "1254937590"]);
+</script><span id="cnzz_stat_icon_1254937590"><a href="http://www.cnzz.com/stat/website.php?web_id=1254937590" target="_blank" title="站长统计">站长统计</a></span><script src=" http://s11.cnzz.com/z_stat.php?id=1254937590" type="text/javascript"></script><script src="http://c.cnzz.com/core.php?web_id=1254937590&amp;t=z" charset="utf-8" type="text/javascript"></script>
+<script src="http://s.360.cn/webscan/bc.htm?uid=&amp;src=&amp;ver=4&amp;ref="></script>
+
+
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-27371609-1']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addOrganic', 'bing', 'q']);
+_gaq.push(['_addOrganic', 'so.com', 'q', false]);
+_gaq.push(['_addOrganic', 'so.360.cn', 'q', false]); 
+_gaq.push(['_addOrganic', 'zhidao.baidu.com', 'word',false]);
+
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<script>
+var EventUtil = {
+   //注册
+   addHandler: function(element, type, handler){
+     if (element.addEventListener){
+       element.addEventListener(type, handler, false);
+     } else if (element.attachEvent){
+       element.attachEvent("on" + type, handler);
+     } else {
+       element["on" + type] = handler;
+     }
+   },
+   //移除注册
+   removeHandler: function(element, type, handler){
+     if (element.removeEventListener){
+             element.removeEventListener(type, handler, false);
+     } else if (element.detachEvent){
+             element.detachEvent("on" + type, handler);
+     } else {
+             element["on" + type] = null;
+     }
+   }             
+  };
+EventUtil.addHandler(window, 'load', loadjs2); 
+function loadjs2() {
+	$(".aside").height($(".container").height());	
+	$(".my-website-search .on").bind("click",function(e){ if ($(".my-website-search-list").css("display") == "none") { $(".my-website-search-list").show();} else {$(".my-website-search-list").hide();} e.stopPropagation();});
+	$(".user-logout").bind("mouseover",function(){ $(".my-website-user-oplist").show();});
+	$(".my-website-user-oplist").hover(function(){$(".my-website-user-oplist").show();},function(){$(".my-website-user-oplist").hide();});
+	$(document).bind("click",function(){$(".my-website-search-list").hide();});
+	$(document).bind("click",function(){$(".popup").hide();});
+}
+</script>
+<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript">
+function RefreshImage_ne2()
+{
+	var imgsrc = $("#img110").attr("src");
+	if(!imgsrc)
+	{
+		$("#img110").attr("src","/securimage/securimage_show.php?sid=d3af574efff4e01b17d55d0aa6a900be");
+	}
+	
+   var el =document.getElementById("img110");
+   el.src=el.src+'?';  //这个特别重要
+}
+</script></body></html>

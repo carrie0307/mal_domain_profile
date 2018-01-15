@@ -1,4 +1,10 @@
 # coding:utf-8
+"""
+    多线程获取腾讯电脑管家王子检测结果
+    author：csy
+    date：2018.01.16
+    注：修改了页面打开方式，下次测算一些
+"""
 
 
 import time
@@ -8,7 +14,6 @@ import threading
 import re
 import os
 import datetime
-import common
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -70,10 +75,11 @@ def phantomjs_get_html(driver,domain):
     '''
     通过phantomjs获取判断结果的页面
     '''
-    driver.get("https://guanjia.qq.com/online_server/webindex.html")
+    # driver.get("https://guanjia.qq.com/online_server/result.html?url=taobao.com")
     driver.find_element_by_id('search_site').clear()
     driver.find_element_by_id("search_site").send_keys(domain)
-    driver.find_element_by_id("search_button").click()
+    # driver.find_element_by_id("search_button").click()
+    driver.find_element_by_xpath("/html/body/div[3]/div[1]/div[1]/div[1]").click()
     time.sleep(3)
     # driver.implicitly_wait(10) # 隐式等待10s
     page = driver.page_source
@@ -162,12 +168,14 @@ def get_html_handler(driver):
         domain = domain_q.get()
         # 打开腾讯首页，发送域名
         try:
+            driver.get("https://guanjia.qq.com/online_server/result.html?url=taobao.com")
             page_html = phantomjs_get_html(driver,domain)
         except:
             # 出现异常则关闭浏览器
             driver.quit()
             # 关闭后重新打开一个新的浏览器
             driver = webdriver.PhantomJS(executable_path = driver_path)
+            driver.get("https://guanjia.qq.com/online_server/result.html?url=taobao.com")
             print "打开新的浏览器... "
             continue
 

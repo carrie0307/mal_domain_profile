@@ -24,10 +24,7 @@ def get_nmap_state(ip):
     ip_info = {}
     ip_info = {'state80': '0', 'state': '0', 'state443': '0'}
     nm = nmap.PortScanner()
-    print '---'
-    nm.wait(time=2)
     res = nm.scan(ip,'80,443')
-    print '+++'
     if res['scan']:
         ip_info['state'] = res['scan'][ip]['status']['state']
         for port in res['scan'][ip]['tcp']:

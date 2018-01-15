@@ -22,7 +22,7 @@ import threading
 import time
 
 """线程数量"""
-thread_num = 1
+thread_num = 5
 
 """同步队列"""
 domain_q = Queue.Queue()
@@ -75,6 +75,7 @@ def get_ip_state():
 
         for ip in dm_ip_dict[domain]:
             try:
+                print 'getting ' + ip + 'state ...'
                 ip_state = nmap_state.ip_nmap.get_nmap_state(ip)
                 dm_ip_state.append(ip_state)
             except Exception, e:
@@ -129,18 +130,18 @@ def main():
     集成以上内容的主函数
     """
     print '获取域名...'
-    get_domains(limit_num = 2)
+    get_domains(limit_num = 100)
     get_state_td = []
     for _ in range(thread_num):
         get_state_td.append(threading.Thread(target=get_ip_state))
     for td in get_state_td:
         td.start()
     print 'getting ip state ...\n'
-    time.sleep(10)
-    print 'save state info ...\n'
-    save_db_td = threading.Thread(target=save_state_info)
-    save_db_td.start()
-    save_db_td.join()
+    # time.sleep(10)
+    # print 'save state info ...\n'
+    # save_db_td = threading.Thread(target=save_state_info)
+    # save_db_td.start()
+    # save_db_td.join()
 
 
 if __name__ == '__main__':

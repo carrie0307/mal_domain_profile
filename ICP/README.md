@@ -37,7 +37,7 @@
 * 数据库flag位
 
 以2进制为对应
-|icp_cmp| icp_duplicate | page_icp | auth_icp |
+|icp_duplicate| icp_cmp | page_icp | auth_icp |
 | ------------- |:-------------:| :-----:|-----:|
 | 8      | 4 | 2 |1 |
 
@@ -45,19 +45,20 @@
 * 获取auth_icp前:
     flag = 0
 * 获取auth_icp后:
-    flag = flag + 1
+    flag = flag + 1,即 flag = 1
 
 * 获取page_icp前:
     flag = 0 或 flag = 1, 即 flag < 2
 * 获取auth_icp后:
-    flag = flag + 2， 即 flag >= 2
-
-* icp查重(针对page_icp)前
-    2 <= flag < 4
-* 查重后:
-    flag >=4
+    flag = flag + 2， 即 flag = 3
 
 * icp_cmp前
-    3 <= flag < 8
+    flag = 3
 * icp_cmp后:
+    flag + 4
+
+* icp查重(针对page_icp)前
+    3 <= flag < 8
+* 查重后:
+    flag + 8
     flag >= 8

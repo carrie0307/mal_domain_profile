@@ -9,7 +9,7 @@ import re
 import time
 import threading
 import sys
-reload(sys) 
+reload(sys)
 sys.setdefaultencoding('utf-8')
 
 headers = {'User-Agent':'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
@@ -98,28 +98,28 @@ def unicode2zh(unicode_str):
 
 
 if __name__ == '__main__':
-    ip.run_Getter()
-    time.sleep(20) # 这个时间很关键，这段时间用来从各平台上获取代理ip
-    ip.ip_Verify() # ip可用性验证
-    time.sleep(60) # 验证以获得足够的IP
-    watcher = threading.Thread(target=ip.ip_watcher) # 可用ip数量监测
-    watcher.setDaemon(True)
-    watcher.start()
-    # #
-    domains = ['baidu.com','taobao.com','1688.com','sohu.com','520820.com','bqmr.info','ked3.com','0-360c.com']
-    # domains = ['qq.com']
-    for domain in domains:
-        proxy = ip.available_IP_q.get()
-        print proxy
-        try:
-            probe = requests.get('http://myip.ipip.net',proxies=proxy,timeout=5).content
-            print probe.strip()
-            page_html = request_res(domain,proxy)
-            auth_res_dict = get_auth_res(page_html)
-            domain_res = get_detect_deteil(auth_res_dict)
-            print domain,domain_res
-        except:
-            pass
+    # ip.run_Getter()
+    # time.sleep(20) # 这个时间很关键，这段时间用来从各平台上获取代理ip
+    # ip.ip_Verify() # ip可用性验证
+    # time.sleep(60) # 验证以获得足够的IP
+    # watcher = threading.Thread(target=ip.ip_watcher) # 可用ip数量监测
+    # watcher.setDaemon(True)
+    # watcher.start()
+    # # #
+    # domains = ['baidu.com','taobao.com','1688.com','sohu.com','520820.com','bqmr.info','ked3.com','0-360c.com']
+    # # domains = ['qq.com']
+    # for domain in domains:
+    #     proxy = ip.available_IP_q.get()
+    #     print proxy
+    #     try:
+    #         probe = requests.get('http://myip.ipip.net',proxies=proxy,timeout=5).content
+    #         print probe.strip()
+    #         page_html = request_res(domain,proxy)
+    #         auth_res_dict = get_auth_res(page_html)
+    #         domain_res = get_detect_deteil(auth_res_dict)
+    #         print domain,domain_res
+    #     except:
+    #        pass
 
         # driver = webdriver.PhantomJS(executable_path="/usr/local/phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
         # url = 'http://tool.chinaz.com/webscan?host=' + domain
