@@ -1,4 +1,11 @@
 # encoding:utf-8
+"""
+    功能：更新分析层domain_ip_relationship和ip_general_list更新domain_general_list中的ip信息
+    author & date: csy 2018.01.17
+    * 在运行build_domain_ip_rela后再运行此代码
+
+"""
+
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -11,8 +18,10 @@ mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform'
 
 def update_domain_ip():
     """
-    根据domain_ip_relationship更新域名总表中的的ip信息(IP地理位置和IP总数)
+    功能：根据domain_ip_relationship更新域名总表中的的ip信息(IP地理位置和IP总数)
     """
+    global mysql_conn
+
     sql = "SELECT ip,count(*),domain from domain_ip_relationship group by domain;"
     fetch_data = mysql_conn.exec_readsql(sql)
     for ip,ip_num,domain in fetch_data:
@@ -25,8 +34,10 @@ def update_domain_ip():
 
 def update_domain_ip_geo():
     """
-    更新域名总表中的的ip的地理位置信息
+    功能：根据新的ip_general_list中的地理位置信息，更新域名总表中的的ip的地理位置信息
     """
+    global mysql_conn
+
     sql = "select distinct IP from domain_general_list WHERE IP != '';"
     fetch_data = mysql_conn.exec_readsql(sql)
     print fetch_data
@@ -43,11 +54,6 @@ def update_domain_ip_geo():
         mysql_conn.commit()
 
 
-    # sql = "SELECT country,region,city FROM ip_general_list WHERE ip = '%s'" %(ip)
-    # fetch_data = mysql_conn.exec_readsql(sql)
-    # for country,region,city in fetch_data:
-    #     print country,region,city
-
 
 def deal_geo_info(country,region,city):
     """
@@ -61,6 +67,11 @@ def deal_geo_info(country,region,city):
     if city != '0' and city != region:
         geo = geo + '-' + city
     return geo
+
+def main():
+    update_domain_ip() # 更新主表中ip信息
+    update_domain_ip_geo() # 更新主表中ip地理位置信息
+
 
 
 if __name__ == '__main__':

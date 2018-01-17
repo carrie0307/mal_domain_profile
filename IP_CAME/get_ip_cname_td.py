@@ -136,7 +136,7 @@ def get_ip_ns_cname_handler():
 
 
 def main():
-    get_domains(limit_num = 10)
+    get_domains(limit_num = None)
     get_dns_td = []
     for _ in range(thread_num):
         get_dns_td.append(threading.Thread(target=get_ip_ns_cname_handler))

@@ -1,5 +1,8 @@
 # encoding:utf-8
 """
+    功能：根据mongo-domain_ip_cname更新分析层domain_ip_relationship表，ip_general_list表和domain_ip_relationship的数量统计信息
+
+    author & date: csy 2018.01.17
 """
 
 import sys
@@ -24,11 +27,15 @@ def md5_id(string):
 
 def get_ip_domain_relationship():
     """
-    根据每次新一轮获得的ip填充domain_ip_relationship表
-    (先据第一次的跑了，以后每次跑slice-1的情况)
-    * 下次跑注意visit_times和slice
+    功能：根据mongo-domain_ip_cname每次新一轮获得的ip填充domain_ip_relationship表
+
+    * 注意visit_times和slice
     """
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{},{'domain':True,'maltype':True,'domain_ip_cnames':{'$slice':1},'_id':False,'visit_times':True},limit_num=None)
+    global mongo_conn
+    global mysql_conn
+
+    # slice=-1取最后一次的获取结果来更新域名与ip的关系
+    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{},{'domain':True,'maltype':True,'domain_ip_cnames':{'$slice':-1},'_id':False,'visit_times':True},limit_num=None)
     for item in fetch_data:
         # print item.keys()
         domain = item['domain']
@@ -52,12 +59,17 @@ def get_ip_domain_relationship():
 
 def get_ip_info():
     """
-    先根据第一次ip的数据跑完了
-    * 下次跑注意visit_times和slice
-    从最新一次探测ip结果，获取最新的ip信息，更新ip总表
+    功能：根据mongo-domain_ip_cname最新一次的数据更新ip_general_list中的ip地理位置信息等
+
+    * 注意visit_times和slice
+    * 最新一次探测ip结果，获取最新的ip信息，更新ip总表
 
     """
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{},{'domain':True,'domain_ip_cnames':{'$slice':1},'_id':False,'visit_times':True},limit_num=None)
+    global mongo_conn
+    global mysql_conn
+
+    # slice=-1取最后一次的ip相关信息
+    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{},{'domain':True,'domain_ip_cnames':{'$slice':-1},'_id':False,'visit_times':True},limit_num=None)
     # print fetch_data
     for item in fetch_data:
         ips = item['domain_ip_cnames'][0]['ips']
@@ -96,6 +108,9 @@ def count_ip_type_num():
     """
     根据domain_ip_relationship更新ip表中的gamble_num,porno_num等
     """
+    global mongo_conn
+    global mysql_conn
+
     sql = "SELECT maltype,ip,count(*) FROM domain_ip_relationship GROUP BY maltype,ip;"
     fetch_data = mysql_conn.exec_readsql(sql)
     for maltype,ip,type_num in fetch_data:
@@ -105,18 +120,18 @@ def count_ip_type_num():
         elif maltype == '色情':
             sql = "UPDATE ip_general_list SET porno_num = %d WHERE ip = '%s';" %(type_num,ip)
         mysql_conn.exec_cudsql(sql)
-    #  然后通过sql语句统计dm_num即可
+    #  通过sql语句统计dm_num即可
+    # sql = "UPDATE ip_general_list SET dm_num = gamble_num + porno_num;"
+    # mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
 
 
 
-
-
-
-
+def main():
+    get_ip_domain_relationship() # 更新域名-ip关系
+    get_ip_info() # 更新ip总表相关信息
+    count_ip_type_num() # 更新ip总表中的相关分类统计数量
 
 
 if __name__ == '__main__':
-    # get_ip_domain_relationship()
-    # get_ip_info()
-    count_ip_type_num()
+    main()
