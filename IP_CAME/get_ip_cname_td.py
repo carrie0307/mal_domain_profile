@@ -16,7 +16,7 @@ sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
 """与库中visit_times相对应"""
-last_visit_times = 0
+last_visit_times = 1
 
 """多线程相关"""
 import Queue
@@ -121,10 +121,9 @@ def get_ip_ns_cname_handler():
             """取消了被封装函数中的异常处理，所有异常在这里统一捕获处理"""
             dns_rr.ip_dns_rr.fetch_rc_ttl(fqdn_domain,g_ns, g_ips, g_cnames)
         except Exception,e:
-            """凡是捕获到异常的，均加入队列统一再获取一遍"""
-            domain_q.put(check_domain)
+            """凡是捕获到异常的，均加入队列统一再获取一遍(因为有些总是出现异常，因此直接存空结果)"""
+            # domain_q.put(check_domain)
             print check_domain,str(e)
-            continue
 
         for ip in g_ips:
             # 获取ip地理为值信息
@@ -137,7 +136,7 @@ def get_ip_ns_cname_handler():
 
 
 def main():
-    get_domains(limit_num = None)
+    get_domains(limit_num = 10)
     get_dns_td = []
     for _ in range(thread_num):
         get_dns_td.append(threading.Thread(target=get_ip_ns_cname_handler))

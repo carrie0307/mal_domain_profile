@@ -51,7 +51,7 @@ def get_domains():
     '''
     global mysql_conn
 
-    sql = "SELECT domain FROM domain_auth_detect WHERE flag = 3;"
+    sql = "SELECT domain FROM domain_auth_detect WHERE flag = 3 or flag = 1;"
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
