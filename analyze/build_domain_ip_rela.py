@@ -3,6 +3,8 @@
     功能：根据mongo-domain_ip_cname更新分析层domain_ip_relationship表，ip_general_list表和domain_ip_relationship的数量统计信息
 
     author & date: csy 2018.01.17
+
+    * 注意visit_times和slice
 """
 
 import sys

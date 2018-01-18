@@ -49,6 +49,33 @@ class MongoConn(object):
         self.collection = self.db[collection_name]
         self.collection.update(condition,{'$inc':operation})
 
+
+    def mongo_addtoset(self,collection_name,condition,operation):
+        '''
+        mongo $addtoset操作（会自动去重）
+
+        向id=2的记录的tags中加入[ "camera", "electronics", "accessories" ]
+        db.inventory.update(
+                               { _id: 2 },
+                               { $addToSet: { tags: { $each: [ "camera", "electronics", "accessories" ] } } }
+                            )
+        '''
+        self.collection = self.db[collection_name]
+        self.collection.update(condition,{'$addToSet':operation})
+
+    def mongo_push(self,collection_name,condition,operation):
+        '''
+        mongo $addtoset操作（不去重） 注：还可以用于添加字典
+        db.students.update(
+               { name: "joe" },
+               { $push: { scores: { $each: [ 90, 92, 85 ] } } }
+            )
+        '''
+        self.collection = self.db[collection_name]
+        self.collection.update(condition,{'$push':operation})
+
+
+
 if __name__ == '__main__':
     mongo_conn = MongoConn('172.29.152.152','mal_domain_min')
     print mongo_conn.mongo_read('domain_index',{},{'_id':False,'domain':True})
