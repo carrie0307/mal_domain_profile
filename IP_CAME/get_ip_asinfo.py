@@ -22,14 +22,14 @@ import threading
 import time
 
 """线程数量"""
-thread_num = 10
+thread_num = 1
 
 """同步队列"""
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
 
 """库中visit_times对应的数值(get_ip_cname已更新visit_times=n,则这里就令visit_times=n)"""
-last_visit_times = 1
+last_visit_times = 2
 
 def get_domains(limit_num = None):
     """
@@ -49,6 +49,7 @@ def get_domains(limit_num = None):
                                                         {'domain':True,'domain_ip_cnames':True,'_id':False},limit_num
                                         )
     for item in fetch_data:
+        print item['domain']
         ips = item['domain_ip_cnames'][last_visit_times - 1]['ips'] # 获取上一次新插入的ip
         if ips:
             domain_q.put({item['domain']:ips})
@@ -80,7 +81,7 @@ def get_asinfo():
                 dm_ip_asinfo.append(std_asinfo)
             except Exception, e:
                 # 出现异常则停止此域名的相关获取，否则会导致ip和as信息不对应
-                domain_q.put(domain_ip_dict) # 将获取失败的域名和ip再次加入队列
+                domain_q.put(dm_ip_dict) # 将获取失败的域名和ip再次加入队列
                 flag = False
                 break
 

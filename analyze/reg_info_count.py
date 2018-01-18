@@ -6,6 +6,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
+import MySQLdb
 import database.mysql_operation
 
 
