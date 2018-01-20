@@ -54,7 +54,6 @@ class Domain_conn(object):
         if domain in self.reg_info_cache:
             return self.reg_info_cache[domain]
         sql = "SELECT reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE domain = '%s';" %(domain)
-        print sql
         fetch_data = mysql_conn.exec_readsql(sql)
         reg_name,reg_email,reg_phone = fetch_data[0]
         # 更新缓存
@@ -96,17 +95,13 @@ class Domain_conn(object):
         """
         global mysql_conn
 
-        new_ip_conn_domains,new_ip_comm_reg = [],[]
+        new_ip_conn_domains,new_ip_conn_reg = [],[]
 
         # 注意：只选择未更新过的关系进行添加
         sql = "SELECT IP FROM domain_ip_relationship WHERE domain = '%s' AND scan_flag = '%s';" %(self.source_domain,'NEW')
         fetch_data = mysql_conn.exec_readsql(sql)
         for item in fetch_data:
             ip = item[0]
-            print ip
-
-            new_ip_conn_domains = [] # 这一次由ip关联到的域名
-            new_ip_conn_reg = [] # 这一次由ip关联到的注册信息
 
             # 获取同ip的域名
             sql = "SELECT domain FROM domain_ip_relationship WHERE ip = '%s'; " %(ip)
@@ -114,10 +109,14 @@ class Domain_conn(object):
 
             for record in dm_fetch_data:
                 domain = record[0]
-                if domain == self.soure_domain:
+                if domain == self.source_domain:
                     # 与源域名相同则不进行处理
                     continue
+
                 # 构建当前这个ip所关联到的域名集合
+                if {'conn':ip,'domain':domain} in new_ip_conn_domains:
+                    continue
+
                 new_ip_conn_domains.append({'conn':ip,'domain':domain})
 
                 # 获取域名的注册信息
@@ -127,7 +126,7 @@ class Domain_conn(object):
 
             # 存储ip关联到的域名与注册信息
             # save_dns_conn_info(new_ip_conn_domains,new_ip_conn_reg,'ip')
-        return new_ip_conn_domains,new_ip_comm_reg
+        return new_ip_conn_domains,new_ip_conn_reg
 
 
     def get_cname_conn_domains(self):
@@ -146,9 +145,6 @@ class Domain_conn(object):
         for item in fetch_data:
             cname = item[0]
 
-            new_cname_conn_domains = [] # 这一次由ip关联到的域名
-            new_cname_conn_reg = [] # 这一次由ip关联到的注册信息
-
             # 获取同ip的域名
             sql = "SELECT domain FROM domain_cname_relationship WHERE cname = '%s'; " %(cname)
             dm_fetch_data = mysql_conn.exec_readsql(sql)
@@ -157,6 +153,9 @@ class Domain_conn(object):
                 domain = record[0]
                 if domain == self.source_domain:
                     # 与源域名相同则不进行处理
+                    continue
+
+                if {'conn':cname,'domain':domain} in new_cname_conn_domains:
                     continue
 
                 # 构建当前这个ip所关联到的域名集合
@@ -169,7 +168,7 @@ class Domain_conn(object):
 
             # 存储cname关联到的域名和注册信息
             # self.save_dns_conn_info(new_cname_conn_domains,new_cname_conn_reg,'cname')
-        return new_cname_conn_domains,new_cname_comm_reg
+        return new_cname_conn_domains,new_cname_conn_reg
 
 
     def get_reg_info_domains(self):
@@ -270,7 +269,7 @@ class Domain_conn(object):
                                                })
 
 
-    def save_conn_info(self,reg_conn_domains,new_cname_conn_domains,new_cname_comm_reg,new_ip_conn_domains,new_ip_conn_reg):
+    def save_conn_info(self,reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg):
         """
         功能：存储所有的关联域名与关联信息
         param: reg_conn_domains: 注册信息关联到的域名
@@ -312,10 +311,10 @@ class Domain_conn(object):
         功能：构建source_domain与其关联域名关系表
         '''
         reg_conn_domains = self.get_reg_info_domains()
-        new_cname_conn_domains,new_cname_comm_reg = self.get_cname_conn_domains()
-        new_ip_conn_domains,new_ip_comm_reg = self.get_ip_conn_domains()
+        new_cname_conn_domains,new_cname_conn_reg = self.get_cname_conn_domains()
+        new_ip_conn_domains,new_ip_conn_reg = self.get_ip_conn_domains()
         # 存储相关信息
-        self.save_conn_info(reg_conn_domains,new_cname_conn_domains,new_cname_comm_reg,new_ip_conn_domains,new_ip_conn_reg)
+        self.save_conn_info(reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg)
 
 
 def main():
