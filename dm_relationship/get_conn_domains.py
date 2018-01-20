@@ -12,7 +12,7 @@ mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_pro
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 
 
-# TODO:建域名注册信息库 (whois信息库添加触发器，每次添加新的whois信息，向关系库中添加 -- 暂时先没做这个出发器，目前是做全表扫描)
+# QUESTION:建域名注册信息库 (whois信息库添加触发器，每次添加新的whois信息，向关系库中添加 -- 暂时先没做这个出发器，目前是做全表扫描)
 # TODO:以后考虑给relationship表加一个标志位，表示该关系是否已经整理过 （每次更新relationship表时加NEW或OLD）
 # TODO： 添加标志位与规则 (规则写文档，尤其是什么时候更新已整理过的标志位)
 # TODO: 每次更新关系表时，重复的记录on duplicate key将scan_flag置为old （还是每次执行完这份代码，将所有的scan_flag直接置为old？）
@@ -88,18 +88,18 @@ def get_ip_conn_domains():
     """
     global mysql_conn
 
+    new_ip_conn_domains = []
+    new_ip_conn_reg = []
+
     # 注意：只选择未更新过的关系进行添加
-    sql = "SELECT IP FROM domain_ip_relationship WHERE domain = '%s' WHERE scan_flag = '%s';" %(source_domain,'NEW')
+    sql = "SELECT IP FROM domain_ip_relationship WHERE domain = '%s' AND scan_flag = '%s';" %(source_domain,'NEW')
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         ip = item[0]
         print ip
 
-        new_ip_conn_domains = [] # 这一次由ip关联到的域名
-        new_ip_conn_reg = [] # 这一次由ip关联到的注册信息
-
         # 获取同ip的域名
-        sql = "SELECT domain FROM domain_ip_relationship WHERE ip = '%s'; " %(ip)
+        sql = "SELECT domain FROM domain_ip_relationship AND ip = '%s'; " %(ip)
         dm_fetch_data = mysql_conn.exec_readsql(sql)
 
         for record in dm_fetch_data:
@@ -112,11 +112,11 @@ def get_ip_conn_domains():
             # 为了注册信息与域名一一对应，不进行去重
             new_ip_conn_reg.append({'conn':ip,'reg_info':reg_info})
 
-        save_dns_conn_info(source_domain,new_ip_conn_domains,new_ip_conn_reg,'ip')
-        print new_ip_conn_domains
-        # TODO:存储：判断每个ip是否已在库中有键值，有则addset，无则ip_domains.domains,ipkey=new_ip_conn_domains[ip_key]
-        print new_ip_conn_reg
-        # TODO:存储：判断每个ip是否已在库中有键值，有则addset，无则ip_domains.domains,ipkey=new_ip_conn_domains[ip_key]
+    save_dns_conn_info(source_domain,new_ip_conn_domains,new_ip_conn_reg,'ip')
+    print new_ip_conn_domains
+    # TODO:存储：判断每个ip是否已在库中有键值，有则addset，无则ip_domains.domains,ipkey=new_ip_conn_domains[ip_key]
+    print new_ip_conn_reg
+    # TODO:存储：判断每个ip是否已在库中有键值，有则addset，无则ip_domains.domains,ipkey=new_ip_conn_domains[ip_key]
 
 
 def get_cname_conn_domains():
@@ -126,16 +126,15 @@ def get_cname_conn_domains():
     * 以后考虑给relationship表加一个标志位，表示该关系是否已经整理过
     """
 
+    new_cname_conn_domains = []
+    new_cname_conn_reg = []
+
     # 注意：只选择未更新过的关系进行添加
     sql = "SELECT cname FROM domain_cname_relationship WHERE domain = '%s' WHERE scan_flag = '%s';" %(source_domain,'NEW')
     # 103.242.101.249
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         cname = item[0]
-
-        new_cname_conn_domains = [] # 这一次由ip关联到的域名
-        new_cname_conn_reg = [] # 这一次由ip关联到的注册信息
-
 
         # 获取同ip的域名
         sql = "SELECT domain FROM domain_cname_relationship WHERE cname = '%s'; " %(cname)
@@ -152,8 +151,8 @@ def get_cname_conn_domains():
             # 添加新域名的注册信息
             new_cname_conn_reg.append({'conn':cname,'reg_info':reg_info})
 
-        # 存储
-        save_dns_conn_info(source_domain,new_cname_conn_domains,new_cname_conn_reg,'cname')
+    # 存储
+    save_dns_conn_info(source_domain,new_cname_conn_domains,new_cname_conn_reg,'cname')
 
 
 def get_reg_info_domains():
@@ -223,12 +222,12 @@ def save_reginfo_conn_info(source_domain,reg_conn_domains):
     global mongo_conn
 
     # 更新关联元素信息
-    mongo_conn.mongo_update('domain_conn_dm',{'source_domain':source_domain},{'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
+    mongo_conn.mongo_update('domain_conn_dm_test',{'source_domain':source_domain},{'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
                                                                               'reg_email_domain.conn':reg_conn_domains['reg_email']['conn'],
                                                                               'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
                                                                               },multi_flag=True)
     # 更新关联的域名和注册信息
-    mongo_conn.mongo_push('domain_conn_dm',{'source_domain':source_domain},{'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
+    mongo_conn.mongo_push('domain_conn_dm_test',{'source_domain':source_domain},{'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
                                                                              'reg_name_domain.reg_info':{'$each':reg_conn_domains['reg_name']['reg_info']},
                                                                              'reg_email_domain.domains':{'$each':reg_conn_domains['reg_email']['domains']},
                                                                              'reg_email_domain.reg_info':{'$each':reg_conn_domains['reg_email']['reg_info']},

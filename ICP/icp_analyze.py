@@ -17,8 +17,22 @@ def page_recheck():
     """
     page_icp查重分析
     """
-    pass
-
+    sql = "SELECT page_icp,count(*) FROM domain_icp GROUP BY page_icp;"
+    fetch_data = mysql_conn.exec_readsql(sql)
+    for page_icp,count in fetch_data:
+        if page_icp == '--' or page_icp == '-1':
+            continue
+        if count < 2:
+            continue
+        sql = "SELECT domain FROM domain_icp WHERE page_icp = '%s';" %(page_icp)
+        fetch_data = mysql_conn.exec_readsql(sql)
+        domains = [item[0] for item in fetch_data]
+        reuse_domains = ';'.join(domains)
+        sql = "UPDATE domain_icp SET reuse_check = '%s' WHERE page_icp = '%s';" %(reuse_domains,page_icp)
+        exec_res = mysql_conn.exec_cudsql(sql)
+    sql = "UPDATE domain_icp SET reuse_check = '未发现重复' WHERE reuse_check is NULL;"
+    exec_res = mysql_conn.exec_cudsql(sql)
+    mysql_conn.commit()
 
 
 def icp_cmp():
@@ -78,4 +92,5 @@ def get_icp_cmp_res(auth_icp,page_icp):
 
 
 if __name__ == '__main__':
-    icp_cmp()
+    page_recheck()
+    # icp_cmp()

@@ -24,8 +24,10 @@ def ini_reg_info_table(reg_type):
         if item == '':
             # 空的注册信息不进行统计
             continue
+
+        # 对注册信息进行转义
+        item = MySQLdb.escape_string(item)
         sql = "REPLACE INTO reg_info(item,reg_type,domain_count) VALUES('%s','%s',%d);" %(item,reg_type,domain_count)
-        sql = MySQLdb.escape_string(sql)
         exec_res = mysql_conn.exec_cudsql(sql)
         # print item,domain_count
     print '初始化完成...'
