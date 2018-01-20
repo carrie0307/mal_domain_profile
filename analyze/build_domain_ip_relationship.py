@@ -31,7 +31,7 @@ def get_ip_domain_relationship():
     """
     功能：根据mongo-domain_ip_cname每次新一轮获得的ip填充domain_ip_relationship表
 
-    * 注意visit_times和slice
+    * 注意visit_times和slice   visit_times标志是用原始库中第几次的数据构建的关系
     """
     global mongo_conn
     global mysql_conn

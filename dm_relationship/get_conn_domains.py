@@ -1,4 +1,7 @@
 # encoding:utf-8
+'''
+    功能：根据各类信息，填充domain_conn_dm表，即每个域名第一层关联到的表
+'''
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -9,8 +12,18 @@ mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_pro
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 
 
+# TODO:建域名注册信息库 (whois信息库添加触发器，每次添加新的whois信息，向关系库中添加 -- 暂时先没做这个出发器，目前是做全表扫描)
 # TODO:以后考虑给relationship表加一个标志位，表示该关系是否已经整理过 （每次更新relationship表时加NEW或OLD）
-# QUESTION：需要关联到的注册信息与关联到的域名一一对应吗？
+# TODO： 添加标志位与规则 (规则写文档，尤其是什么时候更新已整理过的标志位)
+# TODO: 每次更新关系表时，重复的记录on duplicate key将scan_flag置为old （还是每次执行完这份代码，将所有的scan_flag直接置为old？）
+# TODO： links表如何区分（加标志位）
+# TODO： 写成一个class
+
+"""
+注意：ip，cname每次都根据relationship表的标志位获取未处理过的关系，因此是put
+     注册信息方面：随着域名数量增加，关联域名与注册信息会增多，因此是push(怎么区分是已关联过的还未关联过的？？？)
+     连接方面：也是无法区分是否是关联过的
+"""
 
 
 '''域名注册信息缓存'''
@@ -33,7 +46,7 @@ def get_reg_info(domain):
 
     if domain in reg_info_cache:
         return reg_info_cache[domain]
-    sql = "SELECT reg_name,reg_email,reg_phone FROM domain_whois WHERE domain = '%s';" %(domain)
+    sql = "SELECT reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE domain = '%s';" %(domain)
     fetch_data = mysql_conn.exec_readsql(sql)
     reg_name,reg_email,reg_phone = fetch_data[0]
     # 更新缓存
@@ -52,7 +65,7 @@ def get_domains_from_reg(reg_type,reg_info):
     global mysql_conn
 
     domains = []
-    sql = "SELECT domain FROM domain_whois WHERE %s = '%s';" %(reg_type,reg_info)
+    sql = "SELECT domain FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         # 将域名添加到列表中
@@ -75,7 +88,8 @@ def get_ip_conn_domains():
     """
     global mysql_conn
 
-    sql = "SELECT IP FROM domain_ip_relationship WHERE domain = '%s';" %(source_domain)
+    # 注意：只选择未更新过的关系进行添加
+    sql = "SELECT IP FROM domain_ip_relationship WHERE domain = '%s' WHERE scan_flag = '%s';" %(source_domain,'NEW')
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         ip = item[0]
@@ -111,7 +125,9 @@ def get_cname_conn_domains():
 
     * 以后考虑给relationship表加一个标志位，表示该关系是否已经整理过
     """
-    sql = "SELECT cname FROM domain_cname_relationship WHERE domain = '%s';" %(source_domain)
+
+    # 注意：只选择未更新过的关系进行添加
+    sql = "SELECT cname FROM domain_cname_relationship WHERE domain = '%s' WHERE scan_flag = '%s';" %(source_domain,'NEW')
     # 103.242.101.249
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
