@@ -16,13 +16,21 @@
 
 
 ├── build_dm_cname_relationship.py        # 构建域名与cname关系
+
 ├── build_domain_ip_relationship.py       # 构建域名与ip关系
+
 ├── build_domain_reg_relationship.py      # 构建域名与注册信息关系
+
 ├── domain_general_ipinfo.py              # 更新domain_general_list中的ip信息
+
 ├── ini_relative_dm_flag.py               # 初始化关联关系域名的标志位
+
 ├── README.md
+
 ├── reg_info_count.py                     # 更新reg_info表中信息
+
 ├── registrar_analyze.py                  # 更新domain_registrar表中信息
+
 └── test.py
 
 
@@ -94,4 +102,3 @@
     * relative_domains.domains和domains_enter.domains每次新添加的域名标志位为false（吴学长）。
 
     * 每次读取完一个域名的relative_domains关系后，会记录这是哪一个域名，并根据读取出总的relative_domains数量设置flag数列([True] * len(relative_domains.domains))，存入conn_domains中的relative_domains_flag([{'domain':--,flag:[True,...],collection_name:'表名'}])。conn_domains在完成对scan_flag的置数后，根据relative_domains_flag对relative_domains中的flag进行统一置位。
-    
