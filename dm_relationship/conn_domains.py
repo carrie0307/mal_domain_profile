@@ -10,6 +10,7 @@ import database.mongo_operation
 import database.mysql_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
+import time
 
 
 # QUESTION:建域名注册信息库 (whois信息库添加触发器，每次添加新的whois信息，向关系库中添加 -- 暂时先没做这个出发器，目前是做全表扫描)
@@ -41,7 +42,9 @@ class Domain_conn(object):
         # 初始化（根据输入的域名自动执行函数）
         self.source_domain = source_domain
         self.reg_info_cache = {} # 每个域名的关联域名有很多重复，因此设置一个注册信息缓存，对已获取注册信息的域名直接从缓存获取信息
+        self.relative_domains_flag = [] # 关联域名标志位处理([{domain:--,relative_domain_flag:[True,...,True]}])
         self.get_conn_domains()
+
 
     def get_reg_info(self,domain):
         """
@@ -55,7 +58,10 @@ class Domain_conn(object):
             return self.reg_info_cache[domain]
         sql = "SELECT reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE domain = '%s';" %(domain)
         fetch_data = mysql_conn.exec_readsql(sql)
-        reg_name,reg_email,reg_phone = fetch_data[0]
+        if fetch_data: # 库中可以查到该域名的注册信息
+            reg_name,reg_email,reg_phone = fetch_data[0]
+        else: # 尚未入库域名
+            reg_name,reg_email,reg_phone = '库中暂无该注册信息','库中暂无该注册信息','库中暂无该注册信息'
         # 更新缓存
         self.reg_info_cache[domain] = {'reg_name':reg_name,'reg_email':reg_email,'reg_phone':reg_phone}
         # QUESTION:注册信息为空时，照常返回（但是不用为空的注册信息去关联新的域名）
@@ -113,7 +119,7 @@ class Domain_conn(object):
                     # 与源域名相同则不进行处理
                     continue
 
-                # 构建当前这个ip所关联到的域名集合
+                # 构建当前这个ip所关联到的域名集合 / 同一cname关联的同一域名不重复添加
                 if {'conn':ip,'domain':domain} in new_ip_conn_domains:
                     continue
 
@@ -155,6 +161,7 @@ class Domain_conn(object):
                     # 与源域名相同则不进行处理
                     continue
 
+                # 同一cname关联的同一域名不重复添加
                 if {'conn':cname,'domain':domain} in new_cname_conn_domains:
                     continue
 
@@ -173,7 +180,7 @@ class Domain_conn(object):
 
     def get_reg_info_domains(self):
         """
-        功能：根据source_domain的注册人信息获取相关信息
+        功能：根据source_domain的注册信息获取相关信息
 
         email_domains:{
                       conn:---,
@@ -218,6 +225,36 @@ class Domain_conn(object):
         return reg_conn_domains
 
 
+    def get_relative_domains(self):
+        """
+        功能：获取source的相关域名（外链和暗链域名）。且根据标志位每次获取上次未存储的，push到domain_conn_dm中
+        """
+        global monog_conn
+
+        # source_domain新增的关联域名和注册信息列表
+        new_relative_domains,new_relative_reginfo = [],[]
+
+        fetch_data = mongo_conn.mongo_read('links_relation',{'domain':self.source_domain},{'domain':True,'relative_domains':True,'_id':False},limit_num = None)
+        if fetch_data:
+            item = fetch_data[0]
+            domain = item['domain']
+            # 令关联域名与标志位一一对应
+            relative_domains_flag = zip(item['relative_domains']['relative_domains'],item['relative_domains']['flags'])
+            for conn_domain,flag in relative_domains_flag:
+                if not flag: # 说明是未存储过的外链关系
+                    new_relative_domains.append(conn_domain) # 将域名加入关联列表
+                    # 获取关联域名的注册信息
+                    reg_info = self.get_reg_info(conn_domain)
+                    new_relative_reginfo.append(reg_info)
+
+            # 新建一个flag列表，用于将原flag全部置未True
+            new_flag = [True] * len(item['relative_domains']['flags'])
+
+        # print new_relative_domains
+        # print new_relative_reginfo
+        return new_relative_domains,new_relative_reginfo
+
+
     def save_reginfo_conn_info(self,reg_conn_domains):
         """
         功能：存储注册信息关联到的域名及注册信息
@@ -258,7 +295,6 @@ class Domain_conn(object):
         param: conn_type: 关联类型 字符串'cname'或'ip'
         """
         global mongo_conn
-        print type(new_conn_domains)
         domain_column = conn_type + '_domains' + '.domains'
         reg_column = conn_type + '_domains' + '.reg_info'
 
@@ -269,7 +305,7 @@ class Domain_conn(object):
                                                })
 
 
-    def save_conn_info(self,reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg):
+    def save_conn_info(self,reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg,new_relative_domains,new_relative_reginfo):
         """
         功能：存储所有的关联域名与关联信息
         param: reg_conn_domains: 注册信息关联到的域名
@@ -302,6 +338,8 @@ class Domain_conn(object):
                                                                                  'ip_domains.reg_info':{'$each':new_ip_conn_reg},
                                                                                  'cname_domains.domains':{'$each':new_cname_conn_domains},
                                                                                  'cname_domains.reg_info':{'$each':new_cname_conn_reg},
+                                                                                 'links_domains.domains':{'$each':new_relative_domains},
+                                                                                 'links_domains.reg_info':{'$each':new_relative_reginfo}
                                                                                  })
 
 
@@ -312,15 +350,27 @@ class Domain_conn(object):
         '''
         reg_conn_domains = self.get_reg_info_domains()
         new_cname_conn_domains,new_cname_conn_reg = self.get_cname_conn_domains()
+        # print new_cname_conn_domains,new_cname_conn_reg
         new_ip_conn_domains,new_ip_conn_reg = self.get_ip_conn_domains()
+        # print new_ip_conn_domains,new_ip_conn_reg
+        new_relative_domains,new_relative_reginfo = self.get_relative_domains()
+        # print new_relative_domains,new_relative_reginfo
         # 存储相关信息
-        self.save_conn_info(reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg)
+        self.save_conn_info(reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg,new_relative_domains,new_relative_reginfo)
+        if new_ip_conn_domains != [] or new_relative_domains != []:
+            print self.source_domain
 
 
 def main():
-    conn_domains_getter = Domain_conn('0-dian.com')
-    # conn_domains_getter.get_conn_domains()
-    del conn_domains_getter
+    start = time.time()
+    fetch_data = mongo_conn.mongo_read('domain_conn_dm_test',{},{'source_domain':True,'_id':False},limit_num = None)
+
+    for item in fetch_data:
+        domain =  item['source_domain']
+        # print domain
+        conn_domains_getter = Domain_conn(domain)
+        del conn_domains_getter
+    print str(time.time() - start)
 
 
 

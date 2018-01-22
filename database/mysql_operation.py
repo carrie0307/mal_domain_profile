@@ -37,7 +37,7 @@ class MysqlConn(object):
                 print "没有符合条件的数据..."
                 return []
             else:
-                print "取回数据 " + str(count) + " 条..."
+                # print "取回数据 " + str(count) + " 条..."
                 fetch_data = self.cur.fetchall()
                 return fetch_data
         except Exception,e:

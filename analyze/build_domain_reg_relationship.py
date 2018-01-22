@@ -1,7 +1,7 @@
 # encoding:utf-8
 '''
     功能：根据whois表，建立域名注册信息对应关系表
-    (目前是每次扫描whois表全部)
+    (目前是每次扫描whois表全部,这也是存在的问题！！！！！)
 '''
 import sys
 reload(sys)

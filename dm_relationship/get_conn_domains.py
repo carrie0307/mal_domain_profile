@@ -32,7 +32,8 @@ reg_info_cache = {}
 # source_domain = '77360022.cc' # 测试ip 1.32.208.43 /cname
 # source_domain = '383088.com'  # 测试注册信息 KAI LI WANG	YUMING3088@GMAIL.COM	+86.18030573226	13
 # source_domain = '01iii.com'	 #  测试注册信息  KAP MUI MUI	AXETOP@GMAIL.COM	+1.1940044567	5
-source_domain = '0-craft.com' # relative_domains 外链和暗链测算
+# source_domain = '0-du.com' # relative_domains 外链和暗链测算
+source_domain = '0-5babay.com'
 
 
 def get_reg_info(domain):
@@ -267,21 +268,22 @@ def get_relative_domains():
     # source_domain新增的关联域名和注册信息列表
     new_relative_domains,new_relative_reginfo = [],[]
 
-    fetch_data = mongo_conn.mongo_read('links_test',{'domain':source_domain},{'domain':True,'relative_domains':True,'_id':False},limit_num = None)
-    item = fetch_data[0]
-    domain = item['domain']
-    # 令关联域名与标志位一一对应
-    relative_domains_flag = zip(item['relative_domains']['relative_domains'],item['relative_domains']['flags'])
-    for conn_domain,flag in relative_domains_flag:
-        print conn_domain,flag
-        if not flag: # 说明是未存储过的外链关系
-            new_relative_domains.append(conn_domain) # 将域名加入关联列表
-            # 获取关联域名的注册信息
-            reg_info = get_reg_info(conn_domain)
-            new_relative_reginfo.append(reg_info)
+    fetch_data = mongo_conn.mongo_read('links_relation',{'domain':source_domain},{'domain':True,'relative_domains':True,'_id':False},limit_num = None)
+    if fetch_data:
+        item = fetch_data[0]
+        domain = item['domain']
+        # 令关联域名与标志位一一对应
+        relative_domains_flag = zip(item['relative_domains']['relative_domains'],item['relative_domains']['flags'])
+        for conn_domain,flag in relative_domains_flag:
+            print conn_domain,flag
+            if not flag: # 说明是未存储过的外链关系
+                new_relative_domains.append(conn_domain) # 将域名加入关联列表
+                # 获取关联域名的注册信息
+                reg_info = get_reg_info(conn_domain)
+                new_relative_reginfo.append(reg_info)
 
-    # 新建一个flag列表，用于将原flag全部置未True
-    new_flag = len(item['relative_domains']['flags']) * [True]
+        # 新建一个flag列表，用于将原flag全部置未True
+        new_flag = len(item['relative_domains']['flags']) * [True]
 
     # print new_relative_domains
     # print new_relative_reginfo

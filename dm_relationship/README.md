@@ -7,3 +7,8 @@
     * 输入source_domain，直接提取出其相关域名及相关元素；
     * 表中source_domain的关联域名会根据analyze文件夹下代码对**域名及其相关信息的关联关系**的更新而更新；
     * 为了提高效率，要对**域名及其相关信息的关联关系**做好标志位，每次只扫描新添加的关系带来的关联域名。
+
+
+* 标志位
+
+domain_conn_dm表中的visit_times代表完成了根据第几次获取数据更新了域名间关联关系；此visit_times最终和domain_××_relationship中的visit_times相同。
