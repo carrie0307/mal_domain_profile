@@ -16,7 +16,7 @@ sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
 """与库中visit_times相对应"""
-last_visit_times = 1
+last_visit_times = 2
 
 """多线程相关"""
 import Queue
@@ -89,7 +89,7 @@ def insert_data():
             domain_ip_cnames = mongo_conn.mongo_update(collection_name,{'domain':check_domain},
                                                         {cur_array:detect_res}
                                                       )
-            print check_domain + 'saved ...'
+            print check_domain + '  saved ...'
         except Exception,e:
             print check_domain + ' save ' + str(e)
             # pass

@@ -22,14 +22,14 @@ import threading
 import time
 
 """线程数量"""
-thread_num = 1
+thread_num = 20
 
 """同步队列"""
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
 
 """库中visit_times对应的数值(get_ip_cname已更新visit_times=n,则这里就令visit_times=n)"""
-last_visit_times = 2
+last_visit_times = 3
 
 def get_domains(limit_num = None):
     """
@@ -46,11 +46,12 @@ def get_domains(limit_num = None):
 
     fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'visit_times':last_visit_times,
                                                         cur_array:{'$exists':False}},
-                                                        {'domain':True,'domain_ip_cnames':True,'_id':False},limit_num
+                                                        {'domain':True,'domain_ip_cnames':{'$slice':-1},'_id':False},limit_num
                                         )
+
     for item in fetch_data:
-        print item['domain']
-        ips = item['domain_ip_cnames'][last_visit_times - 1]['ips'] # 获取上一次新插入的ip
+
+        ips = item['domain_ip_cnames'][0]['ips'] # 获取上一次新插入的ip
         if ips:
             domain_q.put({item['domain']:ips})
         else:

@@ -19,7 +19,7 @@ mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform'
 # TODO： links表如何区分（加标志位）
 
 # TODO:缺links的更新
-# TODO:却标志位更新方式确定
+# TODO:却标志位更新方式确定  s所有信息跑完后统一置吧～～～
 
 """
 注意：ip，cname每次都根据relationship表的标志位获取未处理过的关系，因此是put

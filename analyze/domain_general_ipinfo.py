@@ -18,7 +18,7 @@ mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform'
 
 def update_domain_ip():
     """
-    功能：根据domain_ip_relationship更新域名总表domain_ip_relationship中的的ip信息(IP地理位置和IP总数)
+    功能：根据domain_ip_relationship更新域名总表domain_general_list中的的ip信息(IP地理位置和IP总数)
     """
     global mysql_conn
 

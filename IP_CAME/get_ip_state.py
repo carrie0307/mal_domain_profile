@@ -29,7 +29,7 @@ domain_q = Queue.Queue()
 res_q = Queue.Queue()
 
 """库中visit_times对应的数值(get_ip_cname已更新visit_times=n,则这里就令visit_times=n)"""
-last_visit_times = 2
+last_visit_times = 3
 
 
 def get_domains(limit_num = None):
@@ -43,14 +43,19 @@ def get_domains(limit_num = None):
     global domain_q
     global res_q
     global last_visit_times
+
+    # 本次ip状态信息对应的下标，用于判断是否已存在此次信息
     cur_array = 'domain_ip_cnames.' + str(last_visit_times - 1) + '.ip_state'
 
+    # slice = -1 每次只获取最后一次的ip信息
     fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'visit_times':last_visit_times,
                                                         cur_array:{'$exists':False}},
-                                                        {'domain':True,'domain_ip_cnames':True,'_id':False},limit_num
+                                                        {'domain':True,'domain_ip_cnames':{'$slice':-1},'_id':False},limit_num
                                         )
     for item in fetch_data:
-        ips = item['domain_ip_cnames'][last_visit_times - 1]['ips'] # 获取上一次新插入的ip
+
+        print item['domain']
+        ips = item['domain_ip_cnames'][0]['ips'] # 获取上一次新插入的ip
         if ips:
             domain_q.put({item['domain']:ips})
         else:
@@ -131,17 +136,17 @@ def main():
     """
     print '获取域名...'
     get_domains(limit_num = 10)
-    get_state_td = []
-    for _ in range(thread_num):
-        get_state_td.append(threading.Thread(target=get_ip_state))
-    for td in get_state_td:
-        td.start()
-    print 'getting ip state ...\n'
-    # time.sleep(10)
-    print 'save state info ...\n'
-    save_db_td = threading.Thread(target=save_state_info)
-    save_db_td.start()
-    save_db_td.join()
+    # get_state_td = []
+    # for _ in range(thread_num):
+    #     get_state_td.append(threading.Thread(target=get_ip_state))
+    # for td in get_state_td:
+    #     td.start()
+    # print 'getting ip state ...\n'
+    # # time.sleep(10)
+    # print 'save state info ...\n'
+    # save_db_td = threading.Thread(target=save_state_info)
+    # save_db_td.start()
+    # save_db_td.join()
 
 
 if __name__ == '__main__':
