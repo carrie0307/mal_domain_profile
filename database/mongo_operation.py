@@ -74,6 +74,12 @@ class MongoConn(object):
         self.collection = self.db[collection_name]
         self.collection.update(condition,{'$push':operation})
 
+    def mongo_any_update(self,collection,condition,operation):
+        '''
+        任何类型 mongo 的更新操作，operation中需要自己包括更新的类型
+        '''
+        self.collection = self.db[collection]
+        self.collection.update(condition,operation)
 
 
 if __name__ == '__main__':

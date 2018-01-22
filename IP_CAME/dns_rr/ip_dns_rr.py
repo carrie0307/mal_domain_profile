@@ -27,7 +27,7 @@ def find_ns(fqdn_domain):
     for i in range(0,domain_len):
         req_obj = DNS.Request()
         flag = False # 是否获取成功标志，默认为false
-    :
+    
         # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
         for _ in range(3):
             try:
