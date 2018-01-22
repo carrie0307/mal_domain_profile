@@ -34,7 +34,7 @@ class MysqlConn(object):
         try:
             count = self.cur.execute(sql)
             if count == 0:
-                print "没有符合条件的数据..."
+                # print "没有符合条件的数据..."
                 return []
             else:
                 # print "取回数据 " + str(count) + " 条..."

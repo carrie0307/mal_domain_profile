@@ -20,7 +20,8 @@ import time
 # TODO： links表如何区分（加标志位）
 
 # TODO:缺links的更新
-# TODO:却标志位更新方式确定  s所有信息跑完后统一置吧～～～
+# TODO:却标志位更新方式确定  s所有信息跑完后统一置吧～～～(代码还没写)
+# QUESTION: Visit-times先手动置书了(用inc又得多一次查询阿。。。。。)
 
 """
 注意：ip，cname每次都根据relationship表的标志位获取未处理过的关系，因此是put
@@ -326,6 +327,7 @@ class Domain_conn(object):
         mongo_conn.mongo_update('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
                                                                                   'reg_email_domain.conn':reg_conn_domains['reg_email']['conn'],
                                                                                   'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
+                                                                                  'visit_times':1
                                                                                   },multi_flag=True)
         # 更新关联的域名和注册信息
         mongo_conn.mongo_push('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
@@ -363,7 +365,7 @@ class Domain_conn(object):
 
 def main():
     start = time.time()
-    fetch_data = mongo_conn.mongo_read('domain_conn_dm_test',{},{'source_domain':True,'_id':False},limit_num = None)
+    fetch_data = mongo_conn.mongo_read('domain_conn_dm_test',{'visit_times':0},{'source_domain':True,'_id':False},limit_num = None)
 
     for item in fetch_data:
         domain =  item['source_domain']

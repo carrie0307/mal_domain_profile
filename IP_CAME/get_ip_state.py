@@ -136,17 +136,17 @@ def main():
     """
     print '获取域名...'
     get_domains(limit_num = 10)
-    # get_state_td = []
-    # for _ in range(thread_num):
-    #     get_state_td.append(threading.Thread(target=get_ip_state))
-    # for td in get_state_td:
-    #     td.start()
-    # print 'getting ip state ...\n'
-    # # time.sleep(10)
-    # print 'save state info ...\n'
-    # save_db_td = threading.Thread(target=save_state_info)
-    # save_db_td.start()
-    # save_db_td.join()
+    get_state_td = []
+    for _ in range(thread_num):
+        get_state_td.append(threading.Thread(target=get_ip_state))
+    for td in get_state_td:
+        td.start()
+    print 'getting ip state ...\n'
+    # time.sleep(10)
+    print 'save state info ...\n'
+    save_db_td = threading.Thread(target=save_state_info)
+    save_db_td.start()
+    save_db_td.join()
 
 
 if __name__ == '__main__':
