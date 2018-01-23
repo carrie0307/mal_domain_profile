@@ -13,11 +13,11 @@ mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform'
 import time
 
 # 标志现在取回的是第几次的数据
-visit_times = 1
+visit_times = 2
 
 # slice获取数据的分割
 start = 0
-skip = 1
+skip = 2
 
 
 def diff_list(list1,list2):

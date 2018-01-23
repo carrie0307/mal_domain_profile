@@ -288,6 +288,7 @@ class Domain_conn(object):
                                                                                  'reg_phone_domain.reg_info':{'$each':reg_conn_domains['reg_phone']['reg_info']},
                                                                                  })
 
+
     def save_dns_conn_info(new_conn_domains,new_conn_reg,conn_type):
         """
         功能：存储由域名ip和cname关联到的域名和注册信息
@@ -323,27 +324,50 @@ class Domain_conn(object):
             new_××_conn_domains:[ {conn_××:---,dm:--}, {conn_××:---,dm:--}...]  //{ip1/cname1:[dm1,dm2,...],ip2/cname2:[dm1,dm2,...],...}这样不方便更新
             new_××_conn_reg: [{conn_ip:--,reg_info:{reg_name:--,reg_email:--,reg_phone:--},{conn_ip:--,reg_info:{reg_name:--,reg_email:--,reg_phone:--}...]
         """
-        # 更新关联元素信息
-        mongo_conn.mongo_update('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
-                                                                                  'reg_email_domain.conn':reg_conn_domains['reg_email']['conn'],
-                                                                                  'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
-                                                                                  'visit_times':1
-                                                                                  },multi_flag=True)
-        # 更新关联的域名和注册信息
-        mongo_conn.mongo_push('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
-                                                                                 'reg_name_domain.reg_info':{'$each':reg_conn_domains['reg_name']['reg_info']},
-                                                                                 'reg_email_domain.domains':{'$each':reg_conn_domains['reg_email']['domains']},
-                                                                                 'reg_email_domain.reg_info':{'$each':reg_conn_domains['reg_email']['reg_info']},
-                                                                                 'reg_phone_domain.domains':{'$each':reg_conn_domains['reg_phone']['domains']},
-                                                                                 'reg_phone_domain.reg_info':{'$each':reg_conn_domains['reg_phone']['reg_info']},
-                                                                                 'ip_domains.domains':{'$each':new_ip_conn_domains},
-                                                                                 'ip_domains.reg_info':{'$each':new_ip_conn_reg},
-                                                                                 'cname_domains.domains':{'$each':new_cname_conn_domains},
-                                                                                 'cname_domains.reg_info':{'$each':new_cname_conn_reg},
-                                                                                 'links_domains.domains':{'$each':new_relative_domains},
-                                                                                 'links_domains.reg_info':{'$each':new_relative_reginfo}
-                                                                                 })
+        # # 更新关联元素信息
+        # mongo_conn.mongo_update('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
+        #                                                                           'reg_email_domain.conn':reg_conn_domains['reg_email']['conn'],
+        #                                                                           'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
+        #                                                                           'visit_times':1
+        #                                                                           },multi_flag=True)
+        # # 更新关联的域名和注册信息
+        # mongo_conn.mongo_push('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
+        #                                                                          'reg_name_domain.reg_info':{'$each':reg_conn_domains['reg_name']['reg_info']},
+        #                                                                          'reg_email_domain.domains':{'$each':reg_conn_domains['reg_email']['domains']},
+        #                                                                          'reg_email_domain.reg_info':{'$each':reg_conn_domains['reg_email']['reg_info']},
+        #                                                                          'reg_phone_domain.domains':{'$each':reg_conn_domains['reg_phone']['domains']},
+        #                                                                          'reg_phone_domain.reg_info':{'$each':reg_conn_domains['reg_phone']['reg_info']},
+        #                                                                          'ip_domains.domains':{'$each':new_ip_conn_domains},
+        #                                                                          'ip_domains.reg_info':{'$each':new_ip_conn_reg},
+        #                                                                          'cname_domains.domains':{'$each':new_cname_conn_domains},
+        #                                                                          'cname_domains.reg_info':{'$each':new_cname_conn_reg},
+        #                                                                          'links_domains.domains':{'$each':new_relative_domains},
+        #                                                                          'links_domains.reg_info':{'$each':new_relative_reginfo}
+        #                                                                          })
+        # 更新关联元素信息、关联域名和关联到的注册信息
+        mongo_conn.mongo_any_update('domain_conn_dm_test',{'source_domain':self.source_domain},
+                                                          {'$set':
+                                                                  {'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
+                                                                   'reg_email_domain.conn':reg_conn_domains['reg_email']['conn'],
+                                                                    'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
+                                                                    'visit_times':1
+                                                                    },
+                                                            '$put':
+                                                                   {'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
+                                                                    'reg_name_domain.reg_info':{'$each':reg_conn_domains['reg_name']['reg_info']},
+                                                                    'reg_email_domain.domains':{'$each':reg_conn_domains['reg_email']['domains']},
+                                                                    'reg_email_domain.reg_info':{'$each':reg_conn_domains['reg_email']['reg_info']},
+                                                                    'reg_phone_domain.domains':{'$each':reg_conn_domains['reg_phone']['domains']},
+                                                                    'reg_phone_domain.reg_info':{'$each':reg_conn_domains['reg_phone']['reg_info']},
+                                                                    'ip_domains.domains':{'$each':new_ip_conn_domains},
+                                                                    'ip_domains.reg_info':{'$each':new_ip_conn_reg},
+                                                                    'cname_domains.domains':{'$each':new_cname_conn_domains},
+                                                                    'cname_domains.reg_info':{'$each':new_cname_conn_reg},
+                                                                    'links_domains.domains':{'$each':new_relative_domains},
+                                                                    'links_domains.reg_info':{'$each':new_relative_reginfo}
+                                                                    }
 
+                                                            )
 
 
     def get_conn_domains(self):

@@ -30,6 +30,8 @@ def page_recheck():
         reuse_domains = ';'.join(domains)
         sql = "UPDATE domain_icp SET reuse_check = '%s' WHERE page_icp = '%s';" %(reuse_domains,page_icp)
         exec_res = mysql_conn.exec_cudsql(sql)
+    sql = "UPDATE domain_icp SET reuse_check = '未获取到页面ICP' WHERE page_icp ='-1' or page_icp = '--';"
+    exec_res = mysql_conn.exec_cudsql(sql)
     sql = "UPDATE domain_icp SET reuse_check = '未发现重复' WHERE reuse_check is NULL;"
     exec_res = mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
