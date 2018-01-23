@@ -27,9 +27,9 @@ def find_ns(fqdn_domain):
     for i in range(0,domain_len):
         req_obj = DNS.Request()
         flag = False # 是否获取成功标志，默认为false
-    
+
         # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
-        for _ in range(3):
+        for _ in range(2):
             try:
                 answer_obj = req_obj.req(name=fqdn_domain, qtype=DNS.Type.NS, server=server, timeout=timeout)
                 flag = True
@@ -62,7 +62,7 @@ def handle_domain_rc(ns_name,domain):
     flag = False # 是否获取成功标志，默认为false
     # try:
     # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
-    for _ in range(3):
+    for _ in range(2):
         try:
             answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
             flag = True # 标志已经获取成功了

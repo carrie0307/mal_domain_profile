@@ -87,6 +87,18 @@ class Domain_conn(object):
         return domains
 
 
+    def get_reg_domain_from_reg(self,reg_type,reg_info):
+        """
+        功能：用注册信息反差时，直接获取关联域名与注册信息
+        """
+        global mysql_conn
+
+        conn_dm_reg = []
+        sql = "SELECT domain,reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
+        fetch_data = mysql_conn.exec_readsql(sql)
+        return fetch_data
+
+
     def escape_key(self,key):
         """
         功能：'.'不能出现在字典键值中，因此将ip，cname，邮箱等的'.'进行处理(后续改了思路，这个函数应该暂不会用到)
@@ -203,23 +215,18 @@ class Domain_conn(object):
             if reg_info[reg_type] == '':
                 continue # 空的注册信息不进行关联
 
-            # 获取当前注册信息关联到的域名
-            conn_domains = self.get_domains_from_reg(reg_type,reg_info[reg_type])
-
-            reg_conn_domains[reg_type]['conn'] = reg_info[reg_type] # 关联因素
-            reg_conn_domains[reg_type]['reg_info'] = []
-
-            # 获取关联域名的注册信息
-            for domain in conn_domains:
+            # 获取当前注册信息关联到的域名和注册信息
+            fetch_data = self.get_reg_domain_from_reg(reg_type,reg_info[reg_type])
+            for domain,reg_name,reg_email,reg_phone in fetch_data:
                 if domain == self.source_domain:
                     # 与源域名相同则不进行获取
                     continue
+                # 关联因素
+                reg_conn_domains[reg_type]['conn'] = reg_info[reg_type]
                 # 将关联域名加入列表
                 reg_conn_domains[reg_type]['domains'].append(domain)
-                # 获取关联域名的注册信息
-                conn_reg_info = self.get_reg_info(domain)
                 # 重复的注册信息也添加，目的在于与域名一一对应
-                reg_conn_domains[reg_type]['reg_info'].append(reg_info)
+                reg_conn_domains[reg_type]['reg_info'].append({'reg_name':reg_name,'reg_email':reg_email,'reg_phone':reg_phone})
 
         # 存储注册信息关联所得的域名
         # self.save_reginfo_conn_info(reg_conn_domains)
@@ -352,7 +359,7 @@ class Domain_conn(object):
                                                                     'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
                                                                     'visit_times':1
                                                                     },
-                                                            '$put':
+                                                            '$push':
                                                                    {'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
                                                                     'reg_name_domain.reg_info':{'$each':reg_conn_domains['reg_name']['reg_info']},
                                                                     'reg_email_domain.domains':{'$each':reg_conn_domains['reg_email']['domains']},
@@ -366,8 +373,7 @@ class Domain_conn(object):
                                                                     'links_domains.domains':{'$each':new_relative_domains},
                                                                     'links_domains.reg_info':{'$each':new_relative_reginfo}
                                                                     }
-
-                                                            )
+                                                            })
 
 
     def get_conn_domains(self):
@@ -396,7 +402,7 @@ def main():
         # print domain
         conn_domains_getter = Domain_conn(domain)
         del conn_domains_getter
-    print str(time.time() - start)
+        print str(time.time() - start) + '\n'
 
 
 

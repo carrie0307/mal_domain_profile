@@ -31,9 +31,9 @@ reg_info_cache = {}
 
 # source_domain = '77360022.cc' # 测试ip 1.32.208.43 /cname
 # source_domain = '383088.com'  # 测试注册信息 KAI LI WANG	YUMING3088@GMAIL.COM	+86.18030573226	13
-# source_domain = '01iii.com'	 #  测试注册信息  KAP MUI MUI	AXETOP@GMAIL.COM	+1.1940044567	5
+source_domain = '01iii.com'	 #  测试注册信息  KAP MUI MUI	AXETOP@GMAIL.COM	+1.1940044567	5
 # source_domain = '0-du.com' # relative_domains 外链和暗链测算
-source_domain = '0-5babay.com'
+# source_domain = '0-5babay.com'
 
 
 def get_reg_info(domain):
@@ -75,6 +75,19 @@ def get_domains_from_reg(reg_type,reg_info):
         # 将域名添加到列表中
         domains.append(item[0])
     return domains
+
+
+def get_reg_domain_from_reg(reg_type,reg_info):
+    """
+    功能：用注册信息反差时，直接获取关联域名与注册信息
+    """
+    global mysql_conn
+
+    conn_dm_reg = []
+    sql = "SELECT domain,reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
+    fetch_data = mysql_conn.exec_readsql(sql)
+    return fetch_data
+
 
 
 def escape_key(key):
@@ -184,26 +197,21 @@ def get_reg_info_domains():
         if reg_info[reg_type] == '':
             continue # 空的注册信息不进行关联
 
-        # 获取当前注册信息关联到的域名
-        conn_domains = get_domains_from_reg(reg_type,reg_info[reg_type])
-
-        reg_conn_domains[reg_type]['conn'] = reg_info[reg_type] # 关联因素
-        reg_conn_domains[reg_type]['reg_info'] = []
-
-        # 获取关联域名的注册信息
-        for domain in conn_domains:
+        #  获取关联到的注册域名和注册信息
+        fetch_data = get_reg_domain_from_reg(reg_type,reg_info[reg_type])
+        for domain,reg_name,reg_email,reg_phone in fetch_data:
             if domain == source_domain:
                 # 与源域名相同则不进行获取
                 continue
+            # 关联因素
+            reg_conn_domains[reg_type]['conn'] = reg_info[reg_type]
             # 将关联域名加入列表
             reg_conn_domains[reg_type]['domains'].append(domain)
-            # 获取关联域名的注册信息
-            conn_reg_info = get_reg_info(domain)
             # 重复的注册信息也添加，目的在于与域名一一对应
-            reg_conn_domains[reg_type]['reg_info'].append(reg_info)
+            reg_conn_domains[reg_type]['reg_info'].append({'reg_name':reg_name,'reg_email':reg_email,'reg_phone':reg_phone})
 
-    # 存储关联信息
-    save_reginfo_conn_info(source_domain,reg_conn_domains)
+    print reg_conn_domains
+    # save_reginfo_conn_info(source_domain,reg_conn_domains)
 
 
 def save_reginfo_conn_info(source_domain,reg_conn_domains):
@@ -326,4 +334,5 @@ def main():
 
 if __name__ == '__main__':
     # main()
-    get_relative_domains()
+    # get_relative_domains()
+    get_reg_info_domains()
