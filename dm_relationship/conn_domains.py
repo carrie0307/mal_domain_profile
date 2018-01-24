@@ -8,7 +8,7 @@ sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 import database.mysql_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
+mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','mal_domain_profile')
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 import time
 
@@ -77,7 +77,7 @@ class Domain_conn(object):
         return: domains: 关联到的域名集合
         """
         global mysql_conn
-
+        reg_info = mysql_conn.escate_string(reg_info)
         domains = []
         sql = "SELECT domain FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
         fetch_data = mysql_conn.exec_readsql(sql)
@@ -92,7 +92,8 @@ class Domain_conn(object):
         功能：用注册信息反差时，直接获取关联域名与注册信息
         """
         global mysql_conn
-
+        # 对注册信息进行转义处理
+        reg_info = mysql_conn.escape_string(reg_info)
         conn_dm_reg = []
         sql = "SELECT domain,reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
         fetch_data = mysql_conn.exec_readsql(sql)
@@ -104,6 +105,16 @@ class Domain_conn(object):
         功能：'.'不能出现在字典键值中，因此将ip，cname，邮箱等的'.'进行处理(后续改了思路，这个函数应该暂不会用到)
         """
         return key.replace('.','-')
+
+
+    def escape_reg_info(reg_info):
+        """
+        功能：对注册信息进行转义处理
+        """
+        for reg_type in reg_info:
+            if reg_info[reg_type] != '':
+                reg_info[reg_type] = mysql_conn.escape_string(reg_info[reg_type])
+        return reg_info
 
 
     def get_ip_conn_domains(self):
@@ -226,7 +237,8 @@ class Domain_conn(object):
                 # 将关联域名加入列表
                 reg_conn_domains[reg_type]['domains'].append(domain)
                 # 重复的注册信息也添加，目的在于与域名一一对应
-                reg_conn_domains[reg_type]['reg_info'].append({'reg_name':reg_name,'reg_email':reg_email,'reg_phone':reg_phone})
+                reg_info = {'reg_name':reg_name,'reg_email':reg_email,'reg_phone':reg_phone}
+                reg_conn_domains[reg_type]['reg_info'].append(reg_info)
 
         # 存储注册信息关联所得的域名
         # self.save_reginfo_conn_info(reg_conn_domains)

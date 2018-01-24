@@ -72,6 +72,11 @@ class MysqlConn(object):
             print "commit有误...\n"
             return False
 
+    def escape_string(self,string):
+        """
+        功能：对字符词进行转义
+        """
+        return MySQLdb.escape_string(string)
 
     def close_db(self):
         """
