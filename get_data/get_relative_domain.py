@@ -2,11 +2,13 @@
 '''
     功能：获取u干练域名页面数据
     问题：没有添加链入链接的部分
+    注意：同一source_domain的不同元素如果关联到了相同的域名，则都会记录(因此最后关联域名有重复的 -- 在图中分属于不同关联因素)
     使用：
          relative_domain_getter = Relative_domain_getter('0-du.com')
          graph_info,show_info = relative_domain_getter.get_relative_data()
          # graph_info,show_info含义在get_relative_data()中有解释
          del relative_domain_getter
+
 '''
 from __future__ import division
 import sys
@@ -143,19 +145,19 @@ if __name__ == '__main__':
     # domain = '0000246.com' # ip测试
     # domain = '0-dian.com' # cname测试
     # domain = '0-du.com' # 链接测试
-    # relative_domain_getter = Relative_domain_getter('0-du.com')
-    # graph_info,show_info = relative_domain_getter.get_relative_data()
+    relative_domain_getter = Relative_domain_getter('0-360c.com')
+    graph_info,show_info = relative_domain_getter.get_relative_data()
 
-    from pymongo import MongoClient
-    mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile
-    collection = mongo_db['domain_conn_dm_test']
-    domains = list(collection.find({},{'_id':False,'source_domain':True}).limit(100))
-    for domain in domains:
-        domain = domain['source_domain']
-        relative_domain_getter = Relative_domain_getter(domain)
-        graph_info,show_info = relative_domain_getter.get_relative_data()
-        # relative_domain_getter.get_relative_data()
-        del relative_domain_getter
-        print graph_info
-        print show_info
-        print '\n'
+    # from pymongo import MongoClient
+    # mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile
+    # collection = mongo_db['domain_conn_dm_test']
+    # domains = list(collection.find({},{'_id':False,'source_domain':True}).limit(100))
+    # for domain in domains:
+    #     domain = domain['source_domain']
+    #     relative_domain_getter = Relative_domain_getter(domain)
+    #     graph_info,show_info = relative_domain_getter.get_relative_data()
+    #     # relative_domain_getter.get_relative_data()
+    #     del relative_domain_getter
+    #     print graph_info
+    #     print show_info
+    #     print '\n'

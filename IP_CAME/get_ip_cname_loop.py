@@ -18,7 +18,7 @@ import database.mongo_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','mal_domain_profile')
 """与库中visit_times相对应"""
 # last_visit_times = 2
-run_times = 3
+run_times = 5
 
 """多线程相关"""
 import Queue

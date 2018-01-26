@@ -8,6 +8,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import arrow
 import datetime
+import MySQLdb # 为转义而引入
 from Base import Base
 
 class Whois_info_getter(Base):
@@ -113,14 +114,17 @@ class Whois_info_getter(Base):
         reg_name_num,reg_email_num,reg_phone_num = '*','*','*'
 
         if reg_name != '':
+            reg_name = MySQLdb.escape_string(reg_name)
             sql = "SELECT domain_count FROM reg_info WHERE item = '%s';" %(reg_name)
             fetch_data = self.mysql_db.query(sql)
             reg_name_num = int(fetch_data[0]['domain_count']) if fetch_data else '--'
         if reg_email != '':
+            reg_email = MySQLdb.escape_string(reg_email)
             sql = "SELECT domain_count FROM reg_info WHERE item = '%s';" %(reg_email)
             fetch_data = self.mysql_db.query(sql)
             reg_email_num = int(fetch_data[0]['domain_count']) if fetch_data else '--'
         if reg_phone != '':
+            reg_phone = MySQLdb.escape_string(reg_phone)
             sql = "SELECT domain_count FROM reg_info WHERE item = '%s';" %(reg_phone)
             fetch_data = self.mysql_db.query(sql)
             reg_phone_num = int(fetch_data[0]['domain_count']) if fetch_data else '--'

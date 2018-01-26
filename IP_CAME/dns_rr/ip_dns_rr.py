@@ -13,8 +13,8 @@ import tldextract
 """获取记录超时时间"""
 timeout = 20
 
-"""阿里114DNS"""
-server = '114.114.114.114'
+"""CNNIC DNS"""
+server = '1.2.4.8'
 
 
 def find_ns(fqdn_domain):
@@ -29,13 +29,11 @@ def find_ns(fqdn_domain):
         flag = False # 是否获取成功标志，默认为false
 
         # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
-        for _ in range(2):
-            try:
-                answer_obj = req_obj.req(name=fqdn_domain, qtype=DNS.Type.NS, server=server, timeout=timeout)
-                flag = True
-                break
-            except:
-                continue
+        try:
+            answer_obj = req_obj.req(name=fqdn_domain, qtype=DNS.Type.NS, server=server, timeout=timeout)
+            flag = True
+        except:
+            pass
 
         if not flag:# 如果没有获取成功，则再获取一次，这里不加异常处理，若还是获取失败，则直接由get_ip_cname_td进行异常捕获
             answer_obj = req_obj.req(name=fqdn_domain, qtype=DNS.Type.NS, server=server, timeout=timeout)
@@ -62,13 +60,11 @@ def handle_domain_rc(ns_name,domain):
     flag = False # 是否获取成功标志，默认为false
     # try:
     # 取消这里的异常捕获，把异常捕获都至于了ge_ip_cname_td函数中统一处理
-    for _ in range(2):
-        try:
-            answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
-            flag = True # 标志已经获取成功了
-            break
-        except:
-            continue
+    try:
+        answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
+        flag = True # 标志已经获取成功了
+    except:
+        pass
 
     if not flag: # 如果没有获取成功，则再获取一次，这里不加异常处理，若还是获取失败，则直接由get_ip_cname_td进行异常捕获
         answer_obj = req_obj.req(name=domain, qtype=DNS.Type.A, server=ns_name, timeout=timeout)
