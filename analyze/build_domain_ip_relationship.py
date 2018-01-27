@@ -5,6 +5,7 @@
     author & date: csy 2018.01.17
 
     * 注意visit_times和slice
+    注意：该以下get_ip_domain_relationship()，把地理位置信息并到这一步来完成
 """
 
 import sys
@@ -128,6 +129,30 @@ def count_ip_type_num():
     mysql_conn.commit()
 
 
+def update_domain_ip_geo():
+    """
+    功能：根据ip_general_list更新domain_ip_relationship的ip地理位置信息
+    """
+    sql = "SELECT IP,country,region FROM ip_general_list;"
+    fetch_data = mysql_conn.exec_readsql(sql)
+    for item in fetch_data:
+        IP,country,region = item
+        # print IP,country,region
+        if country == '香港' or country == '台湾' or country == '澳门':
+            # 港澳台国家写为“中国”，省份写为”香港“，”澳门“和”台湾“
+            region = country
+            country =  '中国'
+        elif country == '中国' and (region[-1] == '市' or region[-1] == '省'):
+            # 不要‘省’和‘市’字
+            region = region[:len(region)-1]
+        print IP,country,region
+        sql = "UPDATE domain_ip_relationship SET ip_country = '%s',ip_province = '%s' WHERE IP = '%s';" %(country,region,IP)
+        mysql_conn.exec_cudsql(sql)
+    mysql_conn.commit()
+
+
+
+
 
 def main():
     get_ip_domain_relationship() # 更新域名-ip关系
@@ -136,4 +161,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    update_domain_ip_geo()

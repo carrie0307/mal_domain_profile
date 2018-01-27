@@ -8,7 +8,7 @@ sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 import database.mysql_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','mal_domain_profile')
+mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 import time
 
@@ -269,11 +269,19 @@ class Domain_conn(object):
 
             # 新建一个flag列表，用于将原flag全部置未True
             new_flag = [True] * len(item['relative_domains']['flags'])
+            self.update_relative_domain_flag(new_flag)
 
         # print new_relative_domains
         # print new_relative_reginfo
         return new_relative_domains,new_relative_reginfo
 
+
+    def update_relative_domain_flag(self,new_flag):
+        '''
+        功能：更新关联域名对应的flag为true
+        :param new_flag: [True] * n (n是当前relative_domain中元素数量)
+        '''
+        mongo_conn.mongo_update('links_relation',{'domain':self.source_domain},{'relative_domains.flags':new_flag})
 
     def save_reginfo_conn_info(self,reg_conn_domains):
         """
@@ -343,26 +351,7 @@ class Domain_conn(object):
             new_××_conn_domains:[ {conn_××:---,dm:--}, {conn_××:---,dm:--}...]  //{ip1/cname1:[dm1,dm2,...],ip2/cname2:[dm1,dm2,...],...}这样不方便更新
             new_××_conn_reg: [{conn_ip:--,reg_info:{reg_name:--,reg_email:--,reg_phone:--},{conn_ip:--,reg_info:{reg_name:--,reg_email:--,reg_phone:--}...]
         """
-        # # 更新关联元素信息
-        # mongo_conn.mongo_update('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.conn':reg_conn_domains['reg_name']['conn'],
-        #                                                                           'reg_email_domain.conn':reg_conn_domains['reg_email']['conn'],
-        #                                                                           'reg_phone_domain.conn':reg_conn_domains['reg_phone']['conn'],
-        #                                                                           'visit_times':1
-        #                                                                           },multi_flag=True)
-        # # 更新关联的域名和注册信息
-        # mongo_conn.mongo_push('domain_conn_dm_test',{'source_domain':self.source_domain},{'reg_name_domain.domains':{'$each':reg_conn_domains['reg_name']['domains']},
-        #                                                                          'reg_name_domain.reg_info':{'$each':reg_conn_domains['reg_name']['reg_info']},
-        #                                                                          'reg_email_domain.domains':{'$each':reg_conn_domains['reg_email']['domains']},
-        #                                                                          'reg_email_domain.reg_info':{'$each':reg_conn_domains['reg_email']['reg_info']},
-        #                                                                          'reg_phone_domain.domains':{'$each':reg_conn_domains['reg_phone']['domains']},
-        #                                                                          'reg_phone_domain.reg_info':{'$each':reg_conn_domains['reg_phone']['reg_info']},
-        #                                                                          'ip_domains.domains':{'$each':new_ip_conn_domains},
-        #                                                                          'ip_domains.reg_info':{'$each':new_ip_conn_reg},
-        #                                                                          'cname_domains.domains':{'$each':new_cname_conn_domains},
-        #                                                                          'cname_domains.reg_info':{'$each':new_cname_conn_reg},
-        #                                                                          'links_domains.domains':{'$each':new_relative_domains},
-        #                                                                          'links_domains.reg_info':{'$each':new_relative_reginfo}
-        #                                                                          })
+
         # 更新关联元素信息、关联域名和关联到的注册信息
         mongo_conn.mongo_any_update('domain_conn_dm_test',{'source_domain':self.source_domain},
                                                           {'$set':
@@ -400,9 +389,12 @@ class Domain_conn(object):
         new_relative_domains,new_relative_reginfo = self.get_relative_domains()
         # print new_relative_domains,new_relative_reginfo
         # 存储相关信息
-        self.save_conn_info(reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg,new_relative_domains,new_relative_reginfo)
-        if new_ip_conn_domains != [] or new_relative_domains != []:
-            print self.source_domain
+        try: # 出现了存储有误的情况（eg.pymongo.errors.DocumentTooLarge: command document too large)
+            self.save_conn_info(reg_conn_domains,new_cname_conn_domains,new_cname_conn_reg,new_ip_conn_domains,new_ip_conn_reg,new_relative_domains,new_relative_reginfo)
+            # if new_ip_conn_domains != [] or new_relative_domains != []:
+                # print self.source_domain
+        except:
+            print self.domain + '  sace wrong ...'
 
 
 def main():
@@ -411,7 +403,7 @@ def main():
 
     for item in fetch_data:
         domain =  item['source_domain']
-        # print domain
+        print domain
         conn_domains_getter = Domain_conn(domain)
         del conn_domains_getter
         print str(time.time() - start) + '\n'

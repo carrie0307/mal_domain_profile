@@ -51,6 +51,7 @@
     * 更新ip_general_list中的ip地理位置信息等；
 
     * 根据domain_ip_relationship更新ip表中的gamble_num,porno_num等；
+    * 根据ip_general_list更新domain_ip_relationship的ip地理位置信息
 
     * 注意scan_falg:标识是否扫描记录过这一对应关系；
 
