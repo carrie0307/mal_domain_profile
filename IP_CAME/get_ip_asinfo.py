@@ -11,7 +11,7 @@
 import sys
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
+mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','mal_domain_profile')
 
 """IP AS获取引入"""
 import ASN.ip_as
@@ -29,7 +29,7 @@ domain_q = Queue.Queue()
 res_q = Queue.Queue()
 
 """库中visit_times对应的数值(get_ip_cname已更新visit_times=n,则这里就令visit_times=n)"""
-last_visit_times = 3
+last_visit_times = 4
 
 def get_domains(limit_num = None):
     """

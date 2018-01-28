@@ -263,9 +263,11 @@ class Domain_conn(object):
             for conn_domain,flag in relative_domains_flag:
                 if not flag: # 说明是未存储过的外链关系
                     new_relative_domains.append(conn_domain) # 将域名加入关联列表
+
+                    # QUESTION:基本库中都查不到注册信息，而很多关联域名数量都很大，导致做了很多无用功力，是否考虑先跑一下外链的注册信息？
                     # 获取关联域名的注册信息
-                    reg_info = self.get_reg_info(conn_domain)
-                    new_relative_reginfo.append(reg_info)
+                    # reg_info = self.get_reg_info(conn_domain)
+                    # new_relative_reginfo.append(reg_info)
 
             # 新建一个flag列表，用于将原flag全部置未True
             new_flag = [True] * len(item['relative_domains']['flags'])
@@ -394,7 +396,7 @@ class Domain_conn(object):
             # if new_ip_conn_domains != [] or new_relative_domains != []:
                 # print self.source_domain
         except:
-            print self.domain + '  sace wrong ...'
+            print '  save wrong ...'
 
 
 def main():
