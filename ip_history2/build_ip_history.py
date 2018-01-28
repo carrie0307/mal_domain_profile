@@ -2,6 +2,7 @@
 '''
     功能：根据对域名进行轮询解析的结果，填充ip历史信息表
 '''
+from __future__ import division
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -16,8 +17,11 @@ import time
 # 2 检查是否有num位（num表所ip数量，这里也用这一位来标志是否进行过历史记录比对）
 # 3 不论是否有变化，都根据ip数量置num的值
 # 4 将这一次的数据与前一次的比对，若有变化，则change+=1,并记录new,cut;
+# 5 cidr问题：
 # for ip in new:
 #     addtoset {ip:---,'cidr':---} # 如果此次新增的ip以前已经记录过其对应的ip-cidr，则addtoset会自动去重
+# 6 频率计算：
+#  每次读出域名ip的全部记录时，不论是否变化，都检查new cut有没有不为空的，如果有，则说明发生了变化， 令计数器+1
 
 
 
@@ -53,6 +57,7 @@ def cmp_whether_change(domain_ip_cnames):
     功能：对n次的ip/cname记录进行比对处理 （对应步骤2,3,4）
     '''
     cidr_list = []
+    counter = 0 # ip发生变化计数器
     for index,record in enumerate(domain_ip_cnames):
         if 'num' not in record.keys():# 说明没有进行过比对(步骤2)
                 # 先置ip数量 （步骤3）
@@ -61,10 +66,10 @@ def cmp_whether_change(domain_ip_cnames):
                 if index == 0:
                     domain_ip_cnames[index]['cut'] = []
                     domain_ip_cnames[index]['new'] = []
-                    for i,ip in enumerate(domain_ip_cnames[index]['ips']):
-                        print '---'
-                        as_cidr = domain_ip_cnames[index]['ip_as'][i]['AS_cidr']
-                        print as_cidr
+                    # for i,ip in enumerate(domain_ip_cnames[index]['ips']):
+                        # print '---'
+                        # as_cidr = domain_ip_cnames[index]['ip_as'][i]['AS_cidr']
+                        # print as_cidr
                 else:
                     cur_ips = record['ips'] # 当前ip
                     last_time_ips = domain_ip_cnames[index - 1]['ips'] # 上一次的ip记录
@@ -72,11 +77,20 @@ def cmp_whether_change(domain_ip_cnames):
                     domain_ip_cnames[index]['new'] = diff_list(cur_ips,last_time_ips) # 求新增ip
                     domain_ip_cnames[index]['cut'] = diff_list(last_time_ips,cur_ips) # 求减少ip
 
-                    if domain_ip_cnames[index]['new']: # 如果较之上次有了新增的ip，则看是否增加了新的ip-ascidr对
-                        for i,ip in enumerate(domain_ip_cnames[index]['ips']):
-                            as_cidr = domain_ip_cnames[index]['ip_as'][i]['AS_cidr']
-                            print as_cidr
-                            
+                    # if domain_ip_cnames[index]['new']: # 如果较之上次有了新增的ip，则看是否增加了新的ip-ascidr对
+                        # for i,ip in enumerate(domain_ip_cnames[index]['ips']):
+                            # as_cidr = domain_ip_cnames[index]['ip_as'][i]['AS_cidr']
+                            # print as_cidr
+
+        if domain_ip_cnames[index]['new'] or domain_ip_cnames[index]['cut']: #步骤6
+            # 如果有新增或减少的ip
+            counter += 1
+    print counter
+    print index+1
+    frequency = round(counter / (index+1),2) # (index+1是len(domain_ip_cnames))
+    frequency = str(counter) + '/' + str(index+1) + '(' + str(frequency) + ')'
+    print frequency
+
 
 if __name__ == '__main__':
     domain,domain_ip_cnames = get_single_domain_record('0-360c.com')
