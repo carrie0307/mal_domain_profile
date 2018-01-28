@@ -29,7 +29,7 @@ domain_q = Queue.Queue()
 res_q = Queue.Queue()
 
 """库中visit_times对应的数值(get_ip_cname已更新visit_times=n,则这里就令visit_times=n)"""
-last_visit_times = 4
+last_visit_times = 5
 
 def get_domains(limit_num = None):
     """
