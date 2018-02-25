@@ -13,7 +13,7 @@ class Base(object):
             password = "platform",
             charset = "utf8",
         )
-        self.mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile
+        self.mongo_db = MongoClient('172.29.152.151',27017).new_mal_domain_profile
 
     def add_seq_num(self,results):
 

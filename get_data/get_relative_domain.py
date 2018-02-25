@@ -29,13 +29,27 @@ class Relative_domain_getter(Base):
         功能:从数据库中获取基本的关联域名
 
         return: graph_data: 可视化拓扑图中信息
-                            {
-                             'cname_domains': {cname1:[dm1,dm2...],cname2:[dm1,dm2,...]},
-                              'ip_domains': {ip1:[dm1,dm2...],ip2:[dm1,dm2,...]},
-                              'reg_phone_domains': {reg_phone: [dm1,dm2...]},
-                              'reg_name_domains': {reg_name: [dm1,dm2...]},
-                              'reg_email_domains':{reg_email:[dm1,dm2,...]}
-                              'links_domains': [dm1,dm2,...],
+                    {
+                    nodes:[{name: '***.com'}, {name: '***.net'}, {name: '***.cn',}, ...
+                    links: [
+                                {
+                                    source: '源域名',
+                                    target: '***.com',
+                                    name: '***@qq.com 关联',
+                                },
+                                {
+                                    source: '源域名',
+                                    target: '***.net',
+                                    name: '***ip 关联'
+                                },
+                                {
+                                    source: '源域名',
+                                    target: '***.cn',
+                                    name: "***cname 关联"
+                                }
+                        ]
+                    }
+
                             }
                 show_info: 拓扑图下方展示的信息
                             {
@@ -59,11 +73,24 @@ class Relative_domain_getter(Base):
                                                                     'reg_email_domain.conn':True,
                                                                     'reg_phone_domain.conn':True})
         fetch_data = list(fetch_data)
+        nodes, links = [],[]
 
         if fetch_data:
             cname_domains = fetch_data[0]['cname_domains']['domains']
+            for item in cname_domains:
+                nodes.append(item['domain'])
+                links.append({'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'CNAME关联'})
+
             ip_domains = fetch_data[0]['ip_domains']['domains']
+            for item in ip_domains:
+                nodes.append(item['domain'])
+                links.append({'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'IP关联'})
+            # print ip_domains
             links_domains = fetch_data[0]['links_domains']['domains']
+            for item in links_domains:
+                nodes.append(item)
+                links.append({'source':self.domain,'target':item,'name':'','desc':'链出关联'})
+
             reg_name_domains = fetch_data[0]['reg_name_domain']['domains']
             reg_email_domains = fetch_data[0]['reg_email_domain']['domains']
             reg_phone_domains = fetch_data[0]['reg_phone_domain']['domains']
@@ -71,18 +98,23 @@ class Relative_domain_getter(Base):
             reg_email = fetch_data[0]['reg_email_domain']['conn']
             reg_phone = fetch_data[0]['reg_phone_domain']['conn']
 
-            # 对ip和cname关联域名进行整理
-            cname_domain_dict = self.deal_cname_domains(cname_domains)
+            for item in reg_name_domains:
+                nodes.append(item)
+                links.append({'source':self.domain,'target':item,'name':reg_name,'desc':'注册姓名关联'})
+
+            for item in reg_email_domains:
+                nodes.append(item)
+                links.append({'source':self.domain,'target':item,'name':reg_email,'desc':'注册邮箱关联'})
+
+            for item in reg_phone_domains:
+                nodes.append(item)
+                links.append({'source':self.domain,'target':item,'name':reg_phone,'desc':'注册电话关联'})
+
+            # 对ip关联域名进行整理
             ip_domain_dict,ip_num_dict = self.deal_ip_domains(ip_domains)
 
             # 关联图中信息
-            graph_info = {'reg_name_domains':{reg_name:reg_name_domains},
-                          'reg_email_domains':{reg_email:reg_email_domains},
-                          'reg_phone_domains':{reg_phone:reg_phone_domains},
-                          'ip_domains':ip_domain_dict,
-                          'cname_domains':cname_domain_dict,
-                          'links_domains':links_domains
-                          }
+            graph_info = {'nodes':nodes,'links':links}
             # 图下方陈列的信息
             show_info = {
                         'reg_name':reg_name,'reg_name_num':len(reg_name_domains),
@@ -91,7 +123,8 @@ class Relative_domain_getter(Base):
                         'links_domains_num': len(links_domains),
                         'ip_info':ip_domain_dict
                         }
-            print graph_info,show_info
+            # print graph_info,show_info
+            # print nodes,links
             return graph_info,show_info
         else:
             return {},{}
@@ -102,21 +135,6 @@ class Relative_domain_getter(Base):
             # print reg_name
             # print reg_email
             # print reg_phone
-
-
-    def deal_cname_domains(self,cname_domains):
-        '''
-        功能：对cname关联到的域名进行处理
-        '''
-        cname_domain_dict = {} # cname关联域名的字典
-
-        for item in cname_domains:
-            cname = item['conn']
-            domain = item['domain']
-            cname_domain_dict.setdefault(cname, []).append(domain)
-
-        # print cname_domain_dict
-        return cname_domain_dict    # cname
 
 
     def deal_ip_domains(self,ip_domains):
@@ -145,9 +163,11 @@ if __name__ == '__main__':
     # domain = '0000246.com' # ip测试
     # domain = '0-dian.com' # cname测试
     # domain = '0-du.com' # 链接测试
-    relative_domain_getter = Relative_domain_getter('0-360c.com')
+    # 0518jx.com regphone
+    relative_domain_getter = Relative_domain_getter('0518jx.com')
     graph_info,show_info = relative_domain_getter.get_relative_data()
-
+    print graph_info
+    # print graph_info
     # from pymongo import MongoClient
     # mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile
     # collection = mongo_db['domain_conn_dm_test']
