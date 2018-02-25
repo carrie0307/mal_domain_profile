@@ -79,9 +79,13 @@ class Relative_domain_getter(Base):
         if fetch_data:
             cname_domains = fetch_data[0]['cname_domains']['domains']
             for item in cname_domains:
-                # cname是第一个处理的关系，因此不判断该关联域名是否已经记录过
-                nodes.append((item['domain'],'cname'))
-                links[item['domain']] = {'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'CNAME关联'}
+                if item['domain'] not in links:
+                    nodes.append((item['domain'],'cname'))
+                    links[item['domain']] = {'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'CNAME关联'}
+                else:
+                    # 如果已经记录过，则直接在links中整合关系即可
+                    links[item['domain']]['name'] = links[item['domain']]['name'] + '/' + item['conn']
+                    links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/CNAME关联'
 
 
             ip_domains = fetch_data[0]['ip_domains']['domains']
@@ -93,7 +97,7 @@ class Relative_domain_getter(Base):
                 else:
                     # 如果已经记录过，则直接在links中整合关系即可
                     links[item['domain']]['name'] = links[item['domain']]['name'] + '/' + item['conn']
-                    links[item['domain']['desc']] = links[item['domain']]['desc'] + '/IP关联'
+                    links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/IP关联'
 
             # print ip_domains
             links_domains = fetch_data[0]['links_domains']['domains']
@@ -137,53 +141,61 @@ class Relative_domain_getter(Base):
 
             # 获取所有整合后的关系
             links = links.values()
-
-            # 对ip关联域名进行整理
-            ip_domain_dict,ip_num_dict = self.deal_ip_domains(ip_domains)
-
             # 关联图中信息
             graph_info = {'nodes':nodes,'links':links}
+
+            # 对ip关联域名进行整理
+            ip_num_dict = self.deal_ip_domains(ip_domains)
+            cname_num_dict = self.deal_cname_domains(cname_domains)
+
+
             # 图下方陈列的信息
             show_info = {
                         'reg_name':reg_name,'reg_name_num':len(reg_name_domains),
                         'reg_email':reg_email,'reg_email_num':len(reg_email_domains),
                         'reg_phone':reg_phone,'reg_phone_num':len(reg_phone_domains),
                         'links_domains_num': len(links_domains),
-                        'ip_info':ip_domain_dict
+                        'ip_info':ip_num_dict,
+                        'cname_info':cname_num_dict
                         }
             # print graph_info,show_info
             # print nodes,links
             return graph_info,show_info
         else:
             return {},{}
-            # ip_domain_dict
-            # print reg_name_domains
-            # print reg_phone_domains
-            # print reg_email_domains
-            # print reg_name
-            # print reg_email
-            # print reg_phone
+
+    def deal_cname_domains(self,cname_domains):
+        '''
+        功能：对cname关联到的域名进行处理
+        '''
+        cname_num_dict = {} # cname关联域名数量字典
+
+        for item in cname_domains:
+            cname = item['conn']
+            if cname not in cname_num_dict:
+                cname_num_dict[cname] = 0 # 从0开始计数，不包括本身
+            cname_num_dict[cname] += 1
+
+        # print cname_domain_dict
+        return cname_num_dict    # cname
+
 
 
     def deal_ip_domains(self,ip_domains):
         '''
         功能：对ip关联到的域名进行处理
         '''
-        ip_domain_dict = {} # ip关联域名的字典
         ip_num_dict = {} # ip关联域名数量字典
 
         for item in ip_domains:
             ip = item['conn']
-            domain = item['domain']
-            ip_domain_dict.setdefault(ip, []).append(domain)
-
             if ip not in ip_num_dict:
                 ip_num_dict[ip] = 0 # 从0开始计数，不包括本身
             ip_num_dict[ip] += 1   # QUESTION:对于只能关联到本身的域名，这里统计不到
 
         # print ip_domain_dict
         # print ip_num_dict
-        return ip_domain_dict,ip_num_dict
+        return ip_num_dict
 
 
 
@@ -192,9 +204,12 @@ if __name__ == '__main__':
     # domain = '0-dian.com' # cname测试
     # domain = '0-du.com' # 链接测试
     # 0518jx.com regphone
-    relative_domain_getter = Relative_domain_getter('0518jx.com')
+
+    relative_domain_getter = Relative_domain_getter('00008040.com')
     graph_info,show_info = relative_domain_getter.get_relative_data()
-    print graph_info['links']
+    print graph_info
+    print show_info
+    # print graph_info['links']
     # print graph_info
     # from pymongo import MongoClient
     # mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile

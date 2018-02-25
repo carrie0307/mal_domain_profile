@@ -85,25 +85,36 @@ class Relative_reginfo_getter(Base):
             reg_email = fetch_data[0]['reg_email_domain']['conn']
             reg_phone = fetch_data[0]['reg_phone_domain']['conn']
 
+            nodes,links = [],{}
+            nodes.append((self.domain,'---'))
+
             # 对cname关联域名的注册信息进行整理
+            self.deal_ip_cname_nodes_links(nodes,links,cname_reg,'cname')
             cname_reg_dict = self.deal_cname_reginfo(cname_reg)
             for cname in cname_reg_dict:
                 self.add_showinfo_reg(show_info,show_info_complete,cname_reg_dict[cname])
 
             # 对ip关联域名的注册信息进行整理
+            self.deal_ip_cname_nodes_links(nodes,links,ip_reg,'ip')
             ip_reg_dict = self.deal_ip_reginfo(ip_reg)
             for ip in ip_reg_dict:
                 self.add_showinfo_reg(show_info,show_info_complete,ip_reg_dict[ip])
 
             # 对链接的关联域名注册信息进行整理
+            self.deal_links_nodes_links(nodes,links,links_reg,'outer_domain')
             link_reg_dict = self.deal_links_reg(links_reg)
             self.add_showinfo_reg(show_info,show_info_complete,link_reg_dict)
 
             # 对注册信息反查域名所得注册信息进行整理
             reg_name_regdict = self.deal_reginfo_reg(reg_name,reg_name_reginfo)
+            self.deal_reginfo_nodes_links(nodes,links,reg_name_reginfo,reg_name,'reg_name')
             self.add_showinfo_reg(show_info,show_info_complete,reg_name_regdict)
+
+            self.deal_reginfo_nodes_links(nodes,links,reg_email_reginfo,reg_email,'reg_email')
             reg_email_regdict = self.deal_reginfo_reg(reg_email,reg_email_reginfo)
             self.add_showinfo_reg(show_info,show_info_complete,reg_email_regdict)
+
+            self.deal_reginfo_nodes_links(nodes,links,reg_phone_reginfo,reg_phone,'reg_phone')
             reg_phone_regdict = self.deal_reginfo_reg(reg_phone,reg_phone_reginfo)
             self.add_showinfo_reg(show_info,show_info_complete,reg_phone_regdict)
 
@@ -112,16 +123,18 @@ class Relative_reginfo_getter(Base):
             show_info_complete['reg_email'] = sorted(show_info_complete['reg_email'], key=operator.itemgetter('conn_dm_num'), reverse = True)
             show_info_complete['reg_phone'] = sorted(show_info_complete['reg_phone'], key=operator.itemgetter('conn_dm_num'), reverse = True)
 
+            links = links.values()
+            graph_info = {'nodes':nodes,'links':links}
             # print show_info_complete
             # 关联图中信息
-            graph_info = {
-                          'reg_name_reg':{reg_name:reg_name_regdict},
-                          'reg_email_reg':{reg_email:reg_email_regdict},
-                          'reg_phone_regs':{reg_phone:reg_phone_regdict},
-                          'ip_reg':ip_reg_dict,
-                          'cname_reg':cname_reg_dict,
-                          'links_reg':link_reg_dict
-                          }
+            # graph_info = {
+            #               'reg_name_reg':{reg_name:reg_name_regdict},
+            #               'reg_email_reg':{reg_email:reg_email_regdict},
+            #               'reg_phone_regs':{reg_phone:reg_phone_regdict},
+            #               'ip_reg':ip_reg_dict,
+            #               'cname_reg':cname_reg_dict,
+            #               'links_reg':link_reg_dict
+            #               }
 
             return graph_info,show_info_complete
 
@@ -294,7 +307,97 @@ class Relative_reginfo_getter(Base):
                 show_info['reg_phone'].append(reg_phone)
                 show_info_complete['reg_phone'].append({'reg_phone':reg_phone,'conn_dm_num':conn_dm_num})
 
+    def deal_ip_cname_nodes_links(self,nodes,links,conn_reg,conn_type):
+        """
+        ip,cname关联到的注册信息整理到Nodes和links
+        """
+        if conn_type == 'cname':
+            conn_type_info = 'CNAME关联'
+        else:
+            conn_type_info = 'IP关联'
+        for item in conn_reg:
+            if item['reg_info']['reg_name'] != '':
+                if item['reg_info']['reg_name'] not in links:
+                    nodes.append((item['reg_info']['reg_name'],conn_type))
+                    links[item['reg_info']['reg_name']] = {'source':self.domain,'target':item['reg_info']['reg_name'],'name':item['conn'],'desc':conn_type_info}
+                elif item['conn'] not in links[item['reg_info']['reg_name']]['name']:
+                    links[item['reg_info']['reg_name']]['name'] = links[item['reg_info']['reg_name']]['name'] + '/' + item['conn']
+                elif conn_type_info not in links[item['reg_info']['reg_name']]['desc']:
+                    links[item['reg_info']['reg_name']]['desc'] = links[item['reg_info']['reg_name']]['desc'] + '/' + conn_type_info
 
+            if item['reg_info']['reg_email'] != '':
+                if item['reg_info']['reg_email'] not in links:
+                    nodes.append((item['reg_info']['reg_email'],conn_type))
+                    links[item['reg_info']['reg_email']] = {'source':self.domain,'target':item['reg_info']['reg_email'],'name':item['conn'],'desc':conn_type_info}
+                elif item['conn'] not in links[item['reg_info']['reg_email']]['name']:
+                    links[item['reg_info']['reg_email']]['name'] = links[item['reg_info']['reg_email']]['name'] + '/' + item['conn']
+                elif conn_type_info not in links[item['reg_info']['reg_email']]['desc']:
+                    links[item['reg_info']['reg_email']]['desc'] = links[item['reg_info']['reg_email']]['desc'] + '/' + conn_type_info
+
+            if item['reg_info']['reg_phone'] != '':
+                if item['reg_info']['reg_phone'] not in links:
+                    nodes.append((item['reg_info']['reg_phone'],conn_type))
+                    links[item['reg_info']['reg_phone']] = {'source':self.domain,'target':item['reg_info']['reg_phone'],'name':item['conn'],'desc':conn_type_info}
+                elif item['conn'] not in links[item['reg_info']['reg_phone']]['name']:
+                    links[item['reg_info']['reg_phone']]['name'] = links[item['reg_info']['reg_phone']]['name'] + '/' + item['conn']
+                elif conn_type_info not in links[item['reg_info']['reg_phone']]['desc']:
+                    links[item['reg_info']['reg_phone']]['desc'] = links[item['reg_info']['reg_phone']]['desc'] + '/' + conn_type_info
+
+    def deal_reginfo_nodes_links(self,nodes,links,conn_reg,conn_item,conn_type):
+        '''
+        reg_name,reg_phone,reg_email关联到的注册信息整理到Nodes和links
+        '''
+        if conn_type == 'reg_name':
+            conn_type_info = '注册姓名关联'
+        elif conn_type == 'reg_email':
+            conn_type_info = '注册邮箱关联'
+        else:
+            conn_type_info = '注册电话关联'
+        for item in conn_reg:
+
+            if item['reg_name'] != '':
+                if item['reg_name'] not in links:
+                    nodes.append((item['reg_name'],conn_type))
+                    links[item['reg_name']] = {'source':self.domain,'target':item['reg_name'],'name':conn_item,'desc':conn_type_info}
+                elif conn_item not in links[item['reg_name']]['name']:
+                    links[item['reg_name']]['name'] = links[item['reg_name']]['name'] + '/' + conn_item
+                elif conn_type_info not in links[item['reg_name']]['desc']:
+                    links[item['reg_name']]['desc'] = links[item['reg_name']]['desc'] + '/' + conn_type_info
+
+            if item['reg_email'] != '':
+                if item['reg_email'] not in links:
+                    nodes.append((item['reg_email'],conn_type))
+                    links[item['reg_email']] = {'source':self.domain,'target':item['reg_email'],'name':conn_item,'desc':conn_type_info}
+                elif conn_item not in links[item['reg_email']]['name']:
+                    links[item['reg_email']]['name'] = links[item['reg_email']]['name'] + '/' + conn_item
+                elif conn_type_info not in links[item['reg_email']]['desc']:
+                    links[item['reg_email']]['desc'] = links[item['reg_email']]['desc'] + '/' + conn_type_info
+
+            if item['reg_phone'] != '':
+                if item['reg_phone'] not in links:
+                    nodes.append((item['reg_phone'],conn_type))
+                    links[item['reg_phone']] = {'source':self.domain,'target':item['reg_phone'],'name':conn_item,'desc':conn_type_info}
+                elif conn_item not in links[item['reg_phone']]['name']:
+                    links[item['reg_phone']]['name'] = links[item['reg_phone']]['name'] + '/' + conn_item
+                elif conn_type_info not in links[item['reg_phone']]['desc']:
+                    links[item['reg_phone']]['desc'] = links[item['reg_phone']]['desc'] + '/' + conn_type_info
+
+
+    def deal_links_nodes_links(self,nodes,links,links_reg,conn_type):
+        '''
+        内外链接关联到的注册信息整理到Nodes和links
+        '''
+        if conn_type == 'outer_domain':
+            conn_type_info = '外链关联'
+        else:
+            conn_type_info = '链入关联'
+        for item in links_reg:
+            if item['reg_name'] != '':
+                if item['reg_name'] not in links:
+                    nodes.append((item['reg_name'],conn_type))
+                    links[item['reg_name']] = {'source':self.domain,'target':item['reg_name'],'name':'','desc':conn_type_info}
+                elif conn_type_info not in links[item['reg_name']]['desc']:
+                    links[item['reg_name']]['desc'] = links[item['reg_name']]['desc'] + '/' + conn_type_info
 
 
 if __name__ == '__main__':
@@ -303,27 +406,9 @@ if __name__ == '__main__':
     # domain = '00003499.com' # cname测试
     # domain = '0-du.com' # 链接测试
     # domain = '0-chat.com' # 注册姓名测算
-    relative_reginfo_getter = Relative_reginfo_getter('0000666.com')
+    # 0000666.com
+    relative_reginfo_getter = Relative_reginfo_getter('00003499.com')
     graph_info,show_info_complete = relative_reginfo_getter.get_relative_data()
     del relative_reginfo_getter
-    print graph_info
-    print show_info_complete
-    for reg_type in show_info_complete:
-        for item in show_info_complete[reg_type]:
-            print item[reg_type],item['conn_dm_num']
-
-    # from pymongo import MongoClient
-    # mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile
-    # collection = mongo_db['domain_conn_dm_test']
-    # domains = list(collection.find({},{'_id':False,'source_domain':True}).limit(100))
-    # for domain in domains:
-    #     domain = domain['source_domain']
-    #     print domain
-    #     relative_reginfo_getter = Relative_reginfo_getter(domain)
-    #     graph_info,show_info_complete = relative_reginfo_getter.get_relative_data()
-    #     del relative_reginfo_getter
-    #     print 'graph_info:'
-    #     print graph_info
-    #     print 'show_info:'
-    #     print show_info_complete
-    #     print '\n'
+    # print graph_info
+    # print show_info_complete
