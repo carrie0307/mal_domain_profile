@@ -73,23 +73,36 @@ class Relative_domain_getter(Base):
                                                                     'reg_email_domain.conn':True,
                                                                     'reg_phone_domain.conn':True})
         fetch_data = list(fetch_data)
-        nodes, links = [],[]
+        nodes, links,  = [],{}
+        nodes.append((self.domain,'---'))
 
         if fetch_data:
             cname_domains = fetch_data[0]['cname_domains']['domains']
             for item in cname_domains:
-                nodes.append(item['domain'])
-                links.append({'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'CNAME关联'})
+                # cname是第一个处理的关系，因此不判断该关联域名是否已经记录过
+                nodes.append((item['domain'],'cname'))
+                links[item['domain']] = {'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'CNAME关联'}
+
 
             ip_domains = fetch_data[0]['ip_domains']['domains']
             for item in ip_domains:
-                nodes.append(item['domain'])
-                links.append({'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'IP关联'})
+                # 先判断该关联域名是否已经记录过
+                if item['domain'] not in links:
+                    nodes.append((item['domain'],'ip'))
+                    links[item['domain']] = {'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'IP关联'}
+                else:
+                    # 如果已经记录过，则直接在links中整合关系即可
+                    links[item['domain']]['name'] = links[item['domain']]['name'] + '/' + item['conn']
+                    links[item['domain']['desc']] = links[item['domain']]['desc'] + '/IP关联'
+
             # print ip_domains
             links_domains = fetch_data[0]['links_domains']['domains']
             for item in links_domains:
-                nodes.append(item)
-                links.append({'source':self.domain,'target':item,'name':'','desc':'链出关联'})
+                if item not in links:
+                    nodes.append((item,'outer_domain'))
+                    links[item] = {'source':self.domain,'target':item,'name':'','desc':'链出关联'}
+                else:
+                    links[item]['desc'] = links[item]['desc'] + '/链出关联'
 
             reg_name_domains = fetch_data[0]['reg_name_domain']['domains']
             reg_email_domains = fetch_data[0]['reg_email_domain']['domains']
@@ -99,16 +112,31 @@ class Relative_domain_getter(Base):
             reg_phone = fetch_data[0]['reg_phone_domain']['conn']
 
             for item in reg_name_domains:
-                nodes.append(item)
-                links.append({'source':self.domain,'target':item,'name':reg_name,'desc':'注册姓名关联'})
+                if item not in links:
+                    nodes.append((item,'reg_name'))
+                    links[item] = {'source':self.domain,'target':item,'name':reg_name,'desc':'注册姓名关联'}
+                else:
+                    links[item]['name'] = links[item]['name'] + '/' + reg_name
+                    links[item]['desc'] = links[item]['desc'] + '/注册姓名关联'
 
             for item in reg_email_domains:
-                nodes.append(item)
-                links.append({'source':self.domain,'target':item,'name':reg_email,'desc':'注册邮箱关联'})
+                if item not in links:
+                    nodes.append((item,'reg_email'))
+                    links[item] = {'source':self.domain,'target':item,'name':reg_email,'desc':'注册邮箱关联'}
+                else:
+                    links[item]['name'] = links[item]['name'] + '/' + reg_email
+                    links[item]['desc'] = links[item]['desc'] + '/注册邮箱关联'
 
             for item in reg_phone_domains:
-                nodes.append(item)
-                links.append({'source':self.domain,'target':item,'name':reg_phone,'desc':'注册电话关联'})
+                if item not in links:
+                    nodes.append((item,'reg_phone'))
+                    links[item] = {'source':self.domain,'target':item,'name':reg_phone,'desc':'注册电话关联'}
+                else:
+                    links[item]['name'] = links[item]['name'] + '/' + reg_phone
+                    links[item]['desc'] = links[item]['desc'] + '/注册电话关联'
+
+            # 获取所有整合后的关系
+            links = links.values()
 
             # 对ip关联域名进行整理
             ip_domain_dict,ip_num_dict = self.deal_ip_domains(ip_domains)
@@ -166,7 +194,7 @@ if __name__ == '__main__':
     # 0518jx.com regphone
     relative_domain_getter = Relative_domain_getter('0518jx.com')
     graph_info,show_info = relative_domain_getter.get_relative_data()
-    print graph_info
+    print graph_info['links']
     # print graph_info
     # from pymongo import MongoClient
     # mongo_db = MongoClient('172.29.152.151',27017).mal_domain_profile
