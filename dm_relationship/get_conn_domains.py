@@ -318,7 +318,11 @@ def save_link_domain_info(new_relative_domains,new_relative_reginfo,column_name)
 
 
 
-
+def set_relative_dm_flag(new_flag,source_domain):
+    '''
+    功能：给links_relation表中已经读取关联关系的relative_domains置flag为True
+    '''
+    mongo_conn.mongo_update('links_relation',{'domain':source_domain},{'relative_domains.flags':new_flag},)
 
 
 

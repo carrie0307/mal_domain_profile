@@ -13,7 +13,7 @@ sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
 
-"""IP AS获取引入"""
+"""IP state获取引入"""
 import nmap_state.ip_nmap
 
 """多线程相关"""

@@ -5,7 +5,7 @@
 import sys
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
+mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','new_mal_domain_profile')
 import datetime
 
 """多线程相关"""
@@ -13,10 +13,13 @@ import Queue
 import threading
 import time
 
+"""插入时间"""
+import datetime
+
 """ip，ns获取相关"""
 import dns_rr.ip_dns_rr
 import tldextract
-from datetime import datetime
+
 
 """地理位置相关"""
 import ip2region.ip2Region
@@ -34,7 +37,7 @@ last_visit_times= 0
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
-thread_num = 3
+thread_num = 20
 
 
 def get_ip_ns_cname(check_domain):
@@ -95,7 +98,7 @@ def get_asinfo(ips):
             break
     # 未出现异常的as信息获取加入结果队列
     if flag:
-        print as_info
+        # print as_info
         print 'as信息获取完成...'
         return as_info
     else:
@@ -117,7 +120,7 @@ def get_ip_state(ips):
     ip_state_list = []
     for ip in ips:
         try:
-            print 'getting ' + ip + 'state ...'
+            print 'getting ' + ip + '  state ...'
             ip_state = nmap_state.ip_nmap.get_nmap_state(ip)
             ip_state_list.append(ip_state)
         except Exception, e:
@@ -127,7 +130,7 @@ def get_ip_state(ips):
             break
     # 未出现异常的status信息获取加入结果队列
     if flag:
-        print ip_state_list
+        # print ip_state_list
         print 'ip状态信息获取完成...'
         return ip_state_list
     else:
@@ -146,14 +149,13 @@ def get_domains(limit_num = None):
     global domain_q
 
     # 本次ip状态信息对应的下标，用于判断是否已存在此次信息
-    cur_array = 'domain_ip_cnames.' + str(last_visit_times - 1) + '.ip_state'
+    # cur_array = 'domain_ip_cnames.' + str(last_visit_times - 1) + '.ip_state'
 
     # 根据visit_times获取控制获取的域名，然后直接获取域名传递给获取数据的函数
     fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'visit_times':last_visit_times,},
                                                         {'domain':True,'_id':False},limit_num
                                      )
     for item in fetch_data:
-        print item['domain']
         domain_q.put(item['domain'])
 
 def save_data():
@@ -163,7 +165,7 @@ def save_data():
     global mongo_conn
     global res_q
 
-    cur_array = 'domain_ip_cnames.' + str(last_visit_times)
+    # cur_array = 'domain_ip_cnames.' + str(last_visit_times)
 
     while True:
         try:
@@ -173,7 +175,11 @@ def save_data():
             break
 
         try:
-            mongo_conn.mongo_update('domain_ip_cname',{'domain':domain},{cur_array:res},multi_flag=True)
+            mongo_conn.mongo_any_update('domain_ip_cname',{'domain':domain},
+                                        {
+                                            '$inc':{'visit_times':1},
+                                            '$push':{'domain_ip_cnames':{'$each':res}}
+                                        })
             print domain + ' saved ...'
         except Exception,e:
             print domain + str(e)
@@ -195,8 +201,11 @@ def run():
         ip_state_list = get_ip_state(ips)
 
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        res = {'ips':ips,'NS':ns,'ip_geo':ip_geo_list,'cnames':cnames,'ip_as':ip_as,'ip_state':ip_state_list,'insert_time':insert_time}
+        res = {'ips':ips,'NS':ns,'ip_geo':ips_geo_list,'cnames':cnames,'ip_as':ip_as,'ip_state':ip_state_list,'insert_time':insert_time}
+        res = [res]
         res_q.put([check_domain,res])
+        print check_domain
+        print res
 
     print '获取完成...'
 
@@ -209,7 +218,8 @@ def main():
         get_state_td.append(threading.Thread(target=run))
     for td in get_state_td:
         td.start()
-    print 'save state info ...\n'
+    time.sleep(5)
+    print 'save ip general info ...\n'
     save_db_td = threading.Thread(target=save_data)
     save_db_td.start()
     save_db_td.join()

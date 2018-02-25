@@ -5,7 +5,7 @@
          http://www.tianfeiyu.com/?p=1360
 """
 import nmap # 导入 nmap.py 模块
-import datetime
+# import datetime
 
 
 '''
@@ -29,7 +29,7 @@ def get_nmap_state(ip):
         ip_info['state'] = res['scan'][ip]['status']['state']
         for port in res['scan'][ip]['tcp']:
             ip_info['state'+str(port)] = res['scan'][ip]['tcp'][port]['state']
-    ip_info['state_insert_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # ip_info['state_insert_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return ip_info
 
 
