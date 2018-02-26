@@ -30,23 +30,21 @@ class Relative_domain_getter(Base):
 
         return: graph_data: 可视化拓扑图中信息
                     {
-                    nodes:[{name: '***.com'}, {name: '***.net'}, {name: '***.cn',}, ...
+                    nodes:[(domain,conn_type),(domain,conn_type) ...,(domain,conn_type)]
                     links: [
                                 {
                                     source: '源域名',
                                     target: '***.com',
-                                    name: '***@qq.com 关联',
+                                    name: '***@qq.com ', # 指出具体的关联因素
+                                    desc:'通过××关联' # 指出关联的类型
                                 },
                                 {
                                     source: '源域名',
                                     target: '***.net',
-                                    name: '***ip 关联'
+                                    name: '***',
+                                    desc:'通过**关联'
                                 },
-                                {
-                                    source: '源域名',
-                                    target: '***.cn',
-                                    name: "***cname 关联"
-                                }
+                                ......
                         ]
                     }
 
@@ -73,19 +71,23 @@ class Relative_domain_getter(Base):
                                                                     'reg_email_domain.conn':True,
                                                                     'reg_phone_domain.conn':True})
         fetch_data = list(fetch_data)
+        # nodes是关联域名与源域名的节点，links表示各节点间的指向关系
         nodes, links,  = [],{}
         nodes.append((self.domain,'---'))
 
         if fetch_data:
             cname_domains = fetch_data[0]['cname_domains']['domains']
             for item in cname_domains:
+                # 避免添加重复的点
                 if item['domain'] not in links:
                     nodes.append((item['domain'],'cname'))
                     links[item['domain']] = {'source':self.domain,'target':item['domain'],'name':item['conn'],'desc':'CNAME关联'}
                 else:
                     # 如果已经记录过，则直接在links中整合关系即可
                     links[item['domain']]['name'] = links[item['domain']]['name'] + '/' + item['conn']
-                    links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/CNAME关联'
+                    # 不同cname关联同一域名时，不要重复添加注释信息(避免“CMAME关联/CNAME关联的情况出现”)
+                    if 'CNAME关联' not in links[item['domain']]['desc']:
+                        links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/CNAME关联'
 
 
             ip_domains = fetch_data[0]['ip_domains']['domains']
@@ -97,7 +99,9 @@ class Relative_domain_getter(Base):
                 else:
                     # 如果已经记录过，则直接在links中整合关系即可
                     links[item['domain']]['name'] = links[item['domain']]['name'] + '/' + item['conn']
-                    links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/IP关联'
+                    # 不同IP关联同一域名时，不要重复添加注释信息
+                    if 'IP关联' not in links[item['domain']]['desc']
+                        links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/IP关联'
 
             # print ip_domains
             links_domains = fetch_data[0]['links_domains']['domains']
@@ -119,7 +123,7 @@ class Relative_domain_getter(Base):
                 if item not in links:
                     nodes.append((item,'reg_name'))
                     links[item] = {'source':self.domain,'target':item,'name':reg_name,'desc':'注册姓名关联'}
-                else:
+                else:# 注册姓名关联到的域名都是不同的，因此这里可以直接这样写
                     links[item]['name'] = links[item]['name'] + '/' + reg_name
                     links[item]['desc'] = links[item]['desc'] + '/注册姓名关联'
 
@@ -127,7 +131,7 @@ class Relative_domain_getter(Base):
                 if item not in links:
                     nodes.append((item,'reg_email'))
                     links[item] = {'source':self.domain,'target':item,'name':reg_email,'desc':'注册邮箱关联'}
-                else:
+                else:# 注册邮箱关联到的域名都是不同的，因此这里可以直接这样写
                     links[item]['name'] = links[item]['name'] + '/' + reg_email
                     links[item]['desc'] = links[item]['desc'] + '/注册邮箱关联'
 
@@ -135,7 +139,7 @@ class Relative_domain_getter(Base):
                 if item not in links:
                     nodes.append((item,'reg_phone'))
                     links[item] = {'source':self.domain,'target':item,'name':reg_phone,'desc':'注册电话关联'}
-                else:
+                else:# 注册电话关联到的域名都是不同的，因此这里可以直接这样写
                     links[item]['name'] = links[item]['name'] + '/' + reg_phone
                     links[item]['desc'] = links[item]['desc'] + '/注册电话关联'
 
@@ -147,7 +151,6 @@ class Relative_domain_getter(Base):
             # 对ip关联域名进行整理
             ip_num_dict = self.deal_ip_domains(ip_domains)
             cname_num_dict = self.deal_cname_domains(cname_domains)
-
 
             # 图下方陈列的信息
             show_info = {
@@ -169,7 +172,7 @@ class Relative_domain_getter(Base):
         功能：对cname关联到的域名进行处理
         '''
         cname_num_dict = {} # cname关联域名数量字典
-
+        print cname_domains
         for item in cname_domains:
             cname = item['conn']
             if cname not in cname_num_dict:
@@ -207,7 +210,7 @@ if __name__ == '__main__':
 
     relative_domain_getter = Relative_domain_getter('00008040.com')
     graph_info,show_info = relative_domain_getter.get_relative_data()
-    print graph_info
+    # print graph_info
     print show_info
     # print graph_info['links']
     # print graph_info

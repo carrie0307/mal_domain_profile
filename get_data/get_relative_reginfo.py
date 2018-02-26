@@ -36,15 +36,16 @@ class Relative_reginfo_getter(Base):
         问题：没有添加链入链接的信息
         return: graph_data 关联拓扑图显示的信息
         {
-            'links_reg': {'reg_name': [name1,name2,...], 'reg_phone': [phone1,phone2,...], 'reg_email': [email1,email2,...]},
-            'cname_reg': {cname1:{'reg_name':[name1,name2,...],'reg_email':[email1,email2,...],'reg_phone':[phone1,phone2,...]},cname2:{}, cname3:{}, ...},
-            'ip_reg': {ip1:{'reg_name':[name1,name2,...],'reg_email':[email1,email2,...],'reg_phone':[phone1,phone2,...]},ip2:{}, ip3:{}, ...},
-
-            'reg_name_reg': {实际注册人姓名: {'reg_name': [name1,name2,...], 'reg_phone': [phone1,phone2,...], 'reg_email': [email1,email2,...]}},
-
-
-            'reg_email_reg': {实际注册邮箱: {'reg_name': [email1,email2,...], 'reg_phone': [phone1,phone2,...], 'reg_email': [email1,email2,...]} },
-            'reg_phone_regs': {实际注册电话: {'reg_name': [email1,email2,...], 'reg_phone': [phone1,phone2,...], 'reg_email': [email1,email2,...]} }
+            nodes:[(注册姓名/邮箱/电话，关联类型),(注册姓名/邮箱/电话，关联类型),(注册姓名/邮箱/电话，关联类型)...]
+            links:[
+                       {
+                           source: '源域名',
+                           target: '关联到的某个注册信息',
+                           name: '***@qq.com ', # 指出具体的关联因素，IP/CNAME/注册姓名/邮箱/电话/outer_domain
+                           desc:'通过××关联' # 指出关联的类型
+                       },
+                       ......
+                  ]
         }
 
         return: show_info_complete 拓扑图下方具体的注册信息及关联域名数量展示
@@ -85,36 +86,37 @@ class Relative_reginfo_getter(Base):
             reg_email = fetch_data[0]['reg_email_domain']['conn']
             reg_phone = fetch_data[0]['reg_phone_domain']['conn']
 
+            # nodes是关联注册信息与源域名的节点，links表示各节点间的指向关系
             nodes,links = [],{}
             nodes.append((self.domain,'---'))
 
             # 对cname关联域名的注册信息进行整理
-            self.deal_ip_cname_nodes_links(nodes,links,cname_reg,'cname')
+            self.deal_ip_cname_nodes_links(nodes,links,cname_reg,'cname') # 整理nodes和links的内容
             cname_reg_dict = self.deal_cname_reginfo(cname_reg)
             for cname in cname_reg_dict:
                 self.add_showinfo_reg(show_info,show_info_complete,cname_reg_dict[cname])
 
             # 对ip关联域名的注册信息进行整理
-            self.deal_ip_cname_nodes_links(nodes,links,ip_reg,'ip')
+            self.deal_ip_cname_nodes_links(nodes,links,ip_reg,'ip') # 整理nodes和links的内容
             ip_reg_dict = self.deal_ip_reginfo(ip_reg)
             for ip in ip_reg_dict:
                 self.add_showinfo_reg(show_info,show_info_complete,ip_reg_dict[ip])
 
             # 对链接的关联域名注册信息进行整理
-            self.deal_links_nodes_links(nodes,links,links_reg,'outer_domain')
+            self.deal_links_nodes_links(nodes,links,links_reg,'outer_domain') # 整理nodes和links的内容
             link_reg_dict = self.deal_links_reg(links_reg)
             self.add_showinfo_reg(show_info,show_info_complete,link_reg_dict)
 
             # 对注册信息反查域名所得注册信息进行整理
-            reg_name_regdict = self.deal_reginfo_reg(reg_name,reg_name_reginfo)
+            reg_name_regdict = self.deal_reginfo_reg(reg_name,reg_name_reginfo) # 整理nodes和links的内容
             self.deal_reginfo_nodes_links(nodes,links,reg_name_reginfo,reg_name,'reg_name')
             self.add_showinfo_reg(show_info,show_info_complete,reg_name_regdict)
 
-            self.deal_reginfo_nodes_links(nodes,links,reg_email_reginfo,reg_email,'reg_email')
+            self.deal_reginfo_nodes_links(nodes,links,reg_email_reginfo,reg_email,'reg_email') # 整理nodes和links的内容
             reg_email_regdict = self.deal_reginfo_reg(reg_email,reg_email_reginfo)
             self.add_showinfo_reg(show_info,show_info_complete,reg_email_regdict)
 
-            self.deal_reginfo_nodes_links(nodes,links,reg_phone_reginfo,reg_phone,'reg_phone')
+            self.deal_reginfo_nodes_links(nodes,links,reg_phone_reginfo,reg_phone,'reg_phone') # 整理nodes和links的内容
             reg_phone_regdict = self.deal_reginfo_reg(reg_phone,reg_phone_reginfo)
             self.add_showinfo_reg(show_info,show_info_complete,reg_phone_regdict)
 
@@ -124,17 +126,8 @@ class Relative_reginfo_getter(Base):
             show_info_complete['reg_phone'] = sorted(show_info_complete['reg_phone'], key=operator.itemgetter('conn_dm_num'), reverse = True)
 
             links = links.values()
-            graph_info = {'nodes':nodes,'links':links}
-            # print show_info_complete
             # 关联图中信息
-            # graph_info = {
-            #               'reg_name_reg':{reg_name:reg_name_regdict},
-            #               'reg_email_reg':{reg_email:reg_email_regdict},
-            #               'reg_phone_regs':{reg_phone:reg_phone_regdict},
-            #               'ip_reg':ip_reg_dict,
-            #               'cname_reg':cname_reg_dict,
-            #               'links_reg':link_reg_dict
-            #               }
+            graph_info = {'nodes':nodes,'links':links}
 
             return graph_info,show_info_complete
 
@@ -309,7 +302,12 @@ class Relative_reginfo_getter(Base):
 
     def deal_ip_cname_nodes_links(self,nodes,links,conn_reg,conn_type):
         """
-        ip,cname关联到的注册信息整理到Nodes和links
+        功能：ip,cname关联到的注册信息整理到Nodes和links
+        param: nodes: 总的nodes结点列表
+        param: links: 所有结点的关系字典
+        param: conn_reg:进行处理的关联到的注册信息列表
+        param: conn_type: 关联元素的类型CNAME/IP
+        return: nodes，links的值会改变，因此不进行返回
         """
         if conn_type == 'cname':
             conn_type_info = 'CNAME关联'
@@ -345,7 +343,13 @@ class Relative_reginfo_getter(Base):
 
     def deal_reginfo_nodes_links(self,nodes,links,conn_reg,conn_item,conn_type):
         '''
-        reg_name,reg_phone,reg_email关联到的注册信息整理到Nodes和links
+        功能：reg_name,reg_phone,reg_email关联到的注册信息整理到Nodes和links
+        param: nodes: 总的nodes结点列表
+        param: links: 所有结点的关系字典
+        param: conn_reg:进行处理的关联到的注册信息列表
+        param: conn_item: 具体的关联元素：注册姓名/注册邮箱/注册电话
+        paran: conn_type: 关联元素类型：reg_name/reg_email/reg_phone
+        return: nodes，links的值会改变，因此不进行返回
         '''
         if conn_type == 'reg_name':
             conn_type_info = '注册姓名关联'
@@ -385,7 +389,12 @@ class Relative_reginfo_getter(Base):
 
     def deal_links_nodes_links(self,nodes,links,links_reg,conn_type):
         '''
-        内外链接关联到的注册信息整理到Nodes和links
+        功能：内外链接关联到的注册信息整理到Nodes和links
+        param: nodes: 总的nodes结点列表
+        param: links: 所有结点的关系字典
+        param: conn_reg:进行处理的关联到的注册信息列表
+        paramz: conn_type: 关联元素类型(outer_domain/inner_domain)
+        return: nodes，links的值会改变，因此不进行返回
         '''
         if conn_type == 'outer_domain':
             conn_type_info = '外链关联'
