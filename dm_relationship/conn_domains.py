@@ -8,7 +8,7 @@ sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 import database.mysql_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
+mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','new_mal_domain_profile')
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 import time
 
@@ -402,7 +402,6 @@ class Domain_conn(object):
 def main():
     start = time.time()
     fetch_data = mongo_conn.mongo_read('domain_conn_dm_test',{'visit_times':0},{'source_domain':True,'_id':False},limit_num = None)
-
     for item in fetch_data:
         domain =  item['source_domain']
         print domain
