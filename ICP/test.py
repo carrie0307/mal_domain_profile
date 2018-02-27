@@ -1,79 +1,85 @@
 # coding=utf-8
-import requests
-import re
-from pymongo import *
-'''
-client = MongoClient('172.29.152.152', 27017)
-db = client.domain_icp_analysis
-collection = db.taiyuan_all_icp
-# collection.update({'domain': 'www.168168cc.com'}, {'$set': {'page_icp':{'icp':'', 'exact_unique':0, 'vague_unique':0}}})
-res = collection.find({'auth_icp.icp':{'$ne':'--'}},{'domain':True, 'auth_icp.icp':True})
-# res = collection.distinct('auth_icp.icp')
-province_dict = {}
-for item in res:
-    if u'晋' not in item['auth_icp']['icp']:
+import urllib2
+import Queue
+import threading
+import sys
+sys.path.append("..") # 回退到上一级目录
+import database.mysql_operation
+
+'''数据库连接'''
+mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
+
+domain_q = Queue.Queue()
+res_q = Queue.Queue()
+
+'''线程数量'''
+thread_num = 15
+
+def get_domains():
+    '''
+    功能：从数据库读取未获取页面icp信息的域名
+    '''
+    global mysql_conn
+    sql = "SELECT domain FROM domain_general_list WHERE http_code = 'None';"
+    fetch_data = mysql_conn.exec_readsql(sql)
+    if fetch_data == False:
+        print "获取数据有误..."
+        return False
+    for domain in fetch_data:
+        domain_q.put(domain[0])
+
+
+def get_http_code():
+    global domain_q
+    global res_q
+
+    while not domain_q.empty():
+        domain = domain_q.get()
+        url = 'http://www.' + domain
         try:
-            province = re.compile(u'([\u4e00-\u9fa5]{0,1})ICP[\u5907][\d]+[\u53f7]*-*[\d]*').findall(item['auth_icp']['icp'])[0]
-            province_dict[province] = province_dict.get(province, 0) + 1
-            # print province
-        except:
-            print '--'
-            print item['domain'],item['auth_icp']['icp']
-province_dict = sorted(province_dict.iteritems(),key = lambda asd:asd[1],reverse = True)
-print province_dict
-for key in province_dict:
-    print key[0], key[1]
-'''
-
-# for item in res:
-    # if item['page_icp']['icp'] != '--' and item['page_icp']['icp'] != '-1' and item['page_icp']['exact_unique'] == 0:
-     #    print item['domain'], item['page_icp']['icp']
-'''
-client = MongoClient('172.29.152.152', 27017)
-db = client.domain_icp_analysis
-collection = db.domain_icp_info3
-collection.update({'page_icp.icp':{'$ne':''}, 'page_icp.exact_unique':{'$ne':0}, 'page_icp.vague_unique':{'$ne':0}}, {'$set': {'page_icp':{'icp':'', 'exact_unique':0, 'vague_unique':0}}},multi=True)
-'''
-'''
-res = collection.find({'page_icp':{'$ne':''}},{'page_icp':True, 'auth_icp':True, 'domain':True, '_id':False})
-for item in list(res):
-    # if item['page_icp'] != '--' and item['page_icp'] != '-1':
-        # print item['domain'], item['auth_icp'], item['page_icp']
-    # if u'ICP证' in item['page_icp'] or u'ICP证' in item['auth_icp']:
-        # print item['domain'], item['auth_icp'], item['page_icp']
-        # collection.update({'domain': item['domain']}, {'$set': {'page_icp':''}})
-    if u'ICP证' in item['auth_icp']:
-        print item['domain'], item['auth_icp'], item['page_icp']
-        # collection.update({'domain': item['domain']}, {'$set': {'page_icp':''}})
-'''
+            resp = urllib2.urlopen(url,timeout=10)
+            code = resp.code
+        except urllib2.HTTPError, e:
+            code = e.code
+        except Exception, e:
+            code = 'ERROR'
+        res_q.put([domain,code])
+    print 'httpcode获取完成...'
 
 
-'''
-# 港ICP证030577号、港ICP证0188188 等转化为030577、0188188
-# 将“沪ICP备09091848号-1”格式类型，全部转化为0909184
-icp1 = u'港ICP证030577号1'
-if u'ICP证' in icp1:
-    icp1 = re.compile(u'([\u4e00-\u9fa5]{0,1})ICP[\u8bc1]([\d]+)').findall(icp1)[0]
-else:
-    icp1 = re.compile(u'([\u4e00-\u9fa5]{0,1})ICP[\u5907]([\d]+)[\u53f7]*-*[\d]*').findall(icp1)[0]
-icp1 =  ''.join(list(icp1))
-icp2 = u'港ICP证030577号1'
-if u'ICP证' in icp2:
-    icp2 = re.compile(u'([\u4e00-\u9fa5]{0,1})ICP[\u8bc1]([\d]+)').findall(icp2)[0]
-else:
-    icp2 = re.compile(u'([\u4e00-\u9fa5]{0,1})ICP[\u5907]([\d]+)[\u53f7]*-*[\d]*').findall(icp2)[0]
-icp2 =  ''.join(list(icp2))
-if icp1 == icp2:
-    print 'ok'
-# if u'ICP证' in item['page_icp']:
-#     page_icp = re.compile(u'ICP[\u8bc1]([\d]+)').findall(item['page_icp'])[0]
-# else:
-#     page_icp = re.compile(u'[\u4e00-\u9fa5]{0,1}ICP[\u5907]([\d]+)[\u53f7]*-*[\d]*').findall(item['page_icp'])[0]
-'''
+def save_res():
+    global res_q
+    global mysql_conn
+    counter = 0
+
+    while True:
+        try:
+            domain,code = res_q.get(timeout=150)
+        except Queue.Empty:
+            print 'save over ... \n'
+            break
+        print counter, domain, code
+        sql = "UPDATE domain_general_list SET http_code = '%s' WHERE domain = '%s';" %(code,domain)
+        exec_res = mysql_conn.exec_cudsql(sql)
+        if exec_res:
+            counter += 1
+            # print "counter : " + str(counter)
+            if counter == 1000:
+                mysql_conn.commit()
+                counter = 0
+    mysql_conn.commit()
+    print "存储完成... "
+    mysql_conn.close_db()
 
 
-pattern3 = re.compile(u'([\u4e00-\u9fa5]{0,1}[A-B][1-2]-[\d]{6,8}-*[\d]*)').findall(u'ICP证&nbsp;桂B2-20040022')
-print pattern3[0]
-#
-pattern3 = re.compile(u'([\u4e00-\u9fa5]{0,1})[A-B][1-2]-([\d]{6,8})-*[\d]*').findall(u'ICP证&nbsp;桂B2-20040022')
-print pattern3[0][0] + pattern3[0][1]
+if __name__ == '__main__':
+    get_domains()
+    get_httpcode_td = []
+    for _ in range(thread_num):
+        get_httpcode_td.append(threading.Thread(target=get_http_code))
+    for td in get_httpcode_td:
+        td.start()
+    print 'save res ...\n'
+    save_db_td = threading.Thread(target=save_res)
+    save_db_td.start()
+    save_db_td.join()

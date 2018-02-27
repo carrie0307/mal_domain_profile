@@ -37,7 +37,7 @@ last_visit_times= 1
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
-thread_num = 1
+thread_num = 20
 
 
 def get_ip_ns_cname(check_domain):
@@ -148,12 +148,9 @@ def get_domains(limit_num = None):
     global domain_q
 
     # 根据visit_times获取控制获取的域名，然后直接获取域名传递给获取数据的函数
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname_history',{'visit_times':last_visit_times},
+    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'visit_times':last_visit_times},
                                                         {'domain':True,'_id':False},limit_num
                                      )
-    # fetch_data = mongo_conn.mongo_read('domain_ip_cname_history',{'domain':'0-360c.com'},
-    #                                                     {'domain':True,'_id':False},limit_num
-    #                                  )
     for item in fetch_data:
         domain_q.put(item['domain'])
 
@@ -169,13 +166,13 @@ def save_data():
 
     while True:
         try:
-            domain,res,changed = res_q.get(timeout=30)
+            domain,res,changed = res_q.get(timeout=50)
         except Queue.Empty:
             print '存储完成'
             break
 
         try:
-            mongo_conn.mongo_any_update('domain_ip_cname_history',{'domain':domain},
+            mongo_conn.mongo_any_update('domain_ip_cname',{'domain':domain},
                                         {
                                             '$inc':{'visit_times':1,'change_times':1},
                                             '$push':{'domain_ip_cnames':{'$each':res}}
@@ -200,7 +197,7 @@ def cmp_whether_chagne(check_domain,res):
     '''
     changed = 1 # 标志是否发生了变化
 
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname_history',{'domain':check_domain,},
+    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'domain':check_domain,},
                                                                  {'domain':True,
                                                                   'domain_ip_cnames':{'$slice':-1},
                                                                   '_id':False
@@ -239,20 +236,17 @@ def run():
 
         changed = 0 # 是否发生改变标志，默认为0
         if last_visit_times != 0: # 不是第一次获取的时候，则通过比对来得到new,cut的内容
-            # pass
             changed = cmp_whether_chagne(check_domain,res)
+        res['changed'] = changed
+
         res = [res]
         res_q.put([check_domain,res,changed])
-        print check_domain
-        print res
-        print changed
-
     print '获取完成...'
 
 
 def main():
     # 获取域名
-    get_domains(limit_num = 1)
+    get_domains(limit_num = None)
     get_state_td = []
     for _ in range(thread_num):
         get_state_td.append(threading.Thread(target=run))
