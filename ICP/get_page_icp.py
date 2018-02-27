@@ -7,6 +7,8 @@
     -1 打开网页时有误
     -- 页面没有icp
     icp备××× 页面获取到的icp内容
+
+    增加了存储http_code,下次运行前先测试一下
 '''
 
 import re
@@ -75,13 +77,18 @@ def download_htmlpage():
     global icp_q
     while not domain_q.empty():
         domain = domain_q.get()
-        url = 'http://' + domain
+        url = 'http://www.' + domain
         try:
             resp = urllib2.urlopen(url,timeout=20)
             html = pre_deal_html(resp) # 处理编码
-            html_q.put([domain, html])
+            code = resp.code
+            html_q.put([domain, html,code])
+        except urllib2.HTTPError, e:
+            icp_q.put([domain,'-1',code])
+            code = e.code
         except Exception, e:
-            icp_q.put([domain, '-1'])
+            code = 'WRONG'
+            icp_q.put([domain, '-1',code])
             print domain
             print str(e)
     print 'download over ...'
@@ -99,7 +106,7 @@ def get_page_icp():
     global icp_q
     while True:
         try:
-            domain,html = html_q.get()
+            domain,html,code = html_q.get()
         except Queue.Empty:
             print 'get icp info over ...'
             break
@@ -120,7 +127,7 @@ def get_page_icp():
                         icp = '--'
             if icp == '':
                 icp = '--'
-            icp_q.put([domain, icp])
+            icp_q.put([domain, icp, code])
         except:
             print domain + "get icp WRONG\n"
 
@@ -135,12 +142,12 @@ def mysql_save_icp():
 
     while True:
         try:
-            domain,icp = icp_q.get(timeout=200)
+            domain,icp,code = icp_q.get(timeout=200)
         except Queue.Empty:
             print 'save over ... \n'
             break
         print domain, icp
-        sql = "UPDATE domain_icp SET flag = flag+2, page_icp = '%s' WHERE domain = '%s';" %(icp,domain)
+        sql = "UPDATE domain_icp SET flag = flag+2, page_icp = '%s',http_code = '%s' WHERE domain = '%s';" %(icp,code,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
             counter += 1
