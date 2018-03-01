@@ -37,7 +37,7 @@ last_visit_times= 1
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
-thread_num = 20
+thread_num = 2
 
 
 def get_ip_ns_cname(check_domain):

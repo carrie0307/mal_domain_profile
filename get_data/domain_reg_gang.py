@@ -37,11 +37,15 @@ class Reg_gang(Base):
     def __init__(self,domain):
         self.domain = domain
         Base.__init__(self)
-        self.relative_domains = set()
-        self.relative_domains.add(self.domain)
-        self.relative_reg_name = set()
-        self.relative_reg_email = set()
-        self.relative_reg_phone = set()
+        self.relative_domains = []
+        # 可以理解为待爬取（查询关联关系）域名
+        self.relative_domains = [self.domain]
+        # self.relative_reg_name = []
+        # self.relative_reg_email = []
+        # self.relative_reg_phone = []
+        self.visited_domains = set()
+        self.dm_reg_relationship = {}
+        self.nodes = []
 
     def get_relative_data(self,query_domain):
         collection = self.mongo_db['domain_conn_dm_test']
@@ -55,7 +59,8 @@ class Reg_gang(Base):
         for key in fetch_data:
             if key == 'ip_domains' or key == 'cname_domains':
                 for domain,reg_info in zip(fetch_data[key]['domains'],fetch_data[key]['reg_info']):
-                    if domain['domain'] != query_domain:
+                    # 这里改成与visited_domains比较
+                    if domain['domain'] not in self.visited_domains and domain['domain'] not in self.relative_domains:
                         relative_domains.add(domain['domain'])
                     if reg_info['reg_info']['reg_name'] != '':
                         relative_reg_name.add(reg_info['reg_info']['reg_name'])
@@ -65,15 +70,16 @@ class Reg_gang(Base):
                         relative_reg_phone.add(reg_info['reg_info']['reg_phone'])
             else:
                 for domain,reg_info in zip(fetch_data[key]['domains'],fetch_data[key]['reg_info']):
-                    if domain != query_domain:
-                        relative_domains.add(domain)
                     if key != 'links_domains':
-                        if reg_info['reg_info']['reg_name'] != '':
-                            relative_reg_name.add(reg_info['reg_info']['reg_name'])
-                        if reg_info['reg_info']['reg_email'] != '':
-                            relative_reg_email.add(reg_info['reg_info']['reg_email'])
-                        if reg_info['reg_info']['reg_phone'] != '':
-                            relative_reg_phone.add(reg_info['reg_info']['reg_phone'])
+                        # 外链关联到的域名库中大多没有，因此不进行记录（因为记录后也查不到关联信息）
+                        if domain not in self.visited_domains and domain not in self.relative_domains:
+                            relative_domains.add(domain)
+                        if reg_info['reg_name'] != '':
+                            relative_reg_name.add(reg_info['reg_name'])
+                        if reg_info['reg_email'] != '':
+                            relative_reg_email.add(reg_info['reg_email'])
+                        if reg_info['reg_phone'] != '':
+                            relative_reg_phone.add(reg_info['reg_phone'])
 
         relative_domains = list(relative_domains)
         relative_reg_name = list(relative_reg_name)
@@ -82,18 +88,102 @@ class Reg_gang(Base):
         return relative_domains,relative_reg_name,relative_reg_email,relative_reg_phone
 
 
+    def organize_node_relationship(self,new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone,query_domain):
+        '''
+        功能：整理结点关系
+        param:query_domain: 此次用于关联查询的源域名
+        param:new_relative_reg_name:当前关联到的注册姓名列表
+        param:new_relative_reg_name:当前关联到的注册姓名列表
+        param:new_relative_reg_name:当前关联到的注册姓名列表
+        '''
+        for reg_name in new_relative_reg_name:
+            if reg_name not in self.dm_reg_relationship:
+                self.nodes.append((reg_name,'reg_name'))
+                self.dm_reg_relationship[reg_name] = {'source':query_domain,'target':reg_name,'name':self.domain}
+
+        for reg_email in new_relative_reg_email:
+            if reg_email not in self.dm_reg_relationship:
+                self.nodes.append((reg_email,'reg_email'))
+                self.dm_reg_relationship[reg_email] = {'source':query_domain,'target':reg_email,'name':self.domain}
+
+        for reg_phone in new_relative_reg_phone:
+            if reg_phone not in self.dm_reg_relationship:
+                self.nodes.append((reg_phone,'reg_phone'))
+                self.dm_reg_relationship[reg_phone] = {'source':query_domain,'target':reg_phone,'name':self.domain}
+
+
     def spider_relative_data(self):
-        new_domains,new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone = self.get_relative_data(self.domain)
-        print new_domains
-        print new_relative_reg_name
-        print new_relative_reg_email
-        print new_relative_reg_phone
+        # new_domains,new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone = self.get_relative_data(self.domain)
+        #
+        # self.relative_domains.extend(new_domains)
+        # self.relative_reg_name.extend(new_relative_reg_name)
+        # self.relative_reg_email.extend(new_relative_reg_email)
+        # self.relative_reg_phone.extend(new_relative_reg_phone)
+        #
+        # self.nodes.append((self.domain,'domain'))
+        # # 构建当前域名与注册信息对应关系
+        # self.organize_node_relationship(new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone,self.domain)
+
+        counter = 0
+
+        # 然后在数据库中开始循环爬取
+        while True:
+            if self.relative_domains:
+                # 获取当前要继续爬取查询的注册信息的域名
+                query_domain = self.relative_domains.pop()
+                counter += 1
+                print '当前查询域名: ' + query_domain
+                if query_domain not in self.visited_domains:
+                    # 将当前域名添加到已爬取过域名的列表
+                    self.visited_domains.add(query_domain)
+                    # 获取当前域名的关联信息
+                    new_domains,new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone = self.get_relative_data(query_domain)
+                    print '关联域名: ' + str(len(new_domains))
+                    print '关联注册人： ' + str(len(new_relative_reg_name))
+                    print '关联注册邮箱： ' + str(len(new_relative_reg_email))
+                    print '关联注册电话： ' + str(len(new_relative_reg_phone))
+                    # print '\n'
+                    self.relative_domains.extend(new_domains)
+                    self.relative_domains = list(set(self.relative_domains))
+                    print 'relative_domains: ' + str(len(self.relative_domains))
+                    print '\n'
+                    self.organize_node_relationship(new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone,query_domain)
+                    if counter == 2:
+                        break
+            else:
+                break
 
 
+        print self.nodes
+        self.dm_reg_relationship = self.dm_reg_relationship.values()
+        # print self.dm_reg_relationship
+        print len(self.dm_reg_relationship)
+
+        reg_name_string = ''
+        reg_email_string = ''
+        reg_phone_string = ''
+        for node in self.nodes:
+            if node[1] == 'reg_name':
+                reg_name_string = reg_name_string + node[0] + '\n'
+
+            if node[1] == 'reg_email':
+                reg_email_string = reg_email_string + node[0] + '\n'
+
+            if node[1] == 'reg_phone':
+                reg_phone_string = reg_phone_string + node[0] + '\n'
+        with open('reg_name.txt','w') as f:
+            f.write(reg_name_string)
+
+        with open('reg_email.txt','w') as f:
+            f.write(reg_email_string)
+
+        with open('reg_phone.txt','w') as f:
+            f.write(reg_phone_string)
 
 
 
 if __name__ == '__main__':
-    reg_gang_getter = Reg_gang('0-com.com')
+    # 0002558.com
+    reg_gang_getter = Reg_gang('0002558.com')
     reg_gang_getter.spider_relative_data()
     del reg_gang_getter
