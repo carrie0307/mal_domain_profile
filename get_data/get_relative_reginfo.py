@@ -416,7 +416,7 @@ if __name__ == '__main__':
     # domain = '0-du.com' # 链接测试
     # domain = '0-chat.com' # 注册姓名测算
     # 0000666.com
-    relative_reginfo_getter = Relative_reginfo_getter('00003499.com')
+    relative_reginfo_getter = Relative_reginfo_getter('000000.com')
     graph_info,show_info_complete = relative_reginfo_getter.get_relative_data()
     del relative_reginfo_getter
     # print graph_info

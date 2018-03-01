@@ -76,6 +76,7 @@ class Relative_domain_getter(Base):
         nodes.append((self.domain,'---'))
 
         if fetch_data:
+            print fetch_data[0].keys()
             cname_domains = fetch_data[0]['cname_domains']['domains']
             for item in cname_domains:
                 # 避免添加重复的点
@@ -100,7 +101,7 @@ class Relative_domain_getter(Base):
                     # 如果已经记录过，则直接在links中整合关系即可
                     links[item['domain']]['name'] = links[item['domain']]['name'] + '/' + item['conn']
                     # 不同IP关联同一域名时，不要重复添加注释信息
-                    if 'IP关联' not in links[item['domain']]['desc']
+                    if 'IP关联' not in links[item['domain']]['desc']:
                         links[item['domain']]['desc'] = links[item['domain']]['desc'] + '/IP关联'
 
             # print ip_domains
@@ -208,7 +209,7 @@ if __name__ == '__main__':
     # domain = '0-du.com' # 链接测试
     # 0518jx.com regphone
 
-    relative_domain_getter = Relative_domain_getter('00008040.com')
+    relative_domain_getter = Relative_domain_getter('000000.com')
     graph_info,show_info = relative_domain_getter.get_relative_data()
     # print graph_info
     print show_info

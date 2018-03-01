@@ -81,10 +81,10 @@ class ICP_data(Base):
         '''
         sql = "SELECT auth_icp,page_icp,reuse_check,icp_tag FROM domain_icp WHERE domain = '%s';" %(self.domain)
         fetch_data = self.mysql_db.query(sql)
-        print fetch_data
+        # print fetch_data
         if fetch_data:
             auth_icp,page_icp,reuse_check,icp_tag = fetch_data[0]['auth_icp'],fetch_data[0]['page_icp'],fetch_data[0]['reuse_check'],fetch_data[0]['icp_tag']
-        print auth_icp,page_icp,reuse_check,icp_tag
+        # print auth_icp,page_icp,reuse_check,icp_tag
         auth_icp = self.deal_auth_icp(auth_icp)
         page_icp = self.deal_page_icp(page_icp)
         reuse_check = self.reuse_check_info(reuse_check)
@@ -99,5 +99,7 @@ class ICP_data(Base):
 
 if __name__ == '__main__':
     icp_data_getter = ICP_data('00000z.com')
-    print icp_data_getter.get_icp_info()
+    icp_info = icp_data_getter.get_icp_info()
+    print icp_info
+    print icp_info['icp_tag']
     # print get_icp_info('00000z.com')

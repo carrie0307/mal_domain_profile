@@ -71,6 +71,7 @@ def get_ip_ns_cname(check_domain):
         # 获取ip地理为值信息
         ip_geo_info = ip2region.exec_ip2reg.get_ip_geoinfo(searcher,ip)
         ips_geo_list.append(ip_geo_info)
+    print g_ips
     return g_cnames,g_ips,g_ns,ips_geo_list
 
 
@@ -166,7 +167,7 @@ def save_data():
 
     while True:
         try:
-            domain,res,changed = res_q.get(timeout=50)
+            domain,res,changed = res_q.get(timeout=3600)
         except Queue.Empty:
             print '存储完成'
             break
@@ -174,7 +175,7 @@ def save_data():
         try:
             mongo_conn.mongo_any_update('domain_ip_cname',{'domain':domain},
                                         {
-                                            '$inc':{'visit_times':1,'change_times':1},
+                                            '$inc':{'visit_times':1,'change_times':changed},
                                             '$push':{'domain_ip_cnames':{'$each':res}}
                                         })
             print domain + ' saved ...'

@@ -64,7 +64,7 @@ def save_res():
         if exec_res:
             counter += 1
             # print "counter : " + str(counter)
-            if counter == 1000:
+            if counter == 500:
                 mysql_conn.commit()
                 counter = 0
     mysql_conn.commit()

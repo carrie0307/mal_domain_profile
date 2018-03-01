@@ -28,13 +28,10 @@ class Whois_info_getter(Base):
         whois_info = self.get_whois_key_info()
         if whois_info:
             reg_name,reg_email,reg_phone,sponsoring_registrar = whois_info['reg_name'],whois_info['reg_email'],whois_info['reg_phone'],whois_info['sponsoring_registrar']
-            creation_date,expiration_date,update_date,insert_time = whois_info['creation_date'],whois_info['creation_date'],whois_info['creation_date'],whois_info['creation_date']
+            creation_date,expiration_date,update_date,insert_time = whois_info['creation_date'],whois_info['expiration_date'],whois_info['update_date'],whois_info['insert_time']
             insert_time = self.datetime2string(insert_time)
         else:
             return '无该域名whois信息'
-
-        # 获取地理位置信息
-        geo,postal_code = self.get_whois_locate()
 
         # 获取关联域名数量
         reg_name,reg_name_num,reg_email,reg_email_num,reg_phone,reg_phone_num = self.get_reg_dm_num(reg_name,reg_email,reg_phone)
@@ -42,14 +39,18 @@ class Whois_info_getter(Base):
         # 计算生命周期
         live_period = self.count_life_perios(creation_date,expiration_date)
 
-        # 整合结果
-        res = {'table_content':{'reg_name':whois_info['reg_name'],'reg_email':reg_email,'reg_phone':reg_phone,'geo':geo,'postal_code':postal_code,
-                                'sponsoring_registrar':sponsoring_registrar,'creation_date':creation_date,'expiration_date:':expiration_date,
-                                'update_date':update_date,'insert_time':insert_time
-                                },
-                'tag':{'reg_name_num':reg_name_num,'reg_email_num':reg_email_num,'reg_phone_num':reg_phone_num,'live_period':live_period}
-              }
+        table_content = {}
+        table_content = {'reg_name':whois_info['reg_name'],'reg_email':reg_email,'reg_phone':reg_phone,\
+                         'sponsoring_registrar':sponsoring_registrar,'creation_date':creation_date,\
+                         'expiration_date':expiration_date,'update_date':update_date,'insert_time':insert_time
+                        }
+        # 获取地理位置，验证电话，邮编
+        self.get_whois_locate(table_content)
 
+        # 整合结果
+        res = {'table_content':table_content,
+              'tag':{'reg_name_num':reg_name_num,'reg_email_num':reg_email_num,'reg_phone_num':reg_phone_num,'live_period':live_period}
+              }
         return res
 
 
@@ -80,26 +81,55 @@ class Whois_info_getter(Base):
         return date_time
 
 
-    def get_whois_locate(self):
+    def get_whois_locate(self,table_content):
         '''
         功能：获取whois信息中的地理位置和邮编信息
         param: domain: 要获取信息的域名
         return: geo:   whois中原始的地理位置信息
         return: postal_code:   whois中的邮编
         '''
-        geo = ''
 
-        sql = "SELECT country_code,province,city,street,postal_code FROM domain_locate WHERE domain = '%s';" %(self.domain)
+        table_content['country_code'],table_content['city'],table_content['street'],table_content['province']= '','','',''
+        table_content['reg_whois_country'],table_content['reg_whois_province'],table_content['reg_whois_city'],table_content['reg_whois_street'] = '','','',''
+        table_content['postal_code'] = ''
+        table_content['reg_phone_verify'] = ''
+
+
+        sql = "SELECT reg_whois_country,reg_whois_province,reg_whois_city,reg_whois_street,\
+                      reg_postal_country,reg_postal_province,reg_postal_city,reg_phone_country,reg_phone\
+                      reg_phone_province,reg_phone_city,province,country_code,city,street,postal_code\
+                FROM domain_locate WHERE domain = '%s';" %(self.domain)
         fetch_data = self.mysql_db.query(sql)
 
         if fetch_data:
-            for key in ['country_code','province','city','street']:
-                item = fetch_data[0][key]
-                if item and item != 'None':
-                    geo = geo + item + ' '
-            postal_code = fetch_data[0]['postal_code'] if fetch_data[0]['postal_code'] else '---'
+            fetch_data = fetch_data[0]
 
-        return geo,postal_code
+            for key in ['reg_whois_country','reg_whois_province','reg_whois_city','reg_whois_street',\
+                        'province','country_code','city','street','postal_code']:
+                table_content[key] = fetch_data[key] if fetch_data[key] != 'None' else ''
+
+            # print table_content
+            # print table_content['reg_phone']
+            # print table_content['postal_code']
+            if table_content['reg_phone'] != '':
+                if fetch_data['reg_phone_country'] == '外国':
+                    table_content['reg_phone_verify'] = '合格'
+                elif fetch_data['reg_phone_country'] != 'None' and fetch_data['reg_phone_province'] != 'None' and fetch_data['reg_phone_city'] != 'None':
+                    table_content['reg_phone_verify'] = '合格'
+                else:
+                    table_content['reg_phone_verify'] = '不合格'
+            else:
+                table_content['reg_phone_verify'] = ''
+
+            if table_content['postal_code'] != 'None':
+                if fetch_data['reg_postal_country'] == '外国':
+                    table_content['reg_postal_verify'] = '合格'
+                elif fetch_data['reg_postal_country'] != 'None' and fetch_data['reg_postal_province'] != 'None' and fetch_data['reg_postal_city'] != 'None':
+                    table_content['reg_postal_verify'] = '合格'
+                else:
+                    table_content['reg_postal_verify'] = '不合格'
+            else:
+                table_content['reg_postal_verify'] = ''
 
 
     def get_reg_dm_num(self,reg_name,reg_email,reg_phone):
@@ -180,7 +210,8 @@ if __name__ == '__main__':
         charset = "utf8",
     )
 
-    sql = "SELECT domain FROM domain_whois LIMIT 10"
+    # sql = "SELECT domain FROM domain_whois WHERE domain = '008858.com'"
+    sql = "SELECT domain FROM domain_whois WHERE domain = '000000.in'"
     fetch_data = mysql_db.query(sql)
     for domain in fetch_data:
         # try:
@@ -188,9 +219,7 @@ if __name__ == '__main__':
         whois_info_getter = Whois_info_getter(domain)
         print whois_info_getter.get_whois_info()
         del whois_info_getter
-        # except Exception,e:
-            # print domain
-            # print str(e)
+
 
     # whois_info_getter = Whois_info_getter('00887888.com')
     # print whois_info_getter.get_reg_dm_num('caojianlai','83869698@vip.qq.com','+86.2084491188')
