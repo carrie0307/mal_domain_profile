@@ -1,6 +1,7 @@
 # coding=utf-8
 '''
     功能： 从站长之家获取ICP备案信息的权威结果
+    注：添加了地理位置解析，下次运行注意测试
 '''
 import requests
 import re
@@ -8,6 +9,7 @@ import time
 import Queue
 import threading
 import ip
+import ICP_pos
 import sys
 sys.path.append("..") # 回退到上一级目录
 import database.mysql_operation
@@ -104,8 +106,10 @@ def mysql_save_icp():
         except Queue.Empty:
             print 'save over ... \n'
             break
-        print domain, icp
-        sql = "UPDATE domain_icp SET flag = flag+1, auth_icp = '%s' WHERE domain = '%s';" %(icp,domain)
+        # icp地理位置解析
+        locate = ICP_pos.get_icp_pos(icp) if icp != '--' else ''
+        print domain, icp, locate
+        sql = "UPDATE domain_icp SET flag = flag+1, auth_icp = '%s',icp_locate = '%s' WHERE domain = '%s';" %(icp,locate,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
             counter += 1
