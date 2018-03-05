@@ -33,21 +33,22 @@ import ASN.ip_as
 import nmap_state.ip_nmap
 
 """获取前的visit_times是多少"""
-last_visit_times= 1
+last_visit_times= 3
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
-thread_num = 2
+thread_num = 20
 
 
-def get_ip_ns_cname(check_domain):
+def get_ip_rr_cname(check_domain):
     '''
-    功能：DNS解析获取ip记录/获取ip地理位置信息
+    功能：DNS解析获取资源记录/获取ip地理位置信息
     '''
 
     global searcher
 
     g_ns, g_ips, g_cnames, ips_geo_list = [], [], [], []
+    g_soa, g_txt, g_mx = [], [], []
 
     ## 提取domain+tld
     domain_tld = tldextract.extract(check_domain)
@@ -61,18 +62,16 @@ def get_ip_ns_cname(check_domain):
 
     try:
         """取消了被封装函数中的异常处理，所有异常在这里统一捕获处理"""
-        dns_rr.ip_dns_rr.fetch_rc_ttl(fqdn_domain,g_ns, g_ips, g_cnames)
+        dns_rr.ip_dns_rr.get_complete_dns_rr(fqdn_domain, g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx)
     except Exception,e:
-        """凡是捕获到异常的，均加入队列统一再获取一遍(因为有些总是出现异常，因此直接存空结果)"""
-        # domain_q.put(check_domain)
+        """凡是捕获到异常的，均加入队列统一再获取一遍(因为有些总是出现异常(No address associated with hostname)，因此直接存空结果)"""
         print check_domain,str(e)
 
     for ip in g_ips:
         # 获取ip地理为值信息
         ip_geo_info = ip2region.exec_ip2reg.get_ip_geoinfo(searcher,ip)
         ips_geo_list.append(ip_geo_info)
-    print g_ips
-    return g_cnames,g_ips,g_ns,ips_geo_list
+    return g_cnames,g_ips,g_ns,ips_geo_list,g_soa, g_txt, g_mx
 
 
 
@@ -125,7 +124,7 @@ def get_ip_state(ips):
             ip_state_list.append(ip_state)
         except Exception, e:
             # 出现异常则停止此域名的相关获取，否则会导致ip和as信息不对应
-            print ip,str(e)
+            # print ip,str(e)
             flag = False
             break
     # 未出现异常的status信息获取加入结果队列
@@ -229,11 +228,11 @@ def run():
     while not domain_q.empty():
         check_domain = domain_q.get()
         print check_domain
-        cnames,ips,ns,ips_geo_list = get_ip_ns_cname(check_domain)
+        cnames,ips,ns,ips_geo_list,soa, txt, mx = get_ip_rr_cname(check_domain)
         ip_as = get_asinfo(ips)
         ip_state_list = get_ip_state(ips)
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        res = {'ips':ips,'NS':ns,'ip_geo':ips_geo_list,'cnames':cnames,'ip_as':ip_as,'ip_state':ip_state_list,'insert_time':insert_time}
+        res = {'ips':ips,'NS':ns,'ip_geo':ips_geo_list,'cnames':cnames,'soa':soa,'txt':txt,'mx':mx,'ip_as':ip_as,'ip_state':ip_state_list,'insert_time':insert_time}
 
         changed = 0 # 是否发生改变标志，默认为0
         if last_visit_times != 0: # 不是第一次获取的时候，则通过比对来得到new,cut的内容
@@ -262,6 +261,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # g_cnames,g_ips,g_ns,ips_geo_list = get_ip_ns_cname('baidu.com')
+    # g_cnames,g_ips,g_ns,ips_geo_list = get_ip_rr_cname('baidu.com')
     # get_asinfo(g_ips)
     # get_ip_state(g_ips)

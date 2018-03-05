@@ -45,7 +45,7 @@ def get_domains():
         print "获取数据有误..."
         return False
     for domain in fetch_data:
-        domain_q.put(domain[0])
+        domain_q.put(domain[0]
 
 
 # urllib2获取响应可能存在压缩包问题，在此处理；同时处理编码问题

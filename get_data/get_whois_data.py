@@ -121,7 +121,7 @@ class Whois_info_getter(Base):
             else:
                 table_content['reg_phone_verify'] = ''
 
-            if table_content['postal_code'] != 'None':
+            if table_content['postal_code'] and table_content['postal_code'] != 'None':
                 if fetch_data['reg_postal_country'] == '外国':
                     table_content['reg_postal_verify'] = '合格'
                 elif fetch_data['reg_postal_country'] != 'None' and fetch_data['reg_postal_province'] != 'None' and fetch_data['reg_postal_city'] != 'None':
@@ -129,6 +129,7 @@ class Whois_info_getter(Base):
                 else:
                     table_content['reg_postal_verify'] = '不合格'
             else:
+                print '---'
                 table_content['reg_postal_verify'] = ''
 
 
@@ -211,13 +212,15 @@ if __name__ == '__main__':
     )
 
     # sql = "SELECT domain FROM domain_whois WHERE domain = '008858.com'"
-    sql = "SELECT domain FROM domain_whois WHERE domain = '000000.in'"
+    sql = "SELECT domain FROM domain_whois WHERE domain = '00000151.com'"
     fetch_data = mysql_db.query(sql)
     for domain in fetch_data:
         # try:
         domain = domain['domain']
         whois_info_getter = Whois_info_getter(domain)
-        print whois_info_getter.get_whois_info()
+        whois_info = whois_info_getter.get_whois_info()
+        print whois_info['table_content']
+        print whois_info['table_content']['reg_postal_verify']
         del whois_info_getter
 
 

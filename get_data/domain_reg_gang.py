@@ -131,7 +131,7 @@ class Reg_gang(Base):
             if self.relative_domains:
                 # 获取当前要继续爬取查询的注册信息的域名
                 query_domain = self.relative_domains.pop()
-                counter += 1
+                # counter += 1
                 print '当前查询域名: ' + query_domain
                 if query_domain not in self.visited_domains:
                     # 将当前域名添加到已爬取过域名的列表
@@ -148,8 +148,8 @@ class Reg_gang(Base):
                     print 'relative_domains: ' + str(len(self.relative_domains))
                     print '\n'
                     self.organize_node_relationship(new_relative_reg_name,new_relative_reg_email,new_relative_reg_phone,query_domain)
-                    if counter == 2:
-                        break
+                    # if counter == 2:
+                        # break
             else:
                 break
 
@@ -159,26 +159,26 @@ class Reg_gang(Base):
         # print self.dm_reg_relationship
         print len(self.dm_reg_relationship)
 
-        reg_name_string = ''
-        reg_email_string = ''
-        reg_phone_string = ''
-        for node in self.nodes:
-            if node[1] == 'reg_name':
-                reg_name_string = reg_name_string + node[0] + '\n'
-
-            if node[1] == 'reg_email':
-                reg_email_string = reg_email_string + node[0] + '\n'
-
-            if node[1] == 'reg_phone':
-                reg_phone_string = reg_phone_string + node[0] + '\n'
-        with open('reg_name.txt','w') as f:
-            f.write(reg_name_string)
-
-        with open('reg_email.txt','w') as f:
-            f.write(reg_email_string)
-
-        with open('reg_phone.txt','w') as f:
-            f.write(reg_phone_string)
+        # reg_name_string = ''
+        # reg_email_string = ''
+        # reg_phone_string = ''
+        # for node in self.nodes:
+        #     if node[1] == 'reg_name':
+        #         reg_name_string = reg_name_string + node[0] + '\n'
+        #
+        #     if node[1] == 'reg_email':
+        #         reg_email_string = reg_email_string + node[0] + '\n'
+        #
+        #     if node[1] == 'reg_phone':
+        #         reg_phone_string = reg_phone_string + node[0] + '\n'
+        # with open('reg_name.txt','w') as f:
+        #     f.write(reg_name_string)
+        #
+        # with open('reg_email.txt','w') as f:
+        #     f.write(reg_email_string)
+        #
+        # with open('reg_phone.txt','w') as f:
+        #     f.write(reg_phone_string)
 
 
 

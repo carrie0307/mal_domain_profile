@@ -1,7 +1,7 @@
 # encoding:utf-8
 
 """
-    使用阿里114DNS获取域名NS记录，A记录和CNAME记录
+    使用阿里CNNIC DNS获取域名NS记录，A记录和CNAME记录
     注：每次运行注意更新last_visit_times的数
         循环获取前先测试一下(尤其注意获取成功和不成功时visittimes的变化)
 """
@@ -99,6 +99,33 @@ def find_ns_tll(main_domain,ns_name):
         if i['typename']=='NS' and i['data'] == ns_name:
             return i['ttl']
 
+def get_soa_txt_mx_rr(ns,main_domain):
+    """
+    功能：获取主域名的txt，soa和mx记录（经过测试，www.***.***没有这些记录，因此获取主域名的）
+    param:ns: 某个ns服务器
+    param:main_domain:主域名
+    """
+
+    soa,txt,mx = [],[],[]
+    req_obj = DNS.Request()
+    # 请求mx记录
+    answer_obj = req_obj.req(name=main_domain, qtype=DNS.Type.MX, server=ns, timeout=20)
+    for i in answer_obj.answers:
+        if i['typename'] == 'MX':
+            mx.append(i['data'])
+    # 请求txt记录
+    answer_obj = req_obj.req(name=main_domain, qtype=DNS.Type.TXT, server=ns, timeout=20)
+    for i in answer_obj.answers:
+        if i['typename'] == 'TXT':
+            txt.append(i['data'])
+    # 请求mx记录
+    answer_obj = req_obj.req(name=main_domain, qtype=DNS.Type.SOA, server=ns, timeout=20)
+    for i in answer_obj.answers:
+        if i['typename'] == 'SOA':
+            soa.append(i['data'])
+
+    return soa,txt,mx
+
 
 def fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames):
     """
@@ -113,7 +140,7 @@ def fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames):
         return
     if not g_ns:
         # 注意，这里g_ns.extend(ns)实际时代替了g_ns=ns,不知道为什么g_ns=ns最终的g_ns还是空
-        g_ns.extend(ns) # g_ns=[]说明时获取fqdn的ns，而不死递归调用此函数时获取的cname的ns
+        g_ns.extend(ns) # g_ns=[]说明时获取fqdn的ns，而不是递归调用此函数时获取的cname的ns
 
     ns_name = random.choice(ns)   # 随机选择一个ns服务器
     ip, cname = handle_domain_rc(ns_name, fqdn_domain)  # 得到cname和cname的ttl
@@ -126,13 +153,22 @@ def fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames):
         g_ips.extend(ip)
 
 
+def get_complete_dns_rr(fqdn_domain, g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx):
+
+    fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames)
+    if g_ns:
+        ns = random.choice(g_ns)   # 随机选择一个ns服务器
+        main_domain = tldextract.extract(fqdn_domain).registered_domain
+        soa,txt,mx = get_soa_txt_mx_rr(ns,main_domain)
+        g_soa.extend(soa)
+        g_txt.extend(txt)
+        g_mx.extend(mx)
+
+
+
+
 if __name__ == '__main__':
-    g_ns, g_ips, g_cnames= [],[],[]
+    g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx= [],[],[],[],[],[]
     # fetch_rc_ttl('www.000-078-japan.com', g_ns, g_ips, g_cnames)
-    fetch_rc_ttl('www.0666hg.com', g_ns, g_ips, g_cnames)
-    print g_ns, g_ips, g_cnames
-    # main()
-    # fetch_rc_ttl('0-360c.com')
-    # print g_cnames
-    # print g_ips
-    # print g_ns
+    get_complete_dns_rr('www.00-3.com', g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx)
+    print g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx

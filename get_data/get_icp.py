@@ -98,7 +98,7 @@ class ICP_data(Base):
 
 
 if __name__ == '__main__':
-    icp_data_getter = ICP_data('00000z.com')
+    icp_data_getter = ICP_data('0-dian.com')
     icp_info = icp_data_getter.get_icp_info()
     print icp_info
     print icp_info['icp_tag']
