@@ -33,7 +33,6 @@ def get_icp_pos(icp):
     icp_locate = enable_locate(icp)
     if icp_locate:
         if icp_locate.encode('utf8') in icp_locate_map.keys():
-        if icp_locate in icp_locate_map.keys():
             icp_locate = icp_locate_map[icp_locate.encode('utf8')]['province'].replace('省', '').replace('市', ''). \
                 replace('自治区', '').replace('回族自治区', '').replace('维吾尔自治区', '').replace('壮族自治区', '').replace('特别行政区','')
     return icp_locate

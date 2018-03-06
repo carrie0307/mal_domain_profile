@@ -1,6 +1,6 @@
 # encoding:utf-8
 """
-    icp分析
+    icp分析:包括 page_icp的查重和icp比对结果（注意运行时更新选择条件的flag位）
 
     author：csy
 """
@@ -13,11 +13,15 @@ import database.mysql_operation
 '''数据库连接'''
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 
+flag = 1
+
 def page_recheck():
     """
     page_icp查重分析
     """
-    sql = "SELECT page_icp,count(*) FROM domain_icp GROUP BY page_icp;"
+    global flag
+
+    sql = "SELECT page_icp,count(*) FROM domain_icp GROUP BY page_icp WHERE flag = %d;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     for page_icp,count in fetch_data:
         if page_icp == '--' or page_icp == '-1':
@@ -49,7 +53,9 @@ def icp_cmp():
     auth_icp 的两类取值：icp，--
     page_icp 的三类去值：icp，-1,--
     """
-    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp;"
+    global flag
+
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         domain,auth_icp,page_icp = item
@@ -64,7 +70,7 @@ def icp_cmp():
 
 def get_icp_cmp_res(auth_icp,page_icp):
     """
-    icp比对：
+    icp比对：(icp_cmp()调用)
     1. auth_icp无，page_icp无  -- 无ICP备案信息
     2. auth_icp无，page_icp有  -- 页面显示虚假ICP备案信息(实际无备案)
     3. auth_icp有，page_icp无 -- 页面未显示ICP(实际有备案)
@@ -95,4 +101,4 @@ def get_icp_cmp_res(auth_icp,page_icp):
 
 if __name__ == '__main__':
     page_recheck()
-    # icp_cmp()
+    icp_cmp()

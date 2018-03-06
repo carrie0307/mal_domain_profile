@@ -31,7 +31,8 @@ def get_domains():
     功能:从数据库中读取未获取权威icp信息的域名，添加入域名队列
     '''
     global mysql_conn
-    sql = "SELECT domain FROM domain_icp WHERE flag = 0;"
+    # sql = "SELECT domain FROM domain_icp WHERE flag = 0;"
+    sql = "SELECT domain FROM domain_icp LIMIT 10;"
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."

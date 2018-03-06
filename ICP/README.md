@@ -3,62 +3,56 @@
 ------
 ## 主要内容
 
-* 从[站长之家](http://icp.chinaz.com)获取icp信息：
+* 从http://icp.chinaz.com获取权威的icp信息，并进行地理位置解析
 
-    * python get_chinaz_icp.py（注意修改表名）
+* 从网站页面获取页面的icp信息与http_code
 
-    * 这里存在被ban的情况，采用了之前写的ip_proxy工具。但是由于获取ip代理时也可能被ban，因此会有一些报错信息产生，但并未影响程序的正常获取
+* 对当前库中page_icp信息进行查重
 
-* 从网站页面上获取icp信息：
+## 代码功能
 
-    * python get_page_icp.py（注意修改表名）
+.
+├── get_chinaz_icp.py  // 单独从站长之家获取icp
+├── get_page_icp.py    // 单独从页面获取icp
+├── icp_analyze.py     // icp分析
+├── icp_general_run.py // 整合后的代码:包括查重分析和icp特征结果分析
+├── icp_locate_map.pkl // icp地理位置转化字典文件
+├── icp_num.py         //
+├── ICP_pos.py         // icp地理位置分析(icp_general_run调用)
+├── __init__.py
+├── ip.py              // ip代理模块
+├── log.py             // 日志记录模块(实际未用)
+├── myException.py     // 异常模块(ip代理模块调用)
+├── page_icp.md        // 页面icp特点分析
+├── README.md          // 说明文档
+├── test.py            // 临时代码
+├── transfer_data.py   // 表之间的数据转移
 
-* 站长之家icp与页面icp的一致性比对
+## 运行
 
-    * python cmp.py （注意修改表名）
+* 先获取基本信息 python icp_general_run.py
 
-    * 具体比对方式见代码中注释
+* 然后进行分析 python icp_analyze.py
 
-* icp信息的查重
+### 获取icp基本信息和地理位置解析结果
 
-    * python duplicate_icp.py （注意修改表名）
+* python icp_general_run.py
 
-    * 具体查重方式见代码中注释
+    * 更新表中auth_icp,icp_locate,page_icp,http_code,get_icp_time子弹，并令flag = flag+1；
 
-## 运行与存储相关说明:
-
-* 运行顺序(从逻辑和flag位2方面确定)
-
-    * auth_icp 获取
-    * page_icp 获取
-    * icp查重
-    * icp比对
-
-* 数据库flag位
-
-以2进制为对应
-|icp_duplicate| icp_cmp | page_icp | auth_icp |
-| ------------- |:-------------:| :-----:|-----:|
-| 8      | 4 | 2 |1 |
+    * 当更新时new.auth_icp <> old.auth_icp 或 new.page_icp <> old.page_icp，将通过触发器将原有信息插入到domain_icp_was表中；（即：**当信息发生变化时，原信息会插入domai_icp_was表中；若信息没有变化，则只是更新domain_icp表中时间戳**。）
 
 
-* 获取auth_icp前:
-    flag = 0
-* 获取auth_icp后:
-    flag = flag + 1,即 flag = 1
+### icp分析
 
-* 获取page_icp前:
-    flag = 0 或 flag = 1, 即 flag < 2
-* 获取auth_icp后:
-    flag = flag + 2， 即 flag = 3
+* python icp_analyze.py
+    * page_recheck()  // 查重分析
+    * cmp_res()      //结果比对
+    * 注意每次运行前更新flag位
 
-* icp_cmp前
-    flag = 3
-* icp_cmp后:
-    flag + 4
 
-* icp查重(针对page_icp)前
-    3 <= flag < 8
-* 查重后:
-    flag + 8
-    flag >= 8
+## 考虑
+
+* 给icp_general_run添加schedule自动循环运行；
+
+* 在运行icp_general_run.py后，直接用命令调用执行python icp_analyze.py；将flag当作参数传入。
