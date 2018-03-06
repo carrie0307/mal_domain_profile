@@ -13,19 +13,32 @@
 
 .
 ├── get_chinaz_icp.py  // 单独从站长之家获取icp
+
 ├── get_page_icp.py    // 单独从页面获取icp
+
 ├── icp_analyze.py     // icp分析
+
 ├── icp_general_run.py // 整合后的代码:包括查重分析和icp特征结果分析
+
 ├── icp_locate_map.pkl // icp地理位置转化字典文件
-├── icp_num.py         //
+
+├── icp_num.py         // 一个辅助代码
+
 ├── ICP_pos.py         // icp地理位置分析(icp_general_run调用)
+
 ├── __init__.py
 ├── ip.py              // ip代理模块
+
 ├── log.py             // 日志记录模块(实际未用)
+
 ├── myException.py     // 异常模块(ip代理模块调用)
+
 ├── page_icp.md        // 页面icp特点分析
+
 ├── README.md          // 说明文档
+
 ├── test.py            // 临时代码
+
 ├── transfer_data.py   // 表之间的数据转移
 
 ## 运行
