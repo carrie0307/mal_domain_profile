@@ -155,11 +155,13 @@ def fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames):
 
 def get_complete_dns_rr(fqdn_domain, g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx):
 
+    # 获取ip和cname等信息
     fetch_rc_ttl(fqdn_domain, g_ns, g_ips, g_cnames)
-    if g_ns:
-        ns = random.choice(g_ns)   # 随机选择一个ns服务器
-        main_domain = tldextract.extract(fqdn_domain).registered_domain
-        soa,txt,mx = get_soa_txt_mx_rr(ns,main_domain)
+    main_domain = tldextract.extract(fqdn_domain).registered_domain
+    ns = find_ns(main_domain)
+    if ns:
+        ns_name = random.choice(ns)
+        soa,txt,mx = get_soa_txt_mx_rr(ns_name,main_domain)
         g_soa.extend(soa)
         g_txt.extend(txt)
         g_mx.extend(mx)

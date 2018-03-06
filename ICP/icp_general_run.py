@@ -5,6 +5,7 @@ import ip
 import Queue
 import threading
 import requests
+import chardet
 import urllib2
 import datetime
 import re
