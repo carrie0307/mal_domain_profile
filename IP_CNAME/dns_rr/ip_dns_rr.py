@@ -9,6 +9,10 @@
 import DNS
 import random
 import tldextract
+import chardet
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 """获取记录超时时间"""
 timeout = 20
@@ -172,5 +176,9 @@ def get_complete_dns_rr(fqdn_domain, g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx):
 if __name__ == '__main__':
     g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx= [],[],[],[],[],[]
     # fetch_rc_ttl('www.000-078-japan.com', g_ns, g_ips, g_cnames)
-    get_complete_dns_rr('www.00-3.com', g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx)
+    get_complete_dns_rr('www.12930.com', g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx)
     print g_ns, g_ips, g_cnames,g_soa, g_txt, g_mx
+    txt = g_txt[0][0]
+    print txt.decode(chardet.detect(txt)['encoding']).encode('utf8')
+    # print chardet.detect(g_txt[0][0])['encoding']
+    print type(g_txt[0][0])

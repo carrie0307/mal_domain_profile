@@ -5,6 +5,8 @@
 import sys
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
+reload(sys)
+sys.setdefaultencoding('utf-8')
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','new_mal_domain_profile')
 import datetime
 
@@ -20,6 +22,9 @@ import datetime
 import dns_rr.ip_dns_rr
 import tldextract
 
+"""编码处理"""
+import encode_deal
+
 
 """地理位置相关"""
 import ip2region.ip2Region
@@ -33,11 +38,12 @@ import ASN.ip_as
 import nmap_state.ip_nmap
 
 """获取前的visit_times是多少"""
-last_visit_times= 3
+last_visit_times= 5
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
 thread_num = 20
+collection_name = 'domain_ip_cname'
 
 
 def get_ip_rr_cname(check_domain):
@@ -146,11 +152,14 @@ def get_domains(limit_num = None):
     global mongo_conn
     global last_visit_times
     global domain_q
+    global collection_name
 
     # 根据visit_times获取控制获取的域名，然后直接获取域名传递给获取数据的函数
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'visit_times':last_visit_times},
+    fetch_data = mongo_conn.mongo_read(collection_name,{'visit_times':last_visit_times,},
                                                         {'domain':True,'_id':False},limit_num
                                      )
+
+
     for item in fetch_data:
         domain_q.put(item['domain'])
 
@@ -161,6 +170,7 @@ def save_data():
     '''
     global mongo_conn
     global res_q
+    global collection_name
 
     # cur_array = 'domain_ip_cnames.' + str(last_visit_times)
 
@@ -172,11 +182,12 @@ def save_data():
             break
 
         try:
-            mongo_conn.mongo_any_update('domain_ip_cname',{'domain':domain},
+            mongo_conn.mongo_any_update(collection_name,{'domain':domain},
                                         {
                                             '$inc':{'visit_times':1,'change_times':changed},
                                             '$push':{'domain_ip_cnames':{'$each':res}}
                                         })
+
             print domain + ' saved ...'
         except Exception,e:
             print domain + str(e)
@@ -195,9 +206,10 @@ def cmp_whether_chagne(check_domain,res):
     '''
     前后两次ip比对是否发生了变化
     '''
+    global collection_name
     changed = 1 # 标志是否发生了变化
 
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{'domain':check_domain,},
+    fetch_data = mongo_conn.mongo_read(collection_name,{'domain':check_domain,},
                                                                  {'domain':True,
                                                                   'domain_ip_cnames':{'$slice':-1},
                                                                   '_id':False
@@ -217,7 +229,6 @@ def cmp_whether_chagne(check_domain,res):
     return changed
 
 
-
 def run():
     '''
     功能：调用以上三个函数，一次性完次ip相关信息的获取
@@ -233,12 +244,12 @@ def run():
         ip_state_list = get_ip_state(ips)
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         res = {'ips':ips,'NS':ns,'ip_geo':ips_geo_list,'cnames':cnames,'soa':soa,'txt':txt,'mx':mx,'ip_as':ip_as,'ip_state':ip_state_list,'insert_time':insert_time}
-
+        # 编码处理
+        # encode_deal.dict_encode_deal(res)
         changed = 0 # 是否发生改变标志，默认为0
         if last_visit_times != 0: # 不是第一次获取的时候，则通过比对来得到new,cut的内容
             changed = cmp_whether_chagne(check_domain,res)
         res['changed'] = changed
-
         res = [res]
         res_q.put([check_domain,res,changed])
     print '获取完成...'
