@@ -1,0 +1,18 @@
+注册人姓名(比对时注意：字母不区分大小写)：
+private,privacy,protect(包括了protection,protected),service,whois,agent,domain,admin(admin,administrator),hidden,yinsi(拼音:隐私)
+
+
+
+注册人姓名(比对时注意：字母不区分大小写)：
+private,privacy,protect(包括了protection,protected),whois,admin service,domain,admin(admin,administrator),yinsi(拼音:隐私)
+
+注册人电话(比对时注意：字母不区分大小写)：
+
++
++.
++.+86.
+CN
+NA
+null
+
+

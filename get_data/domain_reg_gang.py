@@ -31,6 +31,10 @@ import get_relative_reginfo
 import get_relative_domain
 from Base import Base
 
+reg_name_filter_list = ['private','privacy','protect','service','whois','agent','domain','admin','hidden','yinsi']
+reg_email_filter_list = ['private','privacy','protect','service','whois'',admin','domain','admin','yinsi']
+reg_phone_filter_list = ['+','+.','+.+86.','CN','NA','null']
+
 
 class Reg_gang(Base):
 
@@ -110,6 +114,16 @@ class Reg_gang(Base):
             if reg_phone not in self.dm_reg_relationship:
                 self.nodes.append((reg_phone,'reg_phone'))
                 self.dm_reg_relationship[reg_phone] = {'source':query_domain,'target':reg_phone,'name':self.domain}
+
+    def filter_invalie_reginfo(self,reg_item,reg_type):
+        '''
+        功能：判断当前注册信息是否是有效的注册信息，过滤掉隐私保护的通用信息
+        param:reg_item:注册信息（reg_name / reg_email）
+        param:reg_tppe
+        return : True: 有效注册信息
+        return : False: 无效注册信息
+        '''
+        pass
 
 
     def spider_relative_data(self):
