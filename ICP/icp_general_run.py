@@ -63,6 +63,7 @@ def get_chinaz_icp_info():
                 continue
             else:
                 print str(e)
+                domain_q.put(domain)
                 print domain + "获取html异常"
                 continue
         # 进行处理获取icp内容内容
@@ -196,7 +197,8 @@ def mysql_save_icp():
             print '存储结束'
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         sql = "UPDATE domain_icp_copy\
-              SET auth_icp = '%s',icp_locate = '%s',page_icp = '%s',http_code = '%s',get_icp_time = '%s',flag = flag + 1\
+              SET auth_icp = '%s',icp_locate = '%s',page_icp = '%s',http_code = '%s',get_icp_time = '%s',\
+              flag = flag + 1,reuse_check = '',icp_tag = ''\
               WHERE domain = '%s';" %(auth_icp,locate,page_icp,code,insert_time,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
@@ -241,3 +243,4 @@ if __name__ == '__main__':
     save_db_td.start()
     save_db_td.join()
     mysql_conn.close_db()
+    print '运行结束，请检查是否有未完成数据;若完成，请根据表中flag运行icp_analyze.py'

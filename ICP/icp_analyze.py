@@ -13,35 +13,33 @@ import database.mysql_operation
 '''数据库连接'''
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 
-flag = 1
-
-def page_recheck():
+def page_recheck(flag):
     """
     page_icp查重分析
     """
-    global flag
 
-    sql = "SELECT page_icp,count(*) FROM domain_icp GROUP BY page_icp WHERE flag = %d;" %(flag)
+    sql = "SELECT page_icp,count(*) FROM domain_icp_copy WHERE flag = %d AND page_icp != '-1' AND page_icp != '--' GROUP BY page_icp;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     for page_icp,count in fetch_data:
         if page_icp == '--' or page_icp == '-1':
             continue
         if count < 2:
             continue
-        sql = "SELECT domain FROM domain_icp WHERE page_icp = '%s';" %(page_icp)
+        sql = "SELECT domain FROM domain_icp_copy WHERE page_icp = '%s';" %(page_icp)
         fetch_data = mysql_conn.exec_readsql(sql)
         domains = [item[0] for item in fetch_data]
         reuse_domains = ';'.join(domains)
-        sql = "UPDATE domain_icp SET reuse_check = '%s' WHERE page_icp = '%s';" %(reuse_domains,page_icp)
+        sql = "UPDATE domain_icp_copy SET reuse_check = '%s' WHERE page_icp = '%s';" %(reuse_domains,page_icp)
         exec_res = mysql_conn.exec_cudsql(sql)
-    sql = "UPDATE domain_icp SET reuse_check = '未获取到页面ICP' WHERE page_icp ='-1' or page_icp = '--';"
+    sql = "UPDATE domain_icp_copy SET reuse_check = '未获取到页面ICP' WHERE page_icp ='-1' or page_icp = '--';"
     exec_res = mysql_conn.exec_cudsql(sql)
-    sql = "UPDATE domain_icp SET reuse_check = '未发现重复' WHERE reuse_check is NULL;"
+    sql = "UPDATE domain_icp_copy SET reuse_check = '未发现重复' WHERE reuse_check is NULL;"
     exec_res = mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
+    print '查重处理完成...'
 
 
-def icp_cmp():
+def icp_cmp(flag):
     """
     icp比对：
     1. auth_icp无，page_icp无  -- 无ICP备案信息
@@ -53,18 +51,18 @@ def icp_cmp():
     auth_icp 的两类取值：icp，--
     page_icp 的三类去值：icp，-1,--
     """
-    global flag
 
-    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d;" %(flag)
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp_copy WHERE flag = %d;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     for item in fetch_data:
         domain,auth_icp,page_icp = item
         # print domain,auth_icp,page_icp
         icp_cmp_res = get_icp_cmp_res(auth_icp,page_icp)
         print domain,icp_cmp_res
-        sql = "UPDATE domain_icp SET icp_tag = '%s', flag = flag + 4 WHERE domain = '%s'" %(icp_cmp_res,domain)
+        sql = "UPDATE domain_icp_copy SET icp_tag = '%s' WHERE domain = '%s'" %(icp_cmp_res,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
+    print '特征分析完成...'
 
 
 
@@ -100,5 +98,11 @@ def get_icp_cmp_res(auth_icp,page_icp):
 
 
 if __name__ == '__main__':
-    page_recheck()
-    icp_cmp()
+    print '请输入此时的flag数值:'
+    flag = int(raw_input())
+    print flag
+    # flag = 2
+    # page_recheck(flag)
+    # print '查重处理完成...'
+    # icp_cmp(flag)
+    print '特征分析完成...'

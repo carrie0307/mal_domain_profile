@@ -9,6 +9,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','new_mal_domain_profile')
 import datetime
+import schedule
 
 """多线程相关"""
 import Queue
@@ -42,8 +43,8 @@ last_visit_times= 5
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
-thread_num = 20
-collection_name = 'domain_ip_cname'
+thread_num = 1
+collection_name = 'test'
 
 
 def get_ip_rr_cname(check_domain):
@@ -176,7 +177,7 @@ def save_data():
 
     while True:
         try:
-            domain,res,changed = res_q.get(timeout=3600)
+            domain,res,changed = res_q.get(timeout=30)
         except Queue.Empty:
             print '存储完成'
             break
@@ -245,7 +246,7 @@ def run():
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         res = {'ips':ips,'NS':ns,'ip_geo':ips_geo_list,'cnames':cnames,'soa':soa,'txt':txt,'mx':mx,'ip_as':ip_as,'ip_state':ip_state_list,'insert_time':insert_time}
         # 编码处理
-        # encode_deal.dict_encode_deal(res)
+        encode_deal.dict_encode_deal(res)
         changed = 0 # 是否发生改变标志，默认为0
         if last_visit_times != 0: # 不是第一次获取的时候，则通过比对来得到new,cut的内容
             changed = cmp_whether_chagne(check_domain,res)
@@ -256,6 +257,12 @@ def run():
 
 
 def main():
+    global last_visit_times
+    last_visit_times += 1
+    print 'last_visit_times: ' + str(last_visit_times)
+
+    print 'start:  ', time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+
     # 获取域名
     get_domains(limit_num = None)
     get_state_td = []
@@ -268,10 +275,17 @@ def main():
     save_db_td = threading.Thread(target=save_data)
     save_db_td.start()
     save_db_td.join()
+    print 'end:   ', time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 
+schedule.every(1).minutes.do(main)
 
 if __name__ == '__main__':
-    main()
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+    # main()
     # g_cnames,g_ips,g_ns,ips_geo_list = get_ip_rr_cname('baidu.com')
     # get_asinfo(g_ips)
     # get_ip_state(g_ips)

@@ -7,6 +7,7 @@ sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','new_mal_domain_profile')
 import datetime
+import schedule
 
 """多线程相关"""
 import Queue
@@ -33,7 +34,7 @@ import ASN.ip_as
 import nmap_state.ip_nmap
 
 """获取前的visit_times是多少"""
-last_visit_times= 0
+last_visit_times= 4
 
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
@@ -169,7 +170,7 @@ def save_data():
 
     while True:
         try:
-            domain,res = res_q.get(timeout=600)
+            domain,res = res_q.get(timeout=30)
         except Queue.Empty:
             print '存储完成'
             break
@@ -212,6 +213,10 @@ def run():
 
 def main():
     # 获取域名
+    global last_visit_times
+    last_visit_times += 1
+    print 'start:  ', time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+
     get_domains(limit_num = None)
     get_state_td = []
     for _ in range(thread_num):
@@ -223,10 +228,20 @@ def main():
     save_db_td = threading.Thread(target=save_data)
     save_db_td.start()
     save_db_td.join()
+    print 'end:   ', time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 
+
+schedule.every(2).minutes.do(main())
 
 if __name__ == '__main__':
-    main()
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+    # schedule.every().hour.do(job)
+
+    # main()
     # g_cnames,g_ips,g_ns,ips_geo_list = get_ip_ns_cname('baidu.com')
     # get_asinfo(g_ips)
     # get_ip_state(g_ips)
