@@ -62,7 +62,7 @@ def get_ip_domain_relationship():
 
 def get_ip_info():
     """
-    功能：根据mongo-domain_ip_cname最新一次的数据更新ip_general_list中的ip地理位置信息等
+    功能：根据mongo-domain_ip_cname最新一次的数据更新ip_general_list(ip 和 ip地理位置信息)等
 
     * 注意visit_times和slice
     * 最新一次探测ip结果，获取最新的ip信息，更新ip总表

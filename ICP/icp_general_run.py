@@ -27,19 +27,22 @@ mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform'
 thread_num = 10
 
 
-def get_domains():
+def get_domains(flag):
     '''
     功能:从数据库中读取未获取权威icp信息的域名，添加入域名队列
     '''
     global mysql_conn
     # sql = "SELECT domain FROM domain_icp WHERE flag = 0;"
-    sql = "SELECT domain FROM domain_icp_copy WHERE flag = 1;"
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d LIMIT 10;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
         return False
-    for domain in fetch_data:
-        domain_q.put(domain[0])
+    for item in fetch_data:
+        domain = item[0]
+        auth_icp = item[1]
+        page_icp = item[2]
+        domain_q.put([domain,auth_icp,page_icp])
 
 
 
@@ -52,29 +55,29 @@ def get_chinaz_icp_info():
 
     proxy = ip.available_IP_q.get() # 获取一个代理
     while not domain_q.empty():
-        domain = domain_q.get()
+        domain,last_auth_icp,last_page_icp = domain_q.get()
         try:
             url = 'http://icp.chinaz.com/{query_domain}'.format(query_domain=domain)
             html = requests.get(url, proxies = proxy, timeout=5).text
         except Exception, e: # 其他异常
             if "Connection" in str(e):
-                domain_q.put(domain) # 被ban导致的获取失败，将域名加入队列，重新获取
+                domain_q.put([domain,last_auth_icp,last_page_icp]) # 被ban导致的获取失败，将域名加入队列，重新获取
                 proxy = ip.available_IP_q.get()
                 continue
             else:
                 print str(e)
-                domain_q.put(domain)
+                domain_q.put([domain,last_auth_icp,last_page_icp])
                 print domain + "获取html异常"
                 continue
         # 进行处理获取icp内容内容
-        icp = get_icp_info(html)
-        if icp:
+        auth_icp = get_icp_info(html)
+        if auth_icp:
             # icp地理位置解析
-            locate = ICP_pos.get_icp_pos(icp) if icp != '--' else ''
-            dm_page_icp_q.put([domain,icp,locate])
+            auth_icp_locate = ICP_pos.get_icp_pos(auth_icp) if auth_icp != '--' else ''
+            dm_page_icp_q.put([domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate])
         else:
             # 提取失败（可能是页面获取有误导致）的重新获取页面
-            domain_q.put(domain)
+            domain_q.put([domain,last_auth_icp,last_page_icp])
     print '权威icp获取完成...'
 
 
@@ -130,7 +133,7 @@ def get_page_icp_info():
 
     while True:
         try:
-            domain,auth_icp,locate = dm_page_icp_q.get(timeout=200)
+            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate = dm_page_icp_q.get(timeout=200)
             url = 'http://www.' + domain
         except Queue.Empty:
             break
@@ -148,8 +151,10 @@ def get_page_icp_info():
             code = 'ERROR'
             page_icp = '-1'
         finally:
-            print domain,auth_icp,locate,page_icp,code
-            res_q.put([domain,auth_icp,locate,page_icp,code])
+            if page_icp:
+                page_icp_locate = ICP_pos.get_icp_pos(page_icp) if page_icp != '--' and page_icp != '-1' else ''
+                print domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code
+            res_q.put([domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code])
     print 'download over ...'
 
 
@@ -183,6 +188,21 @@ def get_page_icp(html):
         return ''
         print domain + "get icp WRONG\n"
 
+def cmp_whether_change(last_auth_icp,last_page_icp,auth_icp,page_icp):
+    '''
+    功能：比对2次的icp信息是否变化
+    param: last_auth_icp:
+    param: last_page_icp:
+    param: auth_icp:
+    param: page_icp:
+    return: True:发生了变化
+    return: False:未发生变化
+    '''
+    if last_auth_icp != auth_icp or last_page_icp != page_icp:
+        return True
+    else:
+        return False
+
 
 def mysql_save_icp():
 
@@ -191,23 +211,31 @@ def mysql_save_icp():
 
     while True:
         try:
-            domain,auth_icp,locate,page_icp,code = res_q.get(timeout=400)
+            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code = res_q.get(timeout=100)
         except Queue.Empty:
             break
             print '存储结束'
+        # 比对是否发生变化
+        flag = cmp_whether_change(last_auth_icp,last_page_icp,auth_icp,page_icp)
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sql = "UPDATE domain_icp_copy\
-              SET auth_icp = '%s',icp_locate = '%s',page_icp = '%s',http_code = '%s',get_icp_time = '%s',\
+        sql = "UPDATE domain_icp\
+              SET auth_icp = '%s',auth_icp_locate = '%s',page_icp = '%s',page_icp_locate = '%s',http_code = '%s',get_icp_time = '%s',\
               flag = flag + 1,reuse_check = '',icp_tag = ''\
-              WHERE domain = '%s';" %(auth_icp,locate,page_icp,code,insert_time,domain)
+              WHERE domain = '%s';" %(auth_icp,auth_icp_locate,page_icp,page_icp_locate,code,insert_time,domain)
         exec_res = mysql_conn.exec_cudsql(sql)
+        if flag:
+            sql = "INSERT INTO domain_icp_was(domain,auth_icp,auth_icp_locate,page_icp,page_icp_locate,reuse_check,icp_tag,flag,get_icp_time,http_code)\
+                   SELECT domain,auth_icp,auth_icp_locate,page_icp,page_icp_locate,reuse_check,icp_tag,flag,get_icp_time,http_code\
+                   FROM domain_icp\
+                  WHERE domain = '%s';" %(domain)
+            exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
             counter += 1
             print "counter:" + str(counter)
             if counter == 100:
-                mysql_conn.commit()
+                # mysql_conn.commit()
                 counter = 0
-    mysql_conn.commit()
+    # mysql_conn.commit()
     print "存储完成... "
 
 
@@ -215,6 +243,7 @@ def mysql_save_icp():
 
 
 if __name__ == '__main__':
+    flag = 2
     global mysql_conn
     ip.run_Getter()
     time.sleep(20) # 这个时间很关键，这段时间用来从各平台上获取代理ip
@@ -224,7 +253,7 @@ if __name__ == '__main__':
     watcher.setDaemon(True)
     watcher.start()
     '''开始icp批量获取'''
-    get_domains()
+    get_domains(flag)
     get_chinaz_icp_td = []
     for _ in range(thread_num):
         get_chinaz_icp_td.append(threading.Thread(target=get_chinaz_icp_info))
@@ -243,4 +272,4 @@ if __name__ == '__main__':
     save_db_td.start()
     save_db_td.join()
     mysql_conn.close_db()
-    print '运行结束，请检查是否有未完成数据;若完成，请根据表中flag运行icp_analyze.py'
+    print '运行结束，请检查是否有未完成数据;若完成，则令运行icp_analyze.py,输入flag= ' + str(flag+1)
