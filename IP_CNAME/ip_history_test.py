@@ -44,7 +44,7 @@ last_visit_times= 5
 domain_q = Queue.Queue()
 res_q = Queue.Queue()
 thread_num = 1
-collection_name = 'test'
+collection_name = 'domain_ip_cname'
 
 
 def get_ip_rr_cname(check_domain):
@@ -177,7 +177,7 @@ def save_data():
 
     while True:
         try:
-            domain,res,changed = res_q.get(timeout=30)
+            domain,res,changed = res_q.get(timeout=3600)
         except Queue.Empty:
             print '存储完成'
             break
@@ -241,6 +241,7 @@ def run():
         check_domain = domain_q.get()
         print check_domain
         cnames,ips,ns,ips_geo_list,soa, txt, mx = get_ip_rr_cname(check_domain)
+        print ips
         ip_as = get_asinfo(ips)
         ip_state_list = get_ip_state(ips)
         insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -258,7 +259,7 @@ def run():
 
 def main():
     global last_visit_times
-    last_visit_times += 1
+    # last_visit_times += 1
     print 'last_visit_times: ' + str(last_visit_times)
 
     print 'start:  ', time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
@@ -277,15 +278,12 @@ def main():
     save_db_td.join()
     print 'end:   ', time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 
-schedule.every(1).minutes.do(main)
+
 
 if __name__ == '__main__':
+    # schedule.every(1).minutes.do(main)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-    # main()
-    # g_cnames,g_ips,g_ns,ips_geo_list = get_ip_rr_cname('baidu.com')
-    # get_asinfo(g_ips)
-    # get_ip_state(g_ips)
+    main()

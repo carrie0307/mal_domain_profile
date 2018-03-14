@@ -113,5 +113,14 @@ class IP_data_getter(Base):
 
 if __name__ == '__main__':
 
-    ip_data_getter = IP_data_getter('0-dian.com')
-    print ip_data_getter.get_ip_info()
+    ip_data_getter = IP_data_getter('0008aa.com')
+    ip_info =  ip_data_getter.get_ip_info()
+    print ip_info
+    # print ip_info.keys()
+    # for key,value in ip_info.items():
+    #     if isinstance(value,(str,int)):
+    #         print key + ': ' + str(value)
+    #     elif isinstance(value,list):
+    #         for key2 in value[0]:
+    #             print key2 + ': ' + str(value[0][key2])
+    #     print '\n'

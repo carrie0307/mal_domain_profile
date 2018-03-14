@@ -1,7 +1,10 @@
 # encoding:utf-8
 """
-    对注册信息总表进行的分析
+    功能：对注册信息总表进行的分析
+
+    实际运行时，加schedule模块，每天定时运行
 """
+import schedule
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -70,7 +73,6 @@ def type_count(reg_type):
     exec_res = mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
 
-
 def main():
     for reg_type in ['reg_email','reg_name','reg_name','sponsoring_registrar']:
         type_count(reg_type)
@@ -79,3 +81,8 @@ def main():
 if __name__ == '__main__':
     main()
     mysql_conn.close_db()
+
+    # schedule.every().day.at("10:30").do(job) # 每天十点三十分开始运行
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)

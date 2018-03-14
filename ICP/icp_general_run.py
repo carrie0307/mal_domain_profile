@@ -33,7 +33,7 @@ def get_domains(flag):
     '''
     global mysql_conn
     # sql = "SELECT domain FROM domain_icp WHERE flag = 0;"
-    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d LIMIT 10;" %(flag)
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d;" %(flag)
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
@@ -133,7 +133,7 @@ def get_page_icp_info():
 
     while True:
         try:
-            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate = dm_page_icp_q.get(timeout=200)
+            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate = dm_page_icp_q.get(timeout=500)
             url = 'http://www.' + domain
         except Queue.Empty:
             break
@@ -211,31 +211,32 @@ def mysql_save_icp():
 
     while True:
         try:
-            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code = res_q.get(timeout=100)
+            domain,last_auth_icp,last_page_icp,auth_icp,auth_icp_locate,page_icp,page_icp_locate,code = res_q.get(timeout=500)
         except Queue.Empty:
             break
             print '存储结束'
         # 比对是否发生变化
-        flag = cmp_whether_change(last_auth_icp,last_page_icp,auth_icp,page_icp)
-        insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sql = "UPDATE domain_icp\
-              SET auth_icp = '%s',auth_icp_locate = '%s',page_icp = '%s',page_icp_locate = '%s',http_code = '%s',get_icp_time = '%s',\
-              flag = flag + 1,reuse_check = '',icp_tag = ''\
-              WHERE domain = '%s';" %(auth_icp,auth_icp_locate,page_icp,page_icp_locate,code,insert_time,domain)
-        exec_res = mysql_conn.exec_cudsql(sql)
-        if flag:
+        cmp_flag = cmp_whether_change(last_auth_icp,last_page_icp,auth_icp,page_icp)
+        # 发生变化则将原记录到was表中
+        if cmp_flag:
             sql = "INSERT INTO domain_icp_was(domain,auth_icp,auth_icp_locate,page_icp,page_icp_locate,reuse_check,icp_tag,flag,get_icp_time,http_code)\
                    SELECT domain,auth_icp,auth_icp_locate,page_icp,page_icp_locate,reuse_check,icp_tag,flag,get_icp_time,http_code\
                    FROM domain_icp\
                   WHERE domain = '%s';" %(domain)
             exec_res = mysql_conn.exec_cudsql(sql)
+        insert_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        sql = "UPDATE domain_icp\
+              SET auth_icp = '%s',auth_icp_locate = '%s',page_icp = '%s',page_icp_locate = '%s',http_code = '%s',get_icp_time = '%s',\
+              flag = flag + 1\
+              WHERE domain = '%s';" %(auth_icp,auth_icp_locate,page_icp,page_icp_locate,code,insert_time,domain)
+        exec_res = mysql_conn.exec_cudsql(sql)
         if exec_res:
             counter += 1
             print "counter:" + str(counter)
             if counter == 100:
-                # mysql_conn.commit()
+                mysql_conn.commit()
                 counter = 0
-    # mysql_conn.commit()
+    mysql_conn.commit()
     print "存储完成... "
 
 
@@ -243,6 +244,8 @@ def mysql_save_icp():
 
 
 if __name__ == '__main__':
+    # QUESTION:代码中撤销flag的标志？？？这样新加入的数据可以直接运行，只要在update中每次令flag自增即可
+    # QUESTION： 每次运行update时是否要令reuse_check,icp_tag置为空？
     flag = 2
     global mysql_conn
     ip.run_Getter()

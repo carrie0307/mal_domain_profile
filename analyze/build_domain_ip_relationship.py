@@ -1,11 +1,16 @@
 # encoding:utf-8
 """
     功能：根据mongo-domain_ip_cname更新分析层domain_ip_relationship表，ip_general_list表和domain_ip_relationship的数量统计信息
+    0. 更新的表：domain_ip_relationship,domain_cname_relationship,ip_general_list
+    1. 每次完整跑完一次ip_history后运行build_ip_domain_relationship,运行完后domain_ip_relationship，domain_ip_relationship，ip_general_list中的visit_time与mongo相同
+    2. 每次运行此代码时，如果某domain_ip对已经存在，则更新detect time;反之则直接插入记录
 
-    author & date: csy 2018.01.17
+    注：1） 每次构建ip - domain 对时，如果某 domain - ip 对已经存在，则只更新探测时间;如果不存在，则直接插入;因此, domain - ip 表内的是domain曾有
+    过ip的并集;
+        2) cname - domain 表同上
 
-    * 注意visit_times和slice
-    注意：该以下get_ip_domain_relationship()，把地理位置信息并到这一步来完成
+    现在先以visit_times=5的情况重新建立了以上3个表
+
 """
 
 import sys
@@ -14,7 +19,7 @@ sys.setdefaultencoding('utf-8')
 sys.path.append("..") # 回退到上一级目录
 import database.mongo_operation
 import database.mysql_operation
-mongo_conn = database.mongo_operation.MongoConn('172.29.152.152','mal_domain_profile')
+mongo_conn = database.mongo_operation.MongoConn('172.29.152.151','new_mal_domain_profile')
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 import md5
 
@@ -28,9 +33,14 @@ def md5_id(string):
     md5_str = m.hexdigest()
     return md5_str
 
-def get_ip_domain_relationship():
+
+def get_ip_cname_domain_relationship():
     """
-    功能：根据mongo-domain_ip_cname每次新一轮获得的ip填充domain_ip_relationship表
+    功能：根据mongo-domain_ip_cname每次新一轮获得的ip填充domain_ip_relationship表和domain_cname_relationship表
+
+    domain_ip_relationship:为ip反查域名服务
+    domain_cname_relationship: 为cname反查域名服务
+    ip_general_list: ip总表
 
     * 注意visit_times和slice   visit_times标志是用原始库中第几次的数据构建的关系
     """
@@ -40,126 +50,141 @@ def get_ip_domain_relationship():
     # slice=-1取最后一次的获取结果来更新域名与ip的关系
     fetch_data = mongo_conn.mongo_read('domain_ip_cname',{},{'domain':True,'maltype':True,'domain_ip_cnames':{'$slice':-1},'_id':False,'visit_times':True},limit_num=None)
     for item in fetch_data:
-        # print item.keys()
         domain = item['domain']
-        ips = item['domain_ip_cnames'][0]['ips']
-        last_detect_time = item['domain_ip_cnames'][0]['insert_time']
-        visit_times = item['visit_times']
         maltype = item['maltype']
-        if ips:
-            for ip in ips:
-                ID =  md5_id(domain+ip)
-                # print ID
-                sql = "INSERT INTO domain_ip_relationship(ID,IP,domain,last_detect_time,maltype) VALUES('%s','%s','%s','%s','%s')\
-                      ON DUPLICATE KEY UPDATE\
-                      last_detect_time='%s'" %(ID,ip,domain,last_detect_time,maltype,last_detect_time)
-                print sql
-                mysql_conn.exec_cudsql(sql)
-    # sql = "UPDATE domain_ip_relationship SET visit_times = %d;" %(visit_times)
+        ips = item['domain_ip_cnames'][0]['ips']
+        ip_geos = item['domain_ip_cnames'][0]['ip_geo']
+        ip_as = item['domain_ip_cnames'][0]['ip_as']
+        ip_state = item['domain_ip_cnames'][0]['ip_state']
+        cnames = item['domain_ip_cnames'][0]['cnames']
+        detect_time = item['domain_ip_cnames'][0]['insert_time']
+
+        visit_times = item['visit_times']
+
+        # 建立ip-domiain关系
+        build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos)
+        # 建立cname-domiain关系
+        build_cname_domain_relationship(domain,maltype,cnames,detect_time)
+        # 构建ip_gemeral_list （ip总表）
+        build_ip_general_list(ips,ip_geos,ip_state,ip_as)
+
+    print '---'
+    # 更新ip表中的gamble_num,porno_num等
+    update_ip_general_list_count()
+
+    sql = "UPDATE domain_ip_relationship_copy SET visit_times = '%d';" %(visit_times)
+    mysql_conn.exec_cudsql(sql)
+    sql = "UPDATE domain_cname_relationship_copy SET visit_times = '%d';" %(visit_times)
+    mysql_conn.exec_cudsql(sql)
+    sql = "UPDATE ip_general_list_copy SET visit_times = '%d';" %(visit_times)
     mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
 
 
-def get_ip_info():
+
+def build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos):
+    '''
+    功能：对当前数据信息建立domain-ip对，并组装sql语句
+    param:domain
+    param:maltype
+    param:ips
+    param:detect_time
+    '''
+    if ips:
+        for index,ip in enumerate(ips):
+            country = ip_geos[index]['country']
+            region = ip_geos[index]['region']
+            # 创建ID
+            ID =  md5_id(domain+ip)
+            # 整理地理位置信息
+            if country == '香港' or country == '台湾' or country == '澳门':
+                # 港澳台国家写为“中国”，省份写为”香港“，”澳门“和”台湾“
+                region = country
+                country =  '中国'
+            elif country == '中国' and (region[-1] == '市' or region[-1] == '省'):
+                # 不要‘省’和‘市’字
+                region = region[:len(region)-1]
+
+            sql = "INSERT INTO domain_ip_relationship_copy(ID,IP,domain,last_detect_time,maltype,ip_country,ip_province) VALUES('%s','%s','%s','%s','%s','%s','%s')\
+                  ON DUPLICATE KEY UPDATE\
+                  last_detect_time='%s'" %(ID,ip,domain,detect_time,maltype,country,region,detect_time)
+            mysql_conn.exec_cudsql(sql)
+        # 执行完所有commit一次
+        mysql_conn.commit()
+
+
+def build_cname_domain_relationship(domain,maltype,cnames,detect_time):
+    '''
+    功能：对mongo数据信息建立domain-cname对，并组装sql语句
+    param:domain
+    param:maltype
+    param:cnames
+    param:detect_time
+    '''
+    if cnames:
+        for cname in cnames:
+            ID = md5_id(domain+cname)
+            sql = "INSERT INTO domain_cname_relationship_copy(ID,cname,domain,last_detect_time) VALUES('%s','%s','%s','%s')\
+                  ON DUPLICATE KEY UPDATE\
+                  last_detect_time='%s'" %(ID,cname,domain,detect_time,detect_time)
+            mysql_conn.exec_cudsql(sql)
+        # 执行完所有commit一次
+        mysql_conn.commit()
+
+
+def build_ip_general_list(ips,ip_geos,ip_state,ip_as):
+    '''
+    功能：构建ip_gemeral_list （ip总表）
+    param:
+    '''
+
+    if ips:
+        for index,ip in enumerate(ips):
+            country = ip_geos[index]['country']
+            region = ip_geos[index]['region']
+            city = ip_geos[index]['city']
+            oper = ip_geos[index]['oper']
+            ASN = ip_as[index]['ASN']
+            RIR = ip_as[index]['RIR']
+            AS_CIDR = ip_as[index]['AS_cidr']
+            AS_OWNER = ip_as[index]['AS_owner']
+            state = ip_state[index]['state']
+            state80 = ip_state[index]['state80']
+            state443 = ip_state[index]['state443']
+
+            # 这里用replace，从而使同一ip 的新信息可以覆盖旧的
+            sql = "REPLACE INTO ip_general_list_copy(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443)\
+                                          VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"\
+                                          %(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443)
+            # 执行
+            mysql_conn.exec_cudsql(sql)
+        # 提交
+        mysql_conn.commit()
+
+def update_ip_general_list_count():
     """
-    功能：根据mongo-domain_ip_cname最新一次的数据更新ip_general_list(ip 和 ip地理位置信息)等
-
-    * 注意visit_times和slice
-    * 最新一次探测ip结果，获取最新的ip信息，更新ip总表
-
+    功能：根据domain_ip_relationship更新ip表中的gamble_num,porno_num等
     """
     global mongo_conn
     global mysql_conn
 
-    # slice=-1取最后一次的ip相关信息
-    fetch_data = mongo_conn.mongo_read('domain_ip_cname',{},{'domain':True,'domain_ip_cnames':{'$slice':-1},'_id':False,'visit_times':True},limit_num=None)
-    # print fetch_data
-    for item in fetch_data:
-        ips = item['domain_ip_cnames'][0]['ips']
-        ip_geos = item['domain_ip_cnames'][0]['ip_geo']
-        ip_state = item['domain_ip_cnames'][0]['ip_state']
-        ip_as = item['domain_ip_cnames'][0]['ip_as']
-        if ips:
-            for index,ip in enumerate(ips):
-                country = ip_geos[index]['country']
-                region = ip_geos[index]['region']
-                city = ip_geos[index]['city']
-                oper = ip_geos[index]['oper']
-                ASN = ip_as[index]['ASN']
-                RIR = ip_as[index]['RIR']
-                AS_CIDR = ip_as[index]['AS_cidr']
-                AS_OWNER = ip_as[index]['AS_owner']
-                state = ip_state[index]['state']
-                state80 = ip_state[index]['state80']
-                state443 = ip_state[index]['state443']
-                visit_times = item['visit_times']
-
-                # 这里用replace，从而使同一ip 的新信息可以覆盖旧的
-                sql = "REPLACE INTO ip_general_list(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443)\
-                                              VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"\
-                                              %(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443)
-
-                mysql_conn.exec_cudsql(sql)
-
-    # 每次更新ip总表后将域名数量置为0
-    # sql = "UPDATE ip_general_list SET visit_times = %s,dm_count=0;" %(visit_times)
-    # mysql_conn.exec_cudsql(sql)
-    mysql_conn.commit()
-
-
-def count_ip_type_num():
-    """
-    根据domain_ip_relationship更新ip表中的gamble_num,porno_num等
-    """
-    global mongo_conn
-    global mysql_conn
-
-    sql = "SELECT maltype,ip,count(*) FROM domain_ip_relationship GROUP BY maltype,ip;"
+    sql = "SELECT maltype,ip,count(*) FROM domain_ip_relationship_copy GROUP BY maltype,ip;"
     fetch_data = mysql_conn.exec_readsql(sql)
     for maltype,ip,type_num in fetch_data:
         print maltype,ip,type_num
         if maltype == '非法赌博':
-            sql = "UPDATE ip_general_list SET gamble_num = %d WHERE ip = '%s';" %(type_num,ip)
+            sql = "UPDATE ip_general_list_copy SET gamble_num = %d WHERE ip = '%s';" %(type_num,ip)
         elif maltype == '色情':
-            sql = "UPDATE ip_general_list SET porno_num = %d WHERE ip = '%s';" %(type_num,ip)
+            sql = "UPDATE ip_general_list_copy SET porno_num = %d WHERE ip = '%s';" %(type_num,ip)
         mysql_conn.exec_cudsql(sql)
-    #  通过sql语句统计dm_num即可
-    # sql = "UPDATE ip_general_list SET dm_num = gamble_num + porno_num;"
-    # mysql_conn.exec_cudsql(sql)
+    # 通过sql语句统计dm_num即可
+    sql = "UPDATE ip_general_list_copy SET dm_num = gamble_num + porno_num;"
+    mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
-
-
-def update_domain_ip_geo():
-    """
-    功能：根据ip_general_list更新domain_ip_relationship的ip地理位置信息
-    """
-    sql = "SELECT IP,country,region FROM ip_general_list;"
-    fetch_data = mysql_conn.exec_readsql(sql)
-    for item in fetch_data:
-        IP,country,region = item
-        # print IP,country,region
-        if country == '香港' or country == '台湾' or country == '澳门':
-            # 港澳台国家写为“中国”，省份写为”香港“，”澳门“和”台湾“
-            region = country
-            country =  '中国'
-        elif country == '中国' and (region[-1] == '市' or region[-1] == '省'):
-            # 不要‘省’和‘市’字
-            region = region[:len(region)-1]
-        print IP,country,region
-        sql = "UPDATE domain_ip_relationship SET ip_country = '%s',ip_province = '%s' WHERE IP = '%s';" %(country,region,IP)
-        mysql_conn.exec_cudsql(sql)
-    mysql_conn.commit()
-
-
-
 
 
 def main():
-    get_ip_domain_relationship() # 更新域名-ip关系
-    get_ip_info() # 更新ip总表相关信息
-    count_ip_type_num() # 更新ip总表中的相关分类统计数量
-
+    get_ip_cname_domain_relationship()
 
 if __name__ == '__main__':
-    # main()
-    update_domain_ip_geo()
+    main()
