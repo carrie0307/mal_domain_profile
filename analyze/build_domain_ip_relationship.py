@@ -62,27 +62,17 @@ def get_ip_cname_domain_relationship():
         visit_times = item['visit_times']
 
         # 建立ip-domiain关系
-        build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos)
+        build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos,visit_times)
         # 建立cname-domiain关系
-        build_cname_domain_relationship(domain,maltype,cnames,detect_time)
+        build_cname_domain_relationship(domain,maltype,cnames,detect_time,visit_times)
         # 构建ip_gemeral_list （ip总表）
-        build_ip_general_list(ips,ip_geos,ip_state,ip_as)
+        build_ip_general_list(ips,ip_geos,ip_state,ip_as,visit_times)
 
-    print '---'
     # 更新ip表中的gamble_num,porno_num等
     update_ip_general_list_count()
 
-    sql = "UPDATE domain_ip_relationship_copy SET visit_times = '%d';" %(visit_times)
-    mysql_conn.exec_cudsql(sql)
-    sql = "UPDATE domain_cname_relationship_copy SET visit_times = '%d';" %(visit_times)
-    mysql_conn.exec_cudsql(sql)
-    sql = "UPDATE ip_general_list_copy SET visit_times = '%d';" %(visit_times)
-    mysql_conn.exec_cudsql(sql)
-    mysql_conn.commit()
 
-
-
-def build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos):
+def build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos,visit_times):
     '''
     功能：对当前数据信息建立domain-ip对，并组装sql语句
     param:domain
@@ -105,15 +95,16 @@ def build_ip_domain_relationship(domain,maltype,ips,detect_time,ip_geos):
                 # 不要‘省’和‘市’字
                 region = region[:len(region)-1]
 
-            sql = "INSERT INTO domain_ip_relationship_copy(ID,IP,domain,last_detect_time,maltype,ip_country,ip_province) VALUES('%s','%s','%s','%s','%s','%s','%s')\
-                  ON DUPLICATE KEY UPDATE\
-                  last_detect_time='%s'" %(ID,ip,domain,detect_time,maltype,country,region,detect_time)
+            sql = "INSERT INTO domain_ip_relationship(ID,IP,domain,last_detect_time,maltype,ip_country,ip_province,visit_times)\
+                 VALUES('%s','%s','%s','%s','%s','%s','%s','%d')\
+                  ON DUPLICATE KEY\
+                  UPDATE last_detect_time='%s',visit_times='%d'" %(ID,ip,domain,detect_time,maltype,country,region,visit_times,detect_time,visit_times)
             mysql_conn.exec_cudsql(sql)
         # 执行完所有commit一次
         mysql_conn.commit()
 
 
-def build_cname_domain_relationship(domain,maltype,cnames,detect_time):
+def build_cname_domain_relationship(domain,maltype,cnames,detect_time,visit_times):
     '''
     功能：对mongo数据信息建立domain-cname对，并组装sql语句
     param:domain
@@ -124,15 +115,16 @@ def build_cname_domain_relationship(domain,maltype,cnames,detect_time):
     if cnames:
         for cname in cnames:
             ID = md5_id(domain+cname)
-            sql = "INSERT INTO domain_cname_relationship_copy(ID,cname,domain,last_detect_time) VALUES('%s','%s','%s','%s')\
-                  ON DUPLICATE KEY UPDATE\
-                  last_detect_time='%s'" %(ID,cname,domain,detect_time,detect_time)
+            sql = "INSERT INTO domain_cname_relationship(ID,cname,domain,last_detect_time,visit_times)\
+                   VALUES('%s','%s','%s','%s','%d')\
+                  ON DUPLICATE KEY\
+                  UPDATE last_detect_time='%s',visit_times='%d';" %(ID,cname,domain,detect_time,visit_times,detect_time,visit_times)
             mysql_conn.exec_cudsql(sql)
         # 执行完所有commit一次
         mysql_conn.commit()
 
 
-def build_ip_general_list(ips,ip_geos,ip_state,ip_as):
+def build_ip_general_list(ips,ip_geos,ip_state,ip_as,visit_times):
     '''
     功能：构建ip_gemeral_list （ip总表）
     param:
@@ -153,9 +145,9 @@ def build_ip_general_list(ips,ip_geos,ip_state,ip_as):
             state443 = ip_state[index]['state443']
 
             # 这里用replace，从而使同一ip 的新信息可以覆盖旧的
-            sql = "REPLACE INTO ip_general_list_copy(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443)\
-                                          VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"\
-                                          %(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443)
+            sql = "REPLACE INTO ip_general_list(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443,visit_times)\
+                   VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%d');"\
+                 %(ip,country,region,city,oper,ASN,RIR,AS_CIDR,AS_OWNER,state,state80,state443,visit_times)
             # 执行
             mysql_conn.exec_cudsql(sql)
         # 提交
@@ -168,17 +160,17 @@ def update_ip_general_list_count():
     global mongo_conn
     global mysql_conn
 
-    sql = "SELECT maltype,ip,count(*) FROM domain_ip_relationship_copy GROUP BY maltype,ip;"
+    sql = "SELECT maltype,ip,count(*) FROM domain_ip_relationship GROUP BY maltype,ip;"
     fetch_data = mysql_conn.exec_readsql(sql)
     for maltype,ip,type_num in fetch_data:
         print maltype,ip,type_num
         if maltype == '非法赌博':
-            sql = "UPDATE ip_general_list_copy SET gamble_num = %d WHERE ip = '%s';" %(type_num,ip)
+            sql = "UPDATE ip_general_list SET gamble_num = %d WHERE ip = '%s';" %(type_num,ip)
         elif maltype == '色情':
-            sql = "UPDATE ip_general_list_copy SET porno_num = %d WHERE ip = '%s';" %(type_num,ip)
+            sql = "UPDATE ip_general_list SET porno_num = %d WHERE ip = '%s';" %(type_num,ip)
         mysql_conn.exec_cudsql(sql)
     # 通过sql语句统计dm_num即可
-    sql = "UPDATE ip_general_list_copy SET dm_num = gamble_num + porno_num;"
+    sql = "UPDATE ip_general_list SET dm_num = gamble_num + porno_num;"
     mysql_conn.exec_cudsql(sql)
     mysql_conn.commit()
 

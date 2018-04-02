@@ -59,7 +59,7 @@ def type_count(reg_type):
         reg_item = MySQLdb.escape_string(item)
         print reg_item,reg_type,domain_count,gamble_count,porno_count
 
-        sql = "INSERT INTO reg_info_copy(item,reg_type,domain_count,gamble_count,porno_count)\
+        sql = "INSERT INTO reg_info(item,reg_type,domain_count,gamble_count,porno_count)\
                VALUES('%s','%s',%d,%d,%d)\
                ON DUPLICATE KEY\
                UPDATE domain_count=%d,gamble_count=%d,porno_count=%d;"%(reg_item,reg_type,domain_count,gamble_count,porno_count,domain_count,gamble_count,porno_count)
@@ -74,7 +74,8 @@ def type_count(reg_type):
     mysql_conn.commit()
 
 def main():
-    for reg_type in ['reg_email','reg_name','reg_name','sponsoring_registrar']:
+    # for reg_type in ['reg_email','reg_name','reg_name','sponsoring_registrar']:
+    for reg_type in ['reg_phone']:
         type_count(reg_type)
         print reg_type + " 统计完成"
 

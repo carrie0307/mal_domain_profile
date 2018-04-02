@@ -24,16 +24,15 @@ res_q = Queue.Queue()
 mysql_conn = database.mysql_operation.MysqlConn('172.26.253.3','root','platform','mal_domain_profile','utf8')
 
 '''线程数量'''
-thread_num = 10
+thread_num = 20
 
 
-def get_domains(flag):
+def get_domains():
     '''
     功能:从数据库中读取未获取权威icp信息的域名，添加入域名队列
     '''
     global mysql_conn
-    # sql = "SELECT domain FROM domain_icp WHERE flag = 0;"
-    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp WHERE flag = %d;" %(flag)
+    sql = "SELECT domain,auth_icp,page_icp FROM domain_icp;"
     fetch_data = mysql_conn.exec_readsql(sql)
     if fetch_data == False:
         print "获取数据有误..."
@@ -246,7 +245,7 @@ def mysql_save_icp():
 if __name__ == '__main__':
     # QUESTION:代码中撤销flag的标志？？？这样新加入的数据可以直接运行，只要在update中每次令flag自增即可
     # QUESTION： 每次运行update时是否要令reuse_check,icp_tag置为空？
-    flag = 2
+    # flag = 2
     global mysql_conn
     ip.run_Getter()
     time.sleep(20) # 这个时间很关键，这段时间用来从各平台上获取代理ip
@@ -256,7 +255,7 @@ if __name__ == '__main__':
     watcher.setDaemon(True)
     watcher.start()
     '''开始icp批量获取'''
-    get_domains(flag)
+    get_domains()
     get_chinaz_icp_td = []
     for _ in range(thread_num):
         get_chinaz_icp_td.append(threading.Thread(target=get_chinaz_icp_info))

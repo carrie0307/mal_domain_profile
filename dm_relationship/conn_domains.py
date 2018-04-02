@@ -57,7 +57,8 @@ class Domain_conn(object):
 
         if domain in self.reg_info_cache:
             return self.reg_info_cache[domain]
-        sql = "SELECT reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE domain = '%s';" %(domain)
+        # sql = "SELECT reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE domain = '%s';" %(domain)
+        sql = "SELECT reg_name,reg_email,reg_phone FROM domain_whois WHERE domain = '%s';" %(domain)
         fetch_data = mysql_conn.exec_readsql(sql)
         if fetch_data: # 库中可以查到该域名的注册信息
             reg_name,reg_email,reg_phone = fetch_data[0]
@@ -79,7 +80,8 @@ class Domain_conn(object):
         global mysql_conn
         reg_info = mysql_conn.escate_string(reg_info)
         domains = []
-        sql = "SELECT domain FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
+        # sql = "SELECT domain FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
+        sql = "SELECT domain FROM domain_whois WHERE %s = '%s';" %(reg_type,reg_info)
         fetch_data = mysql_conn.exec_readsql(sql)
         for item in fetch_data:
             # 将域名添加到列表中
@@ -95,7 +97,8 @@ class Domain_conn(object):
         # 对注册信息进行转义处理
         reg_info = mysql_conn.escape_string(reg_info)
         conn_dm_reg = []
-        sql = "SELECT domain,reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
+        # sql = "SELECT domain,reg_name,reg_email,reg_phone FROM domain_reg_relationship WHERE %s = '%s';" %(reg_type,reg_info)
+        sql = "SELECT domain,reg_name,reg_email,reg_phone FROM domain_whois WHERE %s = '%s';" %(reg_type,reg_info)
         fetch_data = mysql_conn.exec_readsql(sql)
         return fetch_data
 

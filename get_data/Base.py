@@ -6,13 +6,13 @@ from copy import copy
 
 class Base(object):
     def __init__(self):
-        # self.mysql_db = torndb.Connection(
-        #     host = "172.26.253.3",
-        #     database = "mal_domain_profile",
-        #     user = "root",
-        #     password = "platform",
-        #     charset = "utf8",
-        # )
+        self.mysql_db = torndb.Connection(
+            host = "172.26.253.3",
+            database = "mal_domain_profile",
+            user = "root",
+            password = "platform",
+            charset = "utf8",
+        )
         self.mongo_db = MongoClient('172.29.152.151',27017).new_mal_domain_profile
 
     def add_seq_num(self,results):
@@ -25,3 +25,10 @@ class Base(object):
             print "结果非列表形式，添加序列号失败"
 
         return results
+
+    def None_to_empty(self,result):
+
+        if result is None:
+            result = ''
+
+        return result

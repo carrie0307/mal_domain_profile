@@ -1,28 +1,20 @@
 #coding=utf-8
 import MySQLdb
-
-
-# conn = MySQLdb.connect('172.29.152.249', 'root', 'platform', 'mds_new', charset = 'utf8')
-# cur = conn.cursor()
-# sql = "SELECT domain,maltype FROM mal_domain_collect WHERE maltype = '非法赌博' LIMIT 90000"
-# count = cur.execute(sql)
-# print count
-# res = cur.fetchall()
-# cur.close()
-# conn.close()
-
-with open('white_list.txt','r') as f:
-    res = f.readlines()
+from pymongo import *
 
 
 conn = MySQLdb.connect('172.26.253.3', 'root', 'platform', 'mal_domain_profile', charset = 'utf8')
 cur = conn.cursor()
-source = 1
+sql = "SELECT domain,maltype FROM domain_index WHERE source = '2nd_domains' LIMIT 10;"
+count = cur.execute(sql)
+res = cur.fetchall()
+documents = []
 for item in res:
-    domain = item.strip()
-    sql = "INSERT INTO white_list(domain) VALUES('%s');" %(domain)
-    print sql
-    cur.execute(sql)
-conn.commit()
-cur.close()
-conn.close()
+    domain,maltype = item
+    temp = {'domain':domain, 'maltype':maltype,'domain_ip_cnames':[],'visit_times':0.0,'change_times':0.0}
+    documents.append(temp)
+
+conn = MongoClient('172.29.152.151',27017)
+db = conn.new_mal_domain_profile
+collection = db['domain_ip_cname_test']
+collection.insert_many(documents)
